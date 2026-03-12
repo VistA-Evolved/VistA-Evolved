@@ -43,7 +43,7 @@ jobs:
           --health-start-period 15s
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Wait for Orthanc healthy
         run: |

@@ -26,7 +26,7 @@ jobs:
       matrix:
         image: [api, web, portal]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install Syft
         uses: anchore/sbom-action/download-syft@v0
@@ -81,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Generate release index entry
         run: |
