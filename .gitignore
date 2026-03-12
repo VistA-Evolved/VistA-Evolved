@@ -46,12 +46,18 @@ vendor/worldvista/*/
 !vendor/worldvista/LOCK.json
 vendor/worldvista/sync.log
 
+# Stage 2: Local upstream clones (lock file is committed; clone contents are not)
+vendor/upstream/*/
+!vendor/upstream/.gitkeep
+
 # Analytics local data (JSONL event persistence)
 apps/api/data/
 
 # Runtime logs (never commit)
 /logs/
 apps/api/logs/
+docker/local-vista/logs/*.log
+docker/local-vista/logs/*.txt
 apps/api/cookies*.txt
 apps/api/verify*.json
 

@@ -21,7 +21,21 @@ async function apiFetch(path: string, opts?: RequestInit) {
     ...opts,
     headers: { ...csrfHeaders(), ...(opts?.headers || {}) },
   });
-  return res.json();
+
+  let payload: any = null;
+  try {
+    payload = await res.json();
+  } catch {
+    payload = null;
+  }
+
+  if (!res.ok || (payload && payload.ok === false)) {
+    const message =
+      payload?.error || (res.status === 401 ? 'Authentication required' : `Request failed (${res.status})`);
+    throw new Error(message);
+  }
+
+  return payload;
 }
 
 export default function LOAQueuePage() {
@@ -34,6 +48,7 @@ export default function LOAQueuePage() {
     critical: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [selectedCase, setSelectedCase] = useState<any>(null);
   const [selectedPack, setSelectedPack] = useState<any>(null);
 
@@ -57,11 +72,19 @@ export default function LOAQueuePage() {
 
     apiFetch(`/rcm/payerops/loa-queue?${params.toString()}`)
       .then((d) => {
+        setLoadError(null);
         setItems(d?.items || []);
         setTotal(d?.total ?? 0);
         setSlaBreakdown(d?.slaBreakdown || { on_track: 0, at_risk: 0, overdue: 0, critical: 0 });
       })
-      .catch(() => {})
+      .catch((err) => {
+        setItems([]);
+        setTotal(0);
+        setSelectedCase(null);
+        setSelectedPack(null);
+        setSlaBreakdown({ on_track: 0, at_risk: 0, overdue: 0, critical: 0 });
+        setLoadError(err instanceof Error ? err.message : 'Unable to load LOA queue.');
+      })
       .finally(() => setLoading(false));
   }, [filterStatus, filterPayer, filterRisk, filterPriority, filterAssignee]);
 
@@ -123,182 +146,190 @@ export default function LOAQueuePage() {
         </span>
       </div>
 
-      {/* SLA Summary Bar */}
-      <div
-        style={{
-          display: 'flex',
-          gap: 16,
-          padding: '10px 24px',
-          borderBottom: '1px solid #dee2e6',
-          background: '#f8f9fa',
-          fontSize: 12,
-        }}
-      >
-        <span>
-          Total Active: <strong>{total}</strong>
-        </span>
-        <SLABadge
-          risk="on_track"
-          count={slaBreakdown.on_track}
-          onClick={() => setFilterRisk(filterRisk === 'on_track' ? '' : 'on_track')}
-          active={filterRisk === 'on_track'}
-        />
-        <SLABadge
-          risk="at_risk"
-          count={slaBreakdown.at_risk}
-          onClick={() => setFilterRisk(filterRisk === 'at_risk' ? '' : 'at_risk')}
-          active={filterRisk === 'at_risk'}
-        />
-        <SLABadge
-          risk="critical"
-          count={slaBreakdown.critical}
-          onClick={() => setFilterRisk(filterRisk === 'critical' ? '' : 'critical')}
-          active={filterRisk === 'critical'}
-        />
-        <SLABadge
-          risk="overdue"
-          count={slaBreakdown.overdue}
-          onClick={() => setFilterRisk(filterRisk === 'overdue' ? '' : 'overdue')}
-          active={filterRisk === 'overdue'}
-        />
-      </div>
-
-      {/* Filters */}
-      <div
-        style={{
-          display: 'flex',
-          gap: 8,
-          padding: '8px 24px',
-          borderBottom: '1px solid #dee2e6',
-          flexWrap: 'wrap',
-          fontSize: 12,
-        }}
-      >
-        <select
-          value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value)}
-          style={filterStyle}
-        >
-          <option value="">All Statuses</option>
-          <option value="draft">Draft</option>
-          <option value="pending_submission">Pending Submission</option>
-          <option value="submitted">Submitted</option>
-          <option value="under_review">Under Review</option>
-        </select>
-        <select
-          value={filterPriority}
-          onChange={(e) => setFilterPriority(e.target.value)}
-          style={filterStyle}
-        >
-          <option value="">All Priorities</option>
-          <option value="stat">STAT</option>
-          <option value="urgent">Urgent</option>
-          <option value="routine">Routine</option>
-        </select>
-        <input
-          value={filterPayer}
-          onChange={(e) => setFilterPayer(e.target.value)}
-          placeholder="Payer ID"
-          style={{ ...filterStyle, width: 120 }}
-        />
-        <input
-          value={filterAssignee}
-          onChange={(e) => setFilterAssignee(e.target.value)}
-          placeholder="Assigned To"
-          style={{ ...filterStyle, width: 120 }}
-        />
-        {(filterStatus || filterPayer || filterRisk || filterPriority || filterAssignee) && (
-          <button
-            onClick={() => {
-              setFilterStatus('');
-              setFilterPayer('');
-              setFilterRisk('');
-              setFilterPriority('');
-              setFilterAssignee('');
-            }}
+      {loadError ? (
+        <div style={{ padding: 16 }}>
+          <p style={{ fontSize: 13, color: '#dc3545' }}>Unable to load LOA queue. {loadError}</p>
+        </div>
+      ) : (
+        <>
+          {/* SLA Summary Bar */}
+          <div
             style={{
-              padding: '2px 8px',
-              fontSize: 11,
-              cursor: 'pointer',
-              background: '#dc3545',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 3,
+              display: 'flex',
+              gap: 16,
+              padding: '10px 24px',
+              borderBottom: '1px solid #dee2e6',
+              background: '#f8f9fa',
+              fontSize: 12,
             }}
           >
-            Clear
-          </button>
-        )}
-      </div>
+            <span>
+              Total Active: <strong>{total}</strong>
+            </span>
+            <SLABadge
+              risk="on_track"
+              count={slaBreakdown.on_track}
+              onClick={() => setFilterRisk(filterRisk === 'on_track' ? '' : 'on_track')}
+              active={filterRisk === 'on_track'}
+            />
+            <SLABadge
+              risk="at_risk"
+              count={slaBreakdown.at_risk}
+              onClick={() => setFilterRisk(filterRisk === 'at_risk' ? '' : 'at_risk')}
+              active={filterRisk === 'at_risk'}
+            />
+            <SLABadge
+              risk="critical"
+              count={slaBreakdown.critical}
+              onClick={() => setFilterRisk(filterRisk === 'critical' ? '' : 'critical')}
+              active={filterRisk === 'critical'}
+            />
+            <SLABadge
+              risk="overdue"
+              count={slaBreakdown.overdue}
+              onClick={() => setFilterRisk(filterRisk === 'overdue' ? '' : 'overdue')}
+              active={filterRisk === 'overdue'}
+            />
+          </div>
 
-      {/* Queue Table */}
-      <div style={{ padding: 16, overflow: 'auto', flex: 1 }}>
-        {loading ? (
-          <p style={{ fontSize: 13, color: '#6c757d' }}>Loading queue...</p>
-        ) : items.length === 0 ? (
-          <p style={{ fontSize: 13, color: '#6c757d' }}>
-            No active LOA cases match the current filters.
-          </p>
-        ) : (
-          <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
-            <thead>
-              <tr style={{ borderBottom: '2px solid #dee2e6', textAlign: 'left' }}>
-                <th style={thStyle}>SLA</th>
-                <th style={thStyle}>Priority</th>
-                <th style={thStyle}>Patient</th>
-                <th style={thStyle}>Payer</th>
-                <th style={thStyle}>Type</th>
-                <th style={thStyle}>Status</th>
-                <th style={thStyle}>Assigned</th>
-                <th style={thStyle}>Deadline</th>
-                <th style={thStyle}>Age</th>
-                <th style={thStyle}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.map((c: any) => (
-                <tr key={c.id} style={{ borderBottom: '1px solid #dee2e6' }}>
-                  <td style={tdStyle}>
-                    <SLAIndicator risk={c.slaRiskLevel} />
-                  </td>
-                  <td style={tdStyle}>
-                    <PriorityBadge priority={c.priority} />
-                  </td>
-                  <td style={tdStyle}>{c.patientDfn}</td>
-                  <td style={tdStyle}>{c.payerName}</td>
-                  <td style={tdStyle}>{c.requestType?.replace(/_/g, ' ')}</td>
-                  <td style={tdStyle}>
-                    <StatusBadge status={c.status} />
-                  </td>
-                  <td style={tdStyle}>{c.assignedTo || '--'}</td>
-                  <td style={{ ...tdStyle, fontSize: 11 }}>
-                    {c.slaDeadline ? formatDeadline(c.slaDeadline) : '--'}
-                  </td>
-                  <td style={{ ...tdStyle, fontSize: 11 }}>{formatAge(c.createdAt)}</td>
-                  <td style={tdStyle}>
-                    <div style={{ display: 'flex', gap: 4 }}>
-                      <button
-                        onClick={() => viewDetail(c.id)}
-                        style={btnStyle}
-                        title="View Details"
-                      >
-                        View
-                      </button>
-                      <button
-                        onClick={() => generatePack(c.id)}
-                        style={btnStyle}
-                        title="Generate Pack"
-                      >
-                        Pack
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+          {/* Filters */}
+          <div
+            style={{
+              display: 'flex',
+              gap: 8,
+              padding: '8px 24px',
+              borderBottom: '1px solid #dee2e6',
+              flexWrap: 'wrap',
+              fontSize: 12,
+            }}
+          >
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              style={filterStyle}
+            >
+              <option value="">All Statuses</option>
+              <option value="draft">Draft</option>
+              <option value="pending_submission">Pending Submission</option>
+              <option value="submitted">Submitted</option>
+              <option value="under_review">Under Review</option>
+            </select>
+            <select
+              value={filterPriority}
+              onChange={(e) => setFilterPriority(e.target.value)}
+              style={filterStyle}
+            >
+              <option value="">All Priorities</option>
+              <option value="stat">STAT</option>
+              <option value="urgent">Urgent</option>
+              <option value="routine">Routine</option>
+            </select>
+            <input
+              value={filterPayer}
+              onChange={(e) => setFilterPayer(e.target.value)}
+              placeholder="Payer ID"
+              style={{ ...filterStyle, width: 120 }}
+            />
+            <input
+              value={filterAssignee}
+              onChange={(e) => setFilterAssignee(e.target.value)}
+              placeholder="Assigned To"
+              style={{ ...filterStyle, width: 120 }}
+            />
+            {(filterStatus || filterPayer || filterRisk || filterPriority || filterAssignee) && (
+              <button
+                onClick={() => {
+                  setFilterStatus('');
+                  setFilterPayer('');
+                  setFilterRisk('');
+                  setFilterPriority('');
+                  setFilterAssignee('');
+                }}
+                style={{
+                  padding: '2px 8px',
+                  fontSize: 11,
+                  cursor: 'pointer',
+                  background: '#dc3545',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: 3,
+                }}
+              >
+                Clear
+              </button>
+            )}
+          </div>
+
+          {/* Queue Table */}
+          <div style={{ padding: 16, overflow: 'auto', flex: 1 }}>
+            {loading ? (
+              <p style={{ fontSize: 13, color: '#6c757d' }}>Loading queue...</p>
+            ) : items.length === 0 ? (
+              <p style={{ fontSize: 13, color: '#6c757d' }}>
+                No active LOA cases match the current filters.
+              </p>
+            ) : (
+              <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr style={{ borderBottom: '2px solid #dee2e6', textAlign: 'left' }}>
+                    <th style={thStyle}>SLA</th>
+                    <th style={thStyle}>Priority</th>
+                    <th style={thStyle}>Patient</th>
+                    <th style={thStyle}>Payer</th>
+                    <th style={thStyle}>Type</th>
+                    <th style={thStyle}>Status</th>
+                    <th style={thStyle}>Assigned</th>
+                    <th style={thStyle}>Deadline</th>
+                    <th style={thStyle}>Age</th>
+                    <th style={thStyle}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {items.map((c: any) => (
+                    <tr key={c.id} style={{ borderBottom: '1px solid #dee2e6' }}>
+                      <td style={tdStyle}>
+                        <SLAIndicator risk={c.slaRiskLevel} />
+                      </td>
+                      <td style={tdStyle}>
+                        <PriorityBadge priority={c.priority} />
+                      </td>
+                      <td style={tdStyle}>{c.patientDfn}</td>
+                      <td style={tdStyle}>{c.payerName}</td>
+                      <td style={tdStyle}>{c.requestType?.replace(/_/g, ' ')}</td>
+                      <td style={tdStyle}>
+                        <StatusBadge status={c.status} />
+                      </td>
+                      <td style={tdStyle}>{c.assignedTo || '--'}</td>
+                      <td style={{ ...tdStyle, fontSize: 11 }}>
+                        {c.slaDeadline ? formatDeadline(c.slaDeadline) : '--'}
+                      </td>
+                      <td style={{ ...tdStyle, fontSize: 11 }}>{formatAge(c.createdAt)}</td>
+                      <td style={tdStyle}>
+                        <div style={{ display: 'flex', gap: 4 }}>
+                          <button
+                            onClick={() => viewDetail(c.id)}
+                            style={btnStyle}
+                            title="View Details"
+                          >
+                            View
+                          </button>
+                          <button
+                            onClick={() => generatePack(c.id)}
+                            style={btnStyle}
+                            title="Generate Pack"
+                          >
+                            Pack
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        </>
+      )}
 
       {/* Detail Modal */}
       {selectedCase && (

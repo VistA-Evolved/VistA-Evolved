@@ -52,6 +52,15 @@ interface RunbookEntry {
   domain: string;
 }
 
+async function apiFetch<T>(path: string): Promise<T> {
+  const res = await fetch(`${API_BASE}${path}`, { credentials: 'include' });
+  const payload = await res.json().catch(() => null);
+  if (!res.ok || !payload?.ok) {
+    throw new Error((payload as any)?.error || `Request failed (${res.status})`);
+  }
+  return payload as T;
+}
+
 export default function OpsAdminPage() {
   const [tab, setTab] = useState<Tab>('overview');
   const [overview, setOverview] = useState<OpsOverview | null>(null);
@@ -65,37 +74,35 @@ export default function OpsAdminPage() {
     setLoading(true);
     setError(null);
     try {
-      const [ovRes, alertRes, storeRes, rbRes] = await Promise.allSettled([
-        fetch(`${API_BASE}/admin/ops/overview`, { credentials: 'include' }),
-        fetch(`${API_BASE}/admin/ops/alerts`, { credentials: 'include' }),
-        fetch(`${API_BASE}/admin/ops/store-inventory`, { credentials: 'include' }),
-        fetch(`${API_BASE}/admin/ops/runbooks`, { credentials: 'include' }),
+      const [overviewData, alertsData, storesData, runbooksData] = await Promise.all([
+        apiFetch<{ ok: true; overview: OpsOverview }>('/admin/ops/overview'),
+        apiFetch<{ ok: true; alerts?: OpsAlert[] }>('/admin/ops/alerts'),
+        apiFetch<{
+          ok: true;
+          total?: number;
+          byClassification?: Record<string, number>;
+          byDomain?: Record<string, number>;
+          byDurability?: Record<string, number>;
+          criticalInMemory?: number;
+        }>('/admin/ops/store-inventory'),
+        apiFetch<{ ok: true; runbooks?: RunbookEntry[] }>('/admin/ops/runbooks'),
       ]);
 
-      if (ovRes.status === 'fulfilled' && ovRes.value.ok) {
-        const d = await ovRes.value.json();
-        if (d.ok) setOverview(d.overview);
-      }
-      if (alertRes.status === 'fulfilled' && alertRes.value.ok) {
-        const d = await alertRes.value.json();
-        if (d.ok) setAlerts(d.alerts || []);
-      }
-      if (storeRes.status === 'fulfilled' && storeRes.value.ok) {
-        const d = await storeRes.value.json();
-        if (d.ok)
-          setStores({
-            total: d.total || 0,
-            byClassification: d.byClassification || {},
-            byDomain: d.byDomain || {},
-            byDurability: d.byDurability || {},
-            criticalInMemory: d.criticalInMemory || 0,
-          });
-      }
-      if (rbRes.status === 'fulfilled' && rbRes.value.ok) {
-        const d = await rbRes.value.json();
-        if (d.ok) setRunbooks(d.runbooks || []);
-      }
+      setOverview(overviewData.overview);
+      setAlerts(alertsData.alerts || []);
+      setStores({
+        total: storesData.total || 0,
+        byClassification: storesData.byClassification || {},
+        byDomain: storesData.byDomain || {},
+        byDurability: storesData.byDurability || {},
+        criticalInMemory: storesData.criticalInMemory || 0,
+      });
+      setRunbooks(runbooksData.runbooks || []);
     } catch (err: any) {
+      setOverview(null);
+      setAlerts([]);
+      setStores(null);
+      setRunbooks([]);
       setError(err.message || 'Failed to fetch ops data');
     }
     setLoading(false);

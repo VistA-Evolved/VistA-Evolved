@@ -35,7 +35,7 @@ interface DomainInfo {
   domain: string;
   readAvailable: boolean;
   writeAvailable: boolean;
-  rpcs: { name: string; available: boolean; domain: string; tags?: string[] }[];
+  rpcs: { rpcName?: string; name?: string; available: boolean; domain: string; tags?: string[] }[];
 }
 
 interface RuntimeMatrix {
@@ -248,7 +248,11 @@ function RpcCoverageTab({ matrix, loading }: { matrix: RuntimeMatrix | null; loa
 
   const [filter, setFilter] = useState<'all' | 'available' | 'missing'>('all');
   const allRpcs = Object.values(matrix.domains).flatMap((d) =>
-    d.rpcs.map((r) => ({ ...r, domain: d.domain }))
+    d.rpcs.map((r) => ({
+      ...r,
+      domain: d.domain,
+      displayName: r.rpcName || r.name || 'UNKNOWN RPC',
+    }))
   );
   const filtered =
     filter === 'all'
@@ -302,8 +306,8 @@ function RpcCoverageTab({ matrix, loading }: { matrix: RuntimeMatrix | null; loa
           </thead>
           <tbody>
             {filtered.map((r) => (
-              <tr key={`${r.domain}-${r.name}`} style={{ borderBottom: '1px solid #f0f0f0' }}>
-                <td style={{ padding: '6px 10px', fontFamily: 'monospace' }}>{r.name}</td>
+              <tr key={`${r.domain}-${r.displayName}`} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                <td style={{ padding: '6px 10px', fontFamily: 'monospace' }}>{r.displayName}</td>
                 <td style={{ padding: '6px 10px' }}>{r.domain}</td>
                 <td style={{ padding: '6px 10px' }}>
                   <StatusBadge ok={r.available} label={r.available ? 'AVAILABLE' : 'MISSING'} />

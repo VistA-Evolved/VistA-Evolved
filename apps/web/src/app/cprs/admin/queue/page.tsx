@@ -51,13 +51,23 @@ interface DisplayBoard {
 
 type Tab = 'queue' | 'display' | 'departments' | 'stats';
 
+type ApiResult<T> = T & {
+  ok?: boolean;
+  error?: string;
+};
+
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API}${path}`, {
     credentials: 'include',
     ...opts,
     headers: { 'Content-Type': 'application/json', ...opts?.headers },
   });
-  return res.json();
+  const data = (await res.json().catch(() => null)) as ApiResult<any> | null;
+  if (!res.ok || data?.ok === false) {
+    const error = data?.error || (res.status === 401 ? 'Authentication required' : `Request failed (${res.status})`);
+    throw new Error(error);
+  }
+  return data;
 }
 
 const PRIORITY_COLORS: Record<string, string> = {
@@ -84,6 +94,10 @@ export default function QueueAdminPage() {
   const [stats, setStats] = useState<QueueStatsData | null>(null);
   const [board, setBoard] = useState<DisplayBoard | null>(null);
   const [loading, setLoading] = useState(false);
+  const [departmentsError, setDepartmentsError] = useState<string | null>(null);
+  const [ticketsError, setTicketsError] = useState<string | null>(null);
+  const [statsError, setStatsError] = useState<string | null>(null);
+  const [boardError, setBoardError] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState<string | null>(null);
   const [newPatientDfn, setNewPatientDfn] = useState('');
@@ -91,25 +105,52 @@ export default function QueueAdminPage() {
   const [newPriority, setNewPriority] = useState('normal');
 
   const loadDepartments = useCallback(async () => {
-    const data = await apiFetch('/queue/departments');
-    if (data.ok) setDepartments(data.departments || []);
+    try {
+      const data = await apiFetch('/queue/departments');
+      setDepartments(data.departments || []);
+      setDepartmentsError(null);
+    } catch (error) {
+      setDepartments([]);
+      setDepartmentsError(
+        error instanceof Error ? error.message : 'Unable to load department configurations'
+      );
+    }
   }, []);
 
   const loadTickets = useCallback(async () => {
     setLoading(true);
-    const data = await apiFetch(`/queue/tickets?dept=${selectedDept}`);
-    if (data.ok) setTickets(data.tickets || []);
-    setLoading(false);
+    try {
+      const data = await apiFetch(`/queue/tickets?dept=${selectedDept}`);
+      setTickets(data.tickets || []);
+      setTicketsError(null);
+    } catch (error) {
+      setTickets([]);
+      setTicketsError(error instanceof Error ? error.message : 'Unable to load queue tickets');
+    } finally {
+      setLoading(false);
+    }
   }, [selectedDept]);
 
   const loadStats = useCallback(async () => {
-    const data = await apiFetch(`/queue/stats/${selectedDept}`);
-    if (data.ok) setStats(data.stats);
+    try {
+      const data = await apiFetch(`/queue/stats/${selectedDept}`);
+      setStats(data.stats);
+      setStatsError(null);
+    } catch (error) {
+      setStats(null);
+      setStatsError(error instanceof Error ? error.message : 'Unable to load queue statistics');
+    }
   }, [selectedDept]);
 
   const loadBoard = useCallback(async () => {
-    const data = await apiFetch(`/queue/display/${selectedDept}`);
-    if (data.ok) setBoard(data.board);
+    try {
+      const data = await apiFetch(`/queue/display/${selectedDept}`);
+      setBoard(data.board);
+      setBoardError(null);
+    } catch (error) {
+      setBoard(null);
+      setBoardError(error instanceof Error ? error.message : 'Unable to load display board');
+    }
   }, [selectedDept]);
 
   useEffect(() => {
@@ -198,16 +239,17 @@ export default function QueueAdminPage() {
         <select
           value={selectedDept}
           onChange={(e) => setSelectedDept(e.target.value)}
+          disabled={!!departmentsError && tab !== 'display'}
           style={{ padding: 6, border: '1px solid #ccc', borderRadius: 4, minWidth: 200 }}
         >
-          {departments.length === 0 && <option value="">-- Seed departments first --</option>}
+          {departments.length === 0 && <option value={selectedDept}>{selectedDept || '--'}</option>}
           {departments.map((d) => (
             <option key={d.department} value={d.department}>
               {d.displayName}
             </option>
           ))}
         </select>
-        {departments.length === 0 && (
+        {departments.length === 0 && !departmentsError && (
           <button
             onClick={handleSeedDepts}
             style={{
@@ -222,6 +264,12 @@ export default function QueueAdminPage() {
           </button>
         )}
       </div>
+
+      {departmentsError && tab !== 'display' && (
+        <p style={{ marginTop: -8, marginBottom: 12, color: '#c62828', fontSize: 13 }}>
+          Unable to load departments. {departmentsError}
+        </p>
+      )}
 
       {/* Tab Bar */}
       <div
@@ -337,6 +385,7 @@ export default function QueueAdminPage() {
           <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
             <button
               onClick={handleCallNext}
+              disabled={!!ticketsError || !!departmentsError}
               style={{
                 padding: '8px 20px',
                 background: '#2e7d32',
@@ -355,6 +404,8 @@ export default function QueueAdminPage() {
           </div>
           {loading ? (
             <p>Loading...</p>
+          ) : ticketsError ? (
+            <p style={{ color: '#c62828' }}>Unable to load active queue. {ticketsError}</p>
           ) : tickets.length === 0 ? (
             <p style={{ color: '#999' }}>No active tickets in this department.</p>
           ) : (
@@ -459,7 +510,9 @@ export default function QueueAdminPage() {
       )}
 
       {/* Display Board Tab */}
-      {tab === 'display' && board && (
+      {tab === 'display' && boardError ? (
+        <p style={{ color: '#c62828' }}>Unable to load display board. {boardError}</p>
+      ) : tab === 'display' && board && (
         <div
           style={{
             background: '#1a237e',
@@ -534,7 +587,9 @@ export default function QueueAdminPage() {
       {tab === 'departments' && (
         <div>
           <h3>Department Configurations</h3>
-          {departments.length === 0 ? (
+          {departmentsError ? (
+            <p style={{ color: '#c62828' }}>Unable to load department configurations. {departmentsError}</p>
+          ) : departments.length === 0 ? (
             <p style={{ color: '#999' }}>No departments configured. Click Seed to initialize.</p>
           ) : (
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
@@ -594,34 +649,37 @@ export default function QueueAdminPage() {
       )}
 
       {/* Stats Tab */}
-      {tab === 'stats' && stats && (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
-          <div style={{ background: '#f5f5f5', padding: 16, borderRadius: 8 }}>
-            <div style={{ fontSize: 28, fontWeight: 700 }}>{stats.totalToday}</div>
-            <div style={{ color: '#666' }}>Total Today</div>
+      {tab === 'stats' &&
+        (statsError ? (
+          <p style={{ color: '#c62828' }}>Unable to load queue statistics. {statsError}</p>
+        ) : stats ? (
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
+            <div style={{ background: '#f5f5f5', padding: 16, borderRadius: 8 }}>
+              <div style={{ fontSize: 28, fontWeight: 700 }}>{stats.totalToday}</div>
+              <div style={{ color: '#666' }}>Total Today</div>
+            </div>
+            <div style={{ background: '#fff3e0', padding: 16, borderRadius: 8 }}>
+              <div style={{ fontSize: 28, fontWeight: 700 }}>{stats.waiting}</div>
+              <div style={{ color: '#666' }}>Waiting</div>
+            </div>
+            <div style={{ background: '#e8f5e9', padding: 16, borderRadius: 8 }}>
+              <div style={{ fontSize: 28, fontWeight: 700 }}>{stats.serving}</div>
+              <div style={{ color: '#666' }}>Serving</div>
+            </div>
+            <div style={{ background: '#e3f2fd', padding: 16, borderRadius: 8 }}>
+              <div style={{ fontSize: 28, fontWeight: 700 }}>{stats.completed}</div>
+              <div style={{ color: '#666' }}>Completed</div>
+            </div>
+            <div style={{ background: '#fce4ec', padding: 16, borderRadius: 8 }}>
+              <div style={{ fontSize: 28, fontWeight: 700 }}>{stats.noShow}</div>
+              <div style={{ color: '#666' }}>No-Show</div>
+            </div>
+            <div style={{ background: '#f3e5f5', padding: 16, borderRadius: 8 }}>
+              <div style={{ fontSize: 28, fontWeight: 700 }}>{stats.averageWaitMinutes}m</div>
+              <div style={{ color: '#666' }}>Avg Wait</div>
+            </div>
           </div>
-          <div style={{ background: '#fff3e0', padding: 16, borderRadius: 8 }}>
-            <div style={{ fontSize: 28, fontWeight: 700 }}>{stats.waiting}</div>
-            <div style={{ color: '#666' }}>Waiting</div>
-          </div>
-          <div style={{ background: '#e8f5e9', padding: 16, borderRadius: 8 }}>
-            <div style={{ fontSize: 28, fontWeight: 700 }}>{stats.serving}</div>
-            <div style={{ color: '#666' }}>Serving</div>
-          </div>
-          <div style={{ background: '#e3f2fd', padding: 16, borderRadius: 8 }}>
-            <div style={{ fontSize: 28, fontWeight: 700 }}>{stats.completed}</div>
-            <div style={{ color: '#666' }}>Completed</div>
-          </div>
-          <div style={{ background: '#fce4ec', padding: 16, borderRadius: 8 }}>
-            <div style={{ fontSize: 28, fontWeight: 700 }}>{stats.noShow}</div>
-            <div style={{ color: '#666' }}>No-Show</div>
-          </div>
-          <div style={{ background: '#f3e5f5', padding: 16, borderRadius: 8 }}>
-            <div style={{ fontSize: 28, fontWeight: 700 }}>{stats.averageWaitMinutes}m</div>
-            <div style={{ color: '#666' }}>Avg Wait</div>
-          </div>
-        </div>
-      )}
+        ) : null)}
     </div>
   );
 }

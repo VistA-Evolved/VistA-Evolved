@@ -189,6 +189,10 @@ export default function DenialsWorkbenchPage() {
         <div style={{ padding: 24, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>
           Loading...
         </div>
+      ) : error ? (
+        <div style={{ padding: 24, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>
+          Unable to load denials.
+        </div>
       ) : denials.length === 0 ? (
         <div style={{ padding: 24, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>
           No denials found. {resolvedFilter === 'false' ? 'All denials have been resolved.' : ''}

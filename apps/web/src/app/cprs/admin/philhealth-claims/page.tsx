@@ -17,6 +17,21 @@ import { useEffect, useState, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE as API } from '@/lib/api-config';
 
+async function apiFetch(path: string, opts?: RequestInit) {
+  const res = await fetch(`${API}${path}`, {
+    credentials: 'include',
+    ...opts,
+    headers: {
+      ...(opts?.headers || {}),
+    },
+  });
+  const data = await res.json();
+  if (!res.ok || data?.ok === false) {
+    throw new Error(data?.error || data?.message || 'Request failed');
+  }
+  return data;
+}
+
 /* -- Types ------------------------------------------------------ */
 
 type ClaimStatus =
@@ -115,12 +130,15 @@ export default function PhilHealthClaimsPage() {
   const fetchClaims = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${API}/rcm/philhealth/claims`, { credentials: 'include' });
-      const data = await res.json();
-      if (data.ok) setClaims(data.drafts);
-      else setError(data.error);
-    } catch {
-      setError('Failed to connect to API');
+      setError(null);
+      const data = await apiFetch('/rcm/philhealth/claims');
+      setClaims(data.drafts ?? []);
+    } catch (err) {
+      setClaims([]);
+      setDetail(null);
+      setSelectedId(null);
+      setValidation(null);
+      setError(err instanceof Error ? err.message : 'Failed to connect to API');
     } finally {
       setLoading(false);
     }
@@ -132,15 +150,16 @@ export default function PhilHealthClaimsPage() {
 
   const fetchDetail = async (id: string) => {
     try {
-      const res = await fetch(`${API}/rcm/philhealth/claims/${id}`, { credentials: 'include' });
-      const data = await res.json();
-      if (data.ok) {
-        setDetail(data.draft);
-        setSelectedId(id);
-        setValidation(null);
-      }
-    } catch {
-      setError('Failed to load claim detail');
+      setError(null);
+      const data = await apiFetch(`/rcm/philhealth/claims/${id}`);
+      setDetail(data.draft);
+      setSelectedId(id);
+      setValidation(null);
+    } catch (err) {
+      setDetail(null);
+      setSelectedId(null);
+      setValidation(null);
+      setError(err instanceof Error ? err.message : 'Failed to load claim detail');
     }
   };
 
@@ -418,7 +437,9 @@ export default function PhilHealthClaimsPage() {
       <div style={{ display: 'flex', gap: 16 }}>
         {/* Claims List */}
         <div style={{ flex: '0 0 380px', maxHeight: 600, overflowY: 'auto' }}>
-          {claims.length === 0 ? (
+          {error ? (
+            <p style={{ fontSize: 13, color: '#b91c1c' }}>Unable to load claim drafts.</p>
+          ) : claims.length === 0 ? (
             <p style={{ fontSize: 13, color: '#6b7280' }}>
               No claim drafts yet. Create one to get started.
             </p>

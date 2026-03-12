@@ -54,7 +54,7 @@ export default function WorkforceAdminPage() {
       <div style={{ display: 'flex', gap: 0, borderBottom: '2px solid #e2e8f0', background: '#fff', padding: '0 32px' }}>
         {tabs.map(t => (
           <button key={t.id} onClick={() => { setTab(t.id); setSearch(''); }} style={{
-            padding: '12px 20px', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 600,
+            padding: '12px 20px', borderTop: 'none', borderRight: 'none', borderLeft: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 600,
             background: 'transparent', color: tab === t.id ? '#2563eb' : '#64748b',
             borderBottom: tab === t.id ? '2px solid #2563eb' : '2px solid transparent', marginBottom: -2,
           }}>{t.label}</button>
@@ -77,7 +77,7 @@ export default function WorkforceAdminPage() {
                   <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>Name</th>
                   <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>NPI</th>
                   <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>DEA</th>
-                  <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>Taxonomy</th>
+                  <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>Person Class IEN</th>
                 </tr></thead>
                 <tbody>
                   {filteredProviders.length === 0 && <tr><td colSpan={5} style={{ padding: 20, textAlign: 'center', color: '#94a3b8' }}>No providers found</td></tr>}
@@ -87,7 +87,7 @@ export default function WorkforceAdminPage() {
                       <td style={{ padding: '8px 14px', fontWeight: 600 }}>{p.name}</td>
                       <td style={{ padding: '8px 14px', fontFamily: 'monospace' }}>{p.npi}</td>
                       <td style={{ padding: '8px 14px', fontFamily: 'monospace' }}>{p.dea}</td>
-                      <td style={{ padding: '8px 14px' }}>{p.taxonomy}</td>
+                      <td style={{ padding: '8px 14px' }}>{p.personClassIen}</td>
                     </tr>
                   ))}
                 </tbody>

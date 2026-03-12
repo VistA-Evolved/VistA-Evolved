@@ -83,6 +83,20 @@ interface ModuleManifest {
   missingDependencies: string[];
 }
 
+interface ModuleCatalogEntry {
+  moduleId: string;
+  name: string;
+  description: string;
+  version: string;
+  alwaysEnabled: boolean;
+  dependencies: string[];
+  routePatterns: string[];
+  adapters: string[];
+  permissions: string[];
+  dataStores: { id: string; type: string; description: string }[];
+  healthCheckEndpoint: string;
+}
+
 interface ConnectorConfig {
   type: string;
   name: string;
@@ -889,7 +903,7 @@ interface EntitlementRow {
 function EntitlementsTab() {
   const [entitlements, setEntitlements] = useState<EntitlementRow[]>([]);
   const [enabledIds, setEnabledIds] = useState<string[]>([]);
-  const [catalog, setCatalog] = useState<ModuleManifest[]>([]);
+  const [catalog, setCatalog] = useState<ModuleCatalogEntry[]>([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [seedMsg, setSeedMsg] = useState('');
@@ -959,7 +973,7 @@ function EntitlementsTab() {
             Always-enabled modules cannot be disabled.
           </p>
           <p style={{ fontSize: 12, color: '#0d6efd', marginTop: 4 }}>
-            {enabledIds.length} modules enabled for default tenant
+            {enabledIds.length} modules enabled for the active tenant
           </p>
         </div>
         <button
@@ -1018,7 +1032,7 @@ function EntitlementsTab() {
           </tr>
         </thead>
         <tbody>
-          {catalog.map((mod: ModuleManifest) => {
+          {catalog.map((mod) => {
             const ent = entitlements.find((e) => e.moduleId === mod.moduleId);
             const isEnabled = enabledIds.includes(mod.moduleId);
             return (
@@ -1026,7 +1040,7 @@ function EntitlementsTab() {
                 <td style={{ padding: '8px 12px', fontFamily: 'monospace', fontSize: 12 }}>
                   {mod.moduleId}
                 </td>
-                <td style={{ padding: '8px 12px' }}>{mod.manifest.name}</td>
+                <td style={{ padding: '8px 12px' }}>{mod.name}</td>
                 <td style={{ padding: '8px 12px' }}>
                   <span
                     style={{
@@ -1040,7 +1054,7 @@ function EntitlementsTab() {
                   >
                     {isEnabled ? 'ENABLED' : 'DISABLED'}
                   </span>
-                  {mod.manifest.alwaysEnabled && (
+                  {mod.alwaysEnabled && (
                     <span style={{ marginLeft: 4, fontSize: 10, color: '#6c757d' }}>
                       (always-on)
                     </span>
@@ -1055,7 +1069,7 @@ function EntitlementsTab() {
                       : '-'}
                 </td>
                 <td style={{ padding: '8px 12px' }}>
-                  {!mod.manifest.alwaysEnabled && (
+                  {!mod.alwaysEnabled && (
                     <button
                       disabled={saving}
                       onClick={() => toggleEntitlement(mod.moduleId, isEnabled)}

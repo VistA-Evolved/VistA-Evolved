@@ -1,0 +1,3 @@
+# Upstream VistA sources are cloned here by scripts/upstream/fetch-worldvista-sources.ps1.
+# Do not commit cloned repo contents; they are listed in .gitignore.
+# See docs/canonical/upstream/local-source-workflow.md.

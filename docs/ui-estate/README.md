@@ -18,6 +18,17 @@ of each surface into VistA-Evolved.
 | `data/ui-estate/ihs-ui-estate.json`     | IHS systems catalog (RPMS EHR, iCare, BPRM, BSDX)   |
 | `data/ui-estate/ui-gap-report.json`     | Auto-generated gap report (run build script)        |
 | `scripts/ui-estate/build-ui-estate.mjs` | Gap report builder                                  |
+| `data/ui-estate/runtime-ui-estate.json` | Current repo runtime UI surface inventory           |
+| `docs/ui-estate/runtime-ui-estate.md`   | Human summary of runtime UI surface inventory       |
+| `data/ui-estate/runtime-ui-audit-checklist.json` | Machine-readable audit tracker for all current surfaces |
+| `docs/ui-estate/runtime-ui-audit-checklist.md`   | Human summary of the runtime audit checklist        |
+| `data/ui-estate/runtime-ui-audit-overrides.json` | Evidence-backed review-state overrides for regenerated checklist surfaces |
+| `data/ui-estate/runtime-ui-truth-matrix.json` | Machine-readable first-pass truth posture for current surfaces |
+| `docs/ui-estate/runtime-ui-truth-matrix.md`   | Human summary of the runtime truth posture          |
+| `scripts/ui-estate/build-runtime-ui-estate.mjs`  | Runtime UI inventory + checklist builder            |
+| `scripts/ui-estate/build-runtime-ui-truth-matrix.mjs` | Runtime truth-matrix builder                   |
+| `scripts/ui-estate/verify-runtime-ui-live-baseline.mjs` | Core chart-read live baseline verifier         |
+| `scripts/ui-estate/verify-runtime-ui-live-p1-followup.mjs` | Unresolved P1 live follow-up verifier     |
 
 ## Coverage Model
 
@@ -120,3 +131,21 @@ node scripts/ui-estate/build-ui-estate.mjs --verbose
 ```
 
 See `prompts/531/531-99-VERIFY.md` for gate definitions.
+
+## Runtime Audit Boundary
+
+Phase 726 adds a runtime inventory and checklist for the current repo UI estate.
+Use it when the task is to audit every current page, screen, route, and shell
+surface in VistA-Evolved rather than only legacy VA/IHS source applications.
+
+The generated checklist defaults every surface to `unreviewed` unless an
+evidence-backed override exists in `data/ui-estate/runtime-ui-audit-overrides.json`.
+Use that file only to preserve browser-proven or otherwise verified audit state
+across regeneration. Do not promote a surface from planning notes alone.
+
+```bash
+pnpm audit:ui-estate:runtime
+pnpm audit:ui-estate:truth
+pnpm audit:ui-estate:live-p1
+pnpm audit:ui-estate:live-p1-followup
+```

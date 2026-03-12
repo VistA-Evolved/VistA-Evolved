@@ -36,13 +36,36 @@ interface QuickTextItem {
 
 type Tab = 'templates' | 'quick-text' | 'specialty-packs' | 'stats';
 
-async function apiFetch(path: string, opts?: RequestInit) {
+interface TemplateApiSuccess {
+  ok: true;
+}
+
+class TemplateApiError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'TemplateApiError';
+  }
+}
+
+async function apiFetch<T extends TemplateApiSuccess>(path: string, opts?: RequestInit): Promise<T> {
   const res = await fetch(`${API}${path}`, {
     credentials: 'include',
     ...opts,
     headers: { 'Content-Type': 'application/json', ...opts?.headers },
   });
-  return res.json();
+
+  let data: any = null;
+  try {
+    data = await res.json();
+  } catch {
+    throw new TemplateApiError('Template request returned an invalid response');
+  }
+
+  if (!res.ok || !data?.ok) {
+    throw new TemplateApiError(data?.error || 'Template request failed');
+  }
+
+  return data as T;
 }
 
 export default function TemplateAdminPage() {
@@ -53,23 +76,45 @@ export default function TemplateAdminPage() {
   const [specialtyFilter, setSpecialtyFilter] = useState('');
   const [loading, setLoading] = useState(false);
   const [seedResult, setSeedResult] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   const loadTemplates = useCallback(async () => {
     setLoading(true);
+    setError(null);
     const params = specialtyFilter ? `?specialty=${specialtyFilter}` : '';
-    const data = await apiFetch(`/admin/templates${params}`);
-    if (data.ok) setTemplates(data.templates || []);
-    setLoading(false);
+    try {
+      const data = await apiFetch<{ ok: true; templates: TemplateSummary[] }>(`/admin/templates${params}`);
+      setTemplates(data.templates || []);
+    } catch (error) {
+      setTemplates([]);
+      setError(error instanceof Error ? error.message : 'Failed to load templates');
+    } finally {
+      setLoading(false);
+    }
   }, [specialtyFilter]);
 
   const loadQuickTexts = useCallback(async () => {
-    const data = await apiFetch('/admin/templates/quick-text');
-    if (data.ok) setQuickTexts(data.quickTexts || []);
+    setError(null);
+    try {
+      const data = await apiFetch<{ ok: true; quickTexts: QuickTextItem[] }>(
+        '/admin/templates/quick-text'
+      );
+      setQuickTexts(data.quickTexts || []);
+    } catch (error) {
+      setQuickTexts([]);
+      setError(error instanceof Error ? error.message : 'Failed to load quick text');
+    }
   }, []);
 
   const loadStats = useCallback(async () => {
-    const data = await apiFetch('/admin/templates/stats');
-    if (data.ok) setStats(data);
+    setError(null);
+    try {
+      const data = await apiFetch<TemplateStats & { ok: true }>('/admin/templates/stats');
+      setStats(data);
+    } catch (error) {
+      setStats(null);
+      setError(error instanceof Error ? error.message : 'Failed to load template stats');
+    }
   }, []);
 
   useEffect(() => {
@@ -79,25 +124,40 @@ export default function TemplateAdminPage() {
   }, [tab, loadTemplates, loadQuickTexts, loadStats]);
 
   const handleSeed = async () => {
+    setError(null);
     setSeedResult('Seeding...');
-    const data = await apiFetch('/admin/templates/seed', { method: 'POST' });
-    if (data.ok) {
+    try {
+      const data = await apiFetch<{ ok: true; seeded: number; specialties: number }>(
+        '/admin/templates/seed',
+        { method: 'POST' }
+      );
       setSeedResult(`Seeded ${data.seeded} templates across ${data.specialties} specialties`);
       loadStats();
       loadTemplates();
-    } else {
-      setSeedResult('Seed failed');
+    } catch (error) {
+      setSeedResult('');
+      setError(error instanceof Error ? error.message : 'Seed failed');
     }
   };
 
   const handlePublish = async (id: string) => {
-    await apiFetch(`/admin/templates/${id}/publish`, { method: 'POST' });
-    loadTemplates();
+    setError(null);
+    try {
+      await apiFetch(`/admin/templates/${id}/publish`, { method: 'POST' });
+      loadTemplates();
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Failed to publish template');
+    }
   };
 
   const handleArchive = async (id: string) => {
-    await apiFetch(`/admin/templates/${id}/archive`, { method: 'POST' });
-    loadTemplates();
+    setError(null);
+    try {
+      await apiFetch(`/admin/templates/${id}/archive`, { method: 'POST' });
+      loadTemplates();
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Failed to archive template');
+    }
   };
 
   return (
@@ -142,6 +202,20 @@ export default function TemplateAdminPage() {
         ))}
       </div>
 
+      {error && (
+        <div
+          style={{
+            background: '#fee',
+            color: '#c00',
+            padding: '8px 12px',
+            borderRadius: 4,
+            marginBottom: 12,
+          }}
+        >
+          {error}
+        </div>
+      )}
+
       {/* Templates Tab */}
       {tab === 'templates' && (
         <div>
@@ -158,6 +232,8 @@ export default function TemplateAdminPage() {
           </div>
           {loading ? (
             <p>Loading...</p>
+          ) : error ? (
+            <p style={{ color: '#c00' }}>Unable to load templates. {error}</p>
           ) : templates.length === 0 ? (
             <p style={{ color: '#999' }}>
               No templates found. Seed specialty packs to get started.
@@ -251,7 +327,9 @@ export default function TemplateAdminPage() {
       {tab === 'quick-text' && (
         <div>
           <h3>Quick Text Library</h3>
-          {quickTexts.length === 0 ? (
+          {error ? (
+            <p style={{ color: '#c00' }}>Unable to load quick text. {error}</p>
+          ) : quickTexts.length === 0 ? (
             <p style={{ color: '#999' }}>No quick texts yet.</p>
           ) : (
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
@@ -300,23 +378,29 @@ export default function TemplateAdminPage() {
       {tab === 'specialty-packs' && (
         <div>
           <h3>Specialty Packs</h3>
-          <p style={{ color: '#666', marginBottom: 12 }}>
-            Seed all 45+ specialty template packs into the current tenant.
-          </p>
-          <button
-            onClick={handleSeed}
-            style={{
-              padding: '8px 20px',
-              background: '#0066cc',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 4,
-              cursor: 'pointer',
-            }}
-          >
-            Seed All Specialty Packs
-          </button>
-          {seedResult && <p style={{ marginTop: 8, fontWeight: 600 }}>{seedResult}</p>}
+          {error ? (
+            <p style={{ color: '#c00' }}>Unable to load specialty-pack actions. {error}</p>
+          ) : (
+            <>
+              <p style={{ color: '#666', marginBottom: 12 }}>
+                Seed all 45+ specialty template packs into the current tenant.
+              </p>
+              <button
+                onClick={handleSeed}
+                style={{
+                  padding: '8px 20px',
+                  background: '#0066cc',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: 4,
+                  cursor: 'pointer',
+                }}
+              >
+                Seed All Specialty Packs
+              </button>
+              {seedResult && <p style={{ marginTop: 8, fontWeight: 600 }}>{seedResult}</p>}
+            </>
+          )}
         </div>
       )}
 
@@ -324,7 +408,9 @@ export default function TemplateAdminPage() {
       {tab === 'stats' && (
         <div>
           <h3>Template Statistics</h3>
-          {stats ? (
+          {error ? (
+            <p style={{ color: '#c00' }}>Unable to load template statistics. {error}</p>
+          ) : stats ? (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               <div style={{ background: '#f5f5f5', padding: 16, borderRadius: 8 }}>
                 <div style={{ fontSize: 28, fontWeight: 700 }}>{stats.totalTemplates}</div>

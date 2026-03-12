@@ -156,7 +156,7 @@ export default function MessagesPage() {
       const data = await parseProtectedJson(res);
       if (data.ok && data.groups) {
         setMailGroups(data.groups);
-        if (!composeRecipientId && data.groups.length > 0) {
+        if (composeRecipientType === 'mail-group' && !composeRecipientId && data.groups.length > 0) {
           setComposeRecipientId(data.groups[0].name);
           setComposeRecipientName(data.groups[0].name);
         }
@@ -164,7 +164,7 @@ export default function MessagesPage() {
     } catch {
       /* silent */
     }
-  }, [composeRecipientId]);
+  }, [composeRecipientId, composeRecipientType]);
 
   useEffect(() => {
     if (sessionReady && !authenticated) {
@@ -477,14 +477,21 @@ export default function MessagesPage() {
                   <button
                     onClick={() => {
                       setTab('compose');
+                      setComposeError('');
+                      setComposeSuccess('');
                       setComposeSubject(`RE: ${vistaDetail.subject}`);
                       setComposeBody('');
-                      if (vistaDetail.fromDuz) {
+                      if (/^\d+$/.test(vistaDetail.fromDuz)) {
                         setComposeRecipientType('user');
                         setComposeRecipientId(vistaDetail.fromDuz);
                         setComposeRecipientName(
                           vistaDetail.fromName || `User ${vistaDetail.fromDuz}`
                         );
+                      } else {
+                        setComposeRecipientType('user');
+                        setComposeRecipientId('');
+                        setComposeRecipientName('');
+                        setComposeError('Reply target is not a user DUZ. Select a recipient manually.');
                       }
                     }}
                     style={{

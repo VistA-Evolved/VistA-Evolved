@@ -1,0 +1,852 @@
+{
+    "generatedAt":  "2026-03-12T00:00:00.000Z",
+    "generatedBy":  "Phase 726 - Full Truth And UX Audit",
+    "items":  [
+                  {
+                      "surfaceId":  "web:/cprs/patient-search",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Live VEHU patient search and chart handoff proven in browser during Phase 726."
+                  },
+                  {
+                      "surfaceId":  "web:/patient-search",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Legacy patient-search alias now emits a canonical Next redirect to /cprs/patient-search instead of serving a stale divergent shell."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/chart/:dfn/:tab",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Chart shell proven on cover and notes tabs for DFN 46, including note-detail drill-in."
+                  },
+                  {
+                      "surfaceId":  "web:/chart/:dfn/:tab",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Legacy chart alias now redirects to the canonical CPRS chart route and preserves slug normalization for cover-sheet, dc-summaries, ai-assist, tele-health, med-rec, and e-prescribing aliases."
+                  },
+                  {
+                      "surfaceId":  "web:/encounter/note-builder",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Starter-template selection and draft-note generation proven with live session and CSRF flow."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/remote-data-viewer",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Remote Data Viewer proven as a protected integration-status surface; it now names missing remote-data routes and unresolved tenant-backed registry state instead of collapsing those failures into fake empty remote-source posture."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/settings/preferences",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Preferences page proven as a protected local settings surface; unauthenticated access now redirects to login instead of exposing editable controls."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/verify",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Verification dashboard proven as a protected route; the page heading is corrected, live payload counts now match the exercised VEHU routes, and the final browser run settled at 21/21 passed, 0 failed."
+                  },
+                  {
+                      "surfaceId":  "web:/page.tsx",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Static landing page proven in browser with truthful unauthenticated copy and working navigation into the CPRS login route."
+                  },
+                  {
+                      "surfaceId":  "portal:/dashboard/account",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Portal account route proven after fixing the localhost-versus-127.0.0.1 API host mismatch and establishing both portal auth cookies during login; the authenticated page now loads real account info, device sessions, and clean sign-out behavior."
+                  },
+                  {
+                      "surfaceId":  "portal:/dashboard/activity",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Portal activity log proven with live /portal/iam/activity data, working sign-in filtering, and verified clean sign-out after the /portal/iam/logout effect-proof fix."
+                  },
+                  {
+                      "surfaceId":  "portal:/dashboard/ai-help",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Portal AI Help proven with live /ai/portal/education and /ai/portal/search responses after fixing the portal request/response contract mismatch and letting /ai/portal/* resolve auth and tenant context from the portal session."
+                  },
+                  {
+                      "surfaceId":  "portal:/dashboard/appointments",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Portal appointments proven with live /portal/appointments data and a truthful scheduling-mode badge after moving the badge fetch off clinician route /scheduling/mode and onto portal-authenticated /portal/appointments/mode."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/scheduling",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Scheduling tabs proven after waitlist, recall, and runtime-error truth fixes."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/vista-workspace",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  ""
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/handoff",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Handoff empty-state, lifecycle flow, and integration-pending create-path messaging proven."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/inbox",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  ""
+                  },
+                  {
+                      "surfaceId":  "web:/inpatient/census",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Ward totals and populated 7A GEN MED census table proven against live VEHU data."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/order-sets",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  ""
+                  },
+                  {
+                      "surfaceId":  "web:/inpatient/bedboard",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Occupied-bed board proven with live ward selector and populated 7A GEN MED bed grid."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/messages",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  ""
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/vista/dashboard",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Admin operational dashboard proven against live VistA-backed metrics."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/nursing",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  ""
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/vista/clinics",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Clinic list and appointment-type tab proven against live VE CLIN LIST data."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/emar",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  ""
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/vista/users",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Users, security keys, and menu search proven against live VistA data."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/vista/system",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "System status, TaskMan, error trap, and parameters tabs proven in browser."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/vista/wards",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Ward list, ward detail, and census tab proven after occupancy truth fix."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/vista/facilities",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Institutions, divisions, services, stop codes, specialties, and site params proven."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/vista/inventory",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Item master, vendors, and purchase orders proven after truth-label fixes."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/vista/billing",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Billing admin tabs proven after sentinel filtering and truthful field labeling."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/vista/clinical-setup",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Clinical setup tabs proven after truthful labeling of raw pointers and status codes."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/vista/lab",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Lab admin tabs proven after sentinel filtering and truthful field labels."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/vista/pharmacy",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Pharmacy admin tabs proven after truthful route, schedule, and detail labeling."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/vista/radiology",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Radiology admin tabs proven after sentinel filtering and truthful raw-field naming."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/vista/quality",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Quality admin tabs proven after reminder-detail and QA param truth fixes."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/vista/workforce",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Workforce admin tabs proven after person-class and detail truth fixes."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/vista/provisioning",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Provisioning wizard proven end to end against live catalog data and persisted tenant creation."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/integrations",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Integrations console proven against the authenticated tenant with live VistA interop telemetry and message-browser drill-in after fixing the stale default-tenant requests and duplicate segment-row React keys."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/payer-db",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Payer DB console proven against the live admin registry: 57 payer rows, working search, truthful empty capabilities/evidence/audit states, and stale SQLite copy removed so the page no longer misstates the backing store."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/payer-directory",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Payer directory console proven against live /rcm/payerops/registry/health, /payers, /registry/sources, and /registry/snapshots routes after adding strict response validation so unauthenticated access no longer reuses the authenticated zero-state registry, source, and merge UI."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/audit-viewer",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Audit viewer proven against live immutable-audit routes after fixing the stats contract so global chain integrity no longer renders as BROKEN when /iam/audit/verify is valid."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/billing",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Billing console proven against live /billing plans, subscription, usage, and health routes after aligning the page with the real session-scoped backend contract and adding a truthful metering snapshot route for the Usage tab."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/branding",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Branding console proven against live /admin/branding/:tenantId, /admin/ui-defaults/:tenantId, and /admin/my-tenant routes after replacing the stale hardcoded default tenant with the current session tenant and surfacing real API failures."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/capability-matrix",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Capability matrix console proven against live /rcm/payerops/capability-matrix and payer registry routes on a truthful zero-data stack; no matrix cells or payers existed, and the browser matched that empty-state contract exactly."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/certification",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Certification console proven against live /posture/certification after fixing the unauthenticated crash path so auth failures render an honest error state and authenticated refreshes stay aligned with the 10/10 production posture payload."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/claims-queue",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Claims queue proven against live /rcm/claims/lifecycle and /rcm/claims/lifecycle/stats zero-state routes after fixing the unauthenticated view so auth failures no longer render the same empty-state copy used for a genuinely empty queue."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/claims-workbench",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Claims workbench proven against live /rcm/claims/hmo/board, /rcm/claims/source-map, and /rcm/payers/rulepacks after fixing the unauthenticated false zero-state, the tab-style React warning, and the stale invalid VEHU example values on the create form."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/denials",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Denials workbench proven against live /rcm/claims/lifecycle/denials zero-state routes after fixing the unauthenticated view so auth failures no longer render the same resolved-empty-state copy used for a genuinely empty denial queue."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/payments",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Payments dashboard proven against live /payerops/payments/batches, /payerops/payments/reconciliation, /payerops/analytics/aging, and /payerops/payments/underpayments zero-state routes after fixing all four tabs so auth failures render truthful load-failure messages instead of fake empty-state data."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/payer-intelligence",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Payer-intelligence dashboard proven against live /payerops/analytics/payer-intelligence and /payerops/analytics/aging zero-state routes after fixing KPI and aging sections so auth failures render truthful load-failure messages instead of fake loaded empty-state copy."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/ph-hmo-console",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "PH HMO Console proven against live /rcm/payers/ph/hmos registry, stats, validation, and Maxicare LOA packet routes after fixing all four tabs so auth failures render truthful route-failure messages instead of fake empty or partial loaded states."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/remittance-intake",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Remittance-intake dashboard proven against live /rcm/remittance and /rcm/remittance/stats zero-state routes after fixing document and stats auth-failure handling and removing the tab-style React warning exposed during live tab switching."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/payer-registry",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Payer-registry console proven against live /admin/payers, /admin/payers/stats, and /admin/payers/audit/verify zero-state routes after fixing registry, evidence, audit, and stats so auth failures render truthful route-failure messages instead of fake loaded zero-state UI."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/payerops",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "PayerOps console proven against live /rcm/payerops health, stats, enrollments, loa, credentials, and adapters routes after fixing the unauthenticated fake offline and empty-state fallthrough across all four tabs."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/performance",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Performance dashboard proven against live /admin/performance summary, profiles, budgets, and slow-queries zero-state routes after fixing the unauthenticated fake loading and empty-state fallthrough across all four tabs."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/ph-market",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "PH market dashboard proven against live /rcm/hmo/market-summary and /rcm/hmo/manifest populated routes after fixing the page to use API_BASE and render truthful auth/load failure messaging instead of crashing on HTML 404s or hanging on unauthenticated loading."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/philhealth-claims",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "PhilHealth claims console proven against live /rcm/philhealth/claims zero-state route after fixing list/detail fetch handling so unauthenticated failures render truthful error messaging instead of the loaded empty-drafts state."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/philhealth-eclaims3",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "PhilHealth eClaims3 console proven against live /rcm/philhealth/claims and /rcm/eclaims3 zero-state routes after fixing adapter, drafts, submissions, denials, and spec-gate fetch handling so unauthenticated failures render truthful error states instead of fake zero-state or loading UI."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/philhealth-setup",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "PhilHealth setup console proven against live /rcm/philhealth/setup zero-state route after fixing the initial load path so unauthenticated failures render a truthful page-level load error instead of blank facility fields, fake provider zero-state, and fake readiness counters."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/denial-cases",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Denial-cases console proven against live /rcm/denials and /rcm/denials/stats empty-state routes after adding strict response validation, truthful auth/load failure handling, and empty-pagination normalization so unauthenticated access no longer masquerades as a loaded empty queue."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/exports",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Exports console proven against live /admin/exports/sources, /admin/exports/jobs, and /admin/exports/stats routes after adding strict response validation, separate load versus action errors, and fail-closed rendering so unauthenticated access no longer masquerades as an empty source registry."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/hmo-portal",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "HMO portal dashboard proven against live /rcm/hmo-portal/adapters, /rcm/hmo-portal/specialties, /rcm/hmo-portal/submissions, and /rcm/hmo-portal/submissions/stats routes after fixing shared fetch validation so unauthenticated access no longer collapses into fake empty adapter, specialty, submissions, or stats UI."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/loa-queue",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "LOA work queue proven against live /rcm/payerops/loa-queue and /rcm/payerops/loa zero-state routes after fixing the initial load path so unauthenticated access no longer collapses into the same empty queue state used for a genuinely empty tenant."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/loa-workbench",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "LOA workbench proven against live /rcm/loa and /rcm/loa/stats zero-state routes after adding strict load validation so unauthenticated access no longer collapses into a fake empty request list or endless stats loading state."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/migration",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Migration console proven against live /migration/health, /migration/templates, /migration/jobs, and /migration/stats routes after adding strict route validation so unauthenticated access no longer misreports fake OFFLINE health or fake empty job/template state."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/module-disabled",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Module-disabled guard page browser-proven as a static admin shell route: the query-string module name renders truthfully, and the Module Administration and Return to CPRS links remain the only live affordances in both authenticated and unauthenticated contexts."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/module-validation",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Module validation console proven against live /admin/module-validation/report, /dependencies, /boundaries, and /coverage routes after adding strict route validation so unauthenticated access no longer hangs on misleading loading states across every tab."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/onboarding",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Onboarding wizard proven against live /admin/onboarding and /api/modules/status routes after failing closed on unauthenticated session-load errors and fixing the modules step to use the real module catalog instead of dead route /api/modules."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/ops",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Ops admin console proven against live /admin/ops/overview, /alerts, /store-inventory, and /runbooks routes after adding strict parallel fetch validation so unauthenticated access no longer renders a silent blank admin shell."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/coverage",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Coverage dashboard proven against live /admin/coverage score, specialties, gaps, and QA ladder routes after adding strict response validation and fail-closed load handling so unauthenticated access no longer crashes the CPRS content boundary."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/contracting-hub",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Contracting hub proven against live /rcm/hmo/contracting dashboard routes after replacing stale relative Next fetches with API_BASE and strict response handling so auth/load failures no longer crash on HTML 404s or hang on a fake loading state."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/compliance",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Compliance dashboard proven against live /regulatory/* posture, frameworks, attestation-summary, and validator routes after replacing stale /api/regulatory calls with API_BASE plus tenant resolution and truthful page-level load failure handling."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/qa-dashboard",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "QA dashboard proven against live tenant-scoped /qa/* routes after resolving the active tenant in the page, attaching X-Tenant-Id to requests, and failing closed on auth or tenant errors instead of falsely rendering QA Routes Disabled."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/pilot",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Pilot readiness console proven against live /admin/pilot/sites and /admin/pilot/summary zero-state routes after fixing the initial load path so unauthenticated failures render truthful auth/load messaging instead of the same empty-site and preflight guidance used for a successfully loaded empty pilot store."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/modules",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Modules console proven against live manifests, marketplace, entitlement, feature-flag, and audit routes after fixing the Entitlements tab to use the flat /admin/modules/catalog response shape instead of crashing on manifest.name."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/break-glass",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Break-glass console proven against live session, posture, and request flows, including a browser-originated request that surfaced as pending and was then denied cleanly with final stats of denied:2, active:0, pending:0."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/adapters",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Adapters console proven against live adapter-health, runtime-matrix, and RPC-coverage routes after fixing the RPC Coverage tab to render rpcName values truthfully and stop generating duplicate undefined row keys."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/alignment",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Alignment console proven against live score, gates, tripwire, snapshot, and summary routes, including safe browser-driven tripwire seeding and snapshot capture that reflected back through the API immediately."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/analytics",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Analytics console proven against live ops, clinical, events, export-health, and aggregation routes after fixing the event-buffer stats helper to return bufferUsage and categories so the UI no longer renders NaN% for live buffer metrics."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/queue",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Queue console proven against live queue departments, tickets, stats, and public display-board routes after fixing protected tabs to fail closed on auth/load errors while preserving the legitimately public display board."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/rcm",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "RCM console proven against live claims, payer-registry, connector-health, audit, submission-safety, and payer-db backend routes after adding a strict route-level bootstrap gate so unauthenticated access cannot fabricate OFFLINE, SQLite, and empty RCM workspace state."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/reconciliation",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Reconciliation console proven against live imports, payments, matches, underpayments, and stats routes after adding a strict route-level bootstrap gate for protected access and normalizing empty pagers from Page 1/0 to Page 1/1."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/reports",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Reports console proven against live operations, integrations, audit, clinical-activity, and export-job routes after fixing the Clinical tab to call the real /reports/clinical-activity backend contract instead of dead route /reports/clinical."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/rpc-debug",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "RPC Debug console proven against live /vista/rpc-debug/actions, /vista/rpc-debug/registry, and /vista/rpc-catalog routes after switching the panel to API_BASE and failing closed on auth/load errors instead of rendering a fake zeroed debug console."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/service-lines",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Service-lines dashboard proven against live /ed/board, /or/board, and /icu/metrics routes after making all three protected tabs fail closed on auth/load errors instead of hanging on fake loading states."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/support",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Support tooling proven against live /admin/support/diagnostics and /admin/support/tickets routes after adding strict response handling so unauthenticated access fails closed instead of rendering fake diagnostics and a fake empty tickets workspace."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/templates",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Templates admin proven against live /admin/templates, /admin/templates/quick-text, and /admin/templates/stats routes after adding strict response handling so unauthenticated access fails closed instead of rendering fake empty templates, fake quick-text zero state, fake zero stats, or exposed specialty-pack actions."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/terminal",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Browser terminal proven against live /terminal/health, /terminal/sessions, and the /ws/console WebSocket gateway after adding a strict health bootstrap so unauthenticated access fails closed instead of mounting a fake loading terminal shell."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/vista",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "VistA admin hub proven against live /admin/vista/dashboard/operational metrics after adding strict response handling so unauthenticated access fails closed instead of rendering a fake loaded hub with placeholder quick stats."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/vista-admin",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Unified VistA admin console proven for the default System surface, the Security Keys subtab, and the embedded terminal after adding a protected bootstrap gate, active-subtab loading, and the correct /vista/admin/keys endpoint so unauthenticated access fails closed and the visible subtabs align with live /vista/admin/* routes."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/admin/workflows",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Workflow manager proven across Definitions, Instances, Packs, Stats, and Switchboard after adding a protected bootstrap gate plus strict tab error handling so unauthenticated access fails closed and backend failures no longer collapse into fake empty-state workflow UI."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/inpatient",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "Inpatient operations proven across live ward census, bedboard, discharge-plan recovery, and partial movement history after adding a protected bootstrap gate plus explicit med-rec integration-pending handling so unauthenticated access fails closed and the missing /vista/med-rec/* contract no longer masquerades as a live workflow."
+                  },
+                  {
+                      "surfaceId":  "web:/cprs/login",
+                      "auditStatus":  "browser-proven",
+                      "interactionAudit":  "browser-proven",
+                      "workflowAudit":  "browser-proven",
+                      "responsiveAudit":  "pending",
+                      "accessibilityAudit":  "pending",
+                      "notes":  "CPRS login proven against live /auth/session and /auth/login behavior: unauthenticated sign-on renders the truthful VEHU credential guidance, valid login redirects into patient search, and authenticated visits to /cprs/login redirect away instead of rendering a stale sign-on form."
+                  }
+              ]
+}

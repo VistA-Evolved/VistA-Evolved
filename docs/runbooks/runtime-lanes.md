@@ -14,17 +14,17 @@ listening on the configured host/port.
 
 ## Quick Comparison
 
-|                        | Lane A — VEHU                       | Lane B — Legacy                     | Lane C — Compose              | Lane D — Distro                            |
-| ---------------------- | ----------------------------------- | ----------------------------------- | ----------------------------- | ------------------------------------------ |
-| **Image**              | `worldvista/vehu`                   | `worldvista/worldvista-ehr`         | `worldvista/worldvista-ehr`   | `vista-evolved/vista-distro` (local build) |
-| **Compose file**       | `services/vista/docker-compose.yml` | `services/vista/docker-compose.yml` | `docker-compose.yml` (root)   | `services/vista-distro/docker-compose.yml` |
-| **Profile flag**       | `--profile vehu`                    | `--profile legacy`                  | _(none — default)_            | `--profile distro`                         |
-| **Broker port (host)** | **9431**                            | 9430                                | 9210                          | 9431 (default)                             |
-| **SSH port (host)**    | 2223                                | 2222                                | —                             | —                                          |
-| **Env template**       | `apps/api/.env.example`             | `apps/api/.env.example`             | `.env.example` (root)         | `.env` + Docker secrets                    |
-| **Primary creds**      | PRO1234 / PRO1234!!                 | PROV123 / PROV123!!                 | PROV123 / PROV123!!           | Injected at runtime                        |
-| **Best for**           | Day-to-day dev, RPC truth, evidence | Legacy compat testing               | Full-stack containerized demo | Production / reproducible builds           |
-| **Recommendation**     | **Use this**                        | Only if needed                      | Quick demos                   | Staging / prod                             |
+|                        | Lane A — VEHU                       | Lane B — Legacy                     | Lane C — Compose              | Lane D — Distro                            | Lane E — Local Vista (canonical local build) |
+| ---------------------- | ----------------------------------- | ----------------------------------- | ----------------------------- | ------------------------------------------ | --------------------------------------------- |
+| **Image**              | `worldvista/vehu`                   | `worldvista/worldvista-ehr`         | `worldvista/worldvista-ehr`   | `vista-evolved/vista-distro` (local build) | `vista-evolved/local-vista` (vendor/upstream) |
+| **Compose file**       | `services/vista/docker-compose.yml` | `services/vista/docker-compose.yml` | `docker-compose.yml` (root)   | `services/vista-distro/docker-compose.yml` | `docker/local-vista/compose.yaml`             |
+| **Profile flag**       | `--profile vehu`                    | `--profile legacy`                  | _(none — default)_            | `--profile distro`                         | `--profile local-vista`                       |
+| **Broker port (host)** | **9431**                            | 9430                                | 9210                          | 9431 (default)                             | **9432**                                     |
+| **SSH port (host)**    | 2223                                | 2222                                | —                             | —                                          | 2224                                          |
+| **Env template**       | `apps/api/.env.example`             | `apps/api/.env.example`             | `.env.example` (root)         | `.env` + Docker secrets                    | `docker/local-vista/build/.env.example`       |
+| **Primary creds**      | PRO1234 / PRO1234!!                 | PROV123 / PROV123!!                 | PROV123 / PROV123!!           | Injected at runtime                        | LOCAL_VISTA_ACCESS / LOCAL_VISTA_VERIFY       |
+| **Best for**           | Day-to-day dev, RPC truth, evidence | Legacy compat testing               | Full-stack containerized demo | Staging / reproducible builds              | Local-source build validation, proof          |
+| **Recommendation**     | **Use this** (pre-built)             | Only if needed                      | Quick demos                   | Staging / prod                             | **Canonical local dev** (build from vendor)   |
 
 ---
 
@@ -260,6 +260,50 @@ to VEHU.
 
 ---
 
+## Lane E — Local Vista (canonical local build)
+
+The **local-vista** lane uses an image built only from `vendor/upstream/VistA-M` (no git pull during build). It is the **canonical local dev runtime** for this repo when validating the local build pipeline.
+
+### Start
+
+```powershell
+$env:LOCAL_VISTA_ACCESS = "PRO1234"
+$env:LOCAL_VISTA_VERIFY = "PRO1234!!"
+.\scripts\runtime\start-local-vista.ps1
+# Or: docker compose -f docker/local-vista/compose.yaml --profile local-vista up -d
+```
+
+### Env Setup
+
+Set before start (or use `docker/local-vista/build/.env.example`):
+
+```env
+LOCAL_VISTA_PORT=9432
+LOCAL_VISTA_SSH_PORT=2224
+LOCAL_VISTA_ACCESS=PRO1234
+LOCAL_VISTA_VERIFY=PRO1234!!
+```
+
+### Ports
+
+| Service    | Host Port | Container Port |
+| ---------- | --------- | -------------- |
+| RPC Broker | 9432      | 9430           |
+| SSH        | 2224      | 22             |
+
+### Readiness and proof
+
+- Run `.\scripts\runtime\healthcheck-local-vista.ps1` for all five readiness levels (CONTAINER_STARTED through RPC_READY).
+- See `docs/canonical/runtime/runtime-readiness-levels.md` and `docs/canonical/runtime/runtime-proof-checklist.md`.
+- Do not claim VistA is ready until at least SERVICE_READY and RPC_READY pass.
+
+### Canonical docs
+
+- [canonical-dev-runtime-profile.md](../canonical/runtime/canonical-dev-runtime-profile.md) — profile decision, ports, API connection
+- [local-vista-lane-inspect.md](../canonical/runtime/local-vista-lane-inspect.md) — service name, volumes, startup sequence
+
+---
+
 ## Switching Between Lanes
 
 1. Stop the current lane: `docker compose down` (in the lane's compose directory)
@@ -267,7 +311,7 @@ to VEHU.
 3. Start the new lane
 4. Verify with `GET /vista/swap-boundary` to confirm the active instance
 
-> **Conflict warning:** Lanes A (VEHU) and D (Distro) both default to port 9431. Do not run both simultaneously unless you change `VISTA_DISTRO_PORT`.
+> **Conflict warning:** Lanes A (VEHU) and D (Distro) both default to port 9431. Do not run both simultaneously unless you change `VISTA_DISTRO_PORT`. Lane E (local-vista) uses port **9432** to avoid conflict; it is the **canonical local dev runtime** when building from vendor/upstream (see `docs/canonical/runtime/canonical-dev-runtime-profile.md`).
 
 ---
 
@@ -285,6 +329,7 @@ When `NODE_ENV !== 'production'`, the CPRS login form now prefills the verified 
 | B (Legacy)  | NURSE123     | NURSE123!!   | NURSE,HELEN WV             |
 | C (Compose) | PROV123      | PROV123!!    | PROVIDER,CLYDE WV (DUZ 87) |
 | D (Distro)  | _(injected)_ | _(injected)_ | _(configured at build)_    |
+| E (Local Vista) | LOCAL_VISTA_ACCESS | LOCAL_VISTA_VERIFY | e.g. PRO1234 / PRO1234!! |
 
 ---
 

@@ -34,10 +34,10 @@ function LabEducationTab() {
     try {
       const res = await fetchLabEducation(labName.trim(), labValue.trim() || undefined);
       const body = res.data as
-        | { ok?: boolean; response?: { content?: string }; error?: string }
+        | { ok?: boolean; explanation?: string; error?: string }
         | undefined;
-      if (res.ok && body?.response?.content) {
-        setResult(body.response.content);
+      if (res.ok && body?.explanation) {
+        setResult(body.explanation);
       } else {
         setError(body?.error || res.error || 'Could not generate explanation. Please try again.');
       }
@@ -130,10 +130,10 @@ function PortalSearchTab() {
     try {
       const res = await askPortalSearch(query.trim());
       const body = res.data as
-        | { ok?: boolean; response?: { content?: string }; error?: string }
+        | { ok?: boolean; answer?: string; error?: string }
         | undefined;
-      if (res.ok && body?.response?.content) {
-        setResult(body.response.content);
+      if (res.ok && body?.answer) {
+        setResult(body.answer);
       } else {
         setError(body?.error || res.error || 'Could not process your question. Please try again.');
       }

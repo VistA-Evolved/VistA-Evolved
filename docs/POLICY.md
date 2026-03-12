@@ -10,6 +10,9 @@
 | Path                   | Purpose                              | Committed? |
 | ---------------------- | ------------------------------------ | ---------- |
 | `docs/POLICY.md`       | This file                            | Yes        |
+| `docs/governance/**`   | Proof-driven governance and build order | Yes     |
+| `docs/canonical/**`    | Source-of-truth index, protocol, status model, verification standard | Yes |
+| `docs/archive/**`      | Salvage/reference archive index and markers | Yes |
 | `docs/INDEX.md`        | Single curated entry point           | Yes        |
 | `docs/runbooks/**`     | Step-by-step operational guides      | Yes        |
 | `docs/decisions/**`    | Architecture Decision Records (ADRs) | Yes        |

@@ -1,3 +1,2454 @@
+## Phase 726 Update - Portal Appointments Slice
+
+## What changed
+1. Fixed the portal appointments page so the honest scheduling-mode badge now loads through a portal-authenticated route instead of a clinician-session-only scheduling endpoint.
+- `apps/api/src/routes/portal-core.ts`
+- `apps/portal/src/lib/api.ts`
+
+2. Recorded the completed portal appointments browser proof in the Phase 726 browser audit and runtime override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and portal app, then verify live health:
+	- `./start-api.ps1`
+	- `pnpm -C apps/portal dev`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+2. Open `http://127.0.0.1:3002/dashboard/appointments` in a fresh signed-out browser context and confirm it fails closed back to the portal login page.
+3. Sign in with `patient1 / Patient1!` and return to `/dashboard/appointments`.
+4. Confirm the page shows the live appointment list and the badge `Request Only (Clinic Confirms)`.
+5. Corroborate the backing routes from the authenticated browser context or cookie-backed client:
+	- `GET /portal/appointments`
+	- `GET /portal/appointments/mode`
+6. Confirm `GET /portal/appointments/mode` returns `mode: request_only` and the page reflects that state in the visible badge.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the page silently swallowed `401 Authentication required` from clinician route `/scheduling/mode`, so the promised scheduling-mode badge never rendered even though the live portal appointments route was working.
+- After the fix, `GET /portal/appointments/mode` returns the live request-only scheduling posture under the patient portal session, and the browser page renders the matching badge.
+
+## Follow-ups
+1. Continue the remaining portal dashboard routes in checklist order from `portal:/dashboard/consents`.
+
+## Phase 726 Update - Portal AI Help Slice
+
+## What changed
+1. Fixed the portal AI Help route family so patient-facing AI requests now pass through the correct portal auth and tenant boundary instead of being blocked as clinician-scoped `/ai/*` requests.
+- `apps/api/src/middleware/security.ts`
+- `apps/api/src/middleware/module-guard.ts`
+
+2. Fixed the portal client/page contract to match the live AI route payloads and request body shape.
+- `apps/portal/src/lib/api.ts`
+- `apps/portal/src/app/dashboard/ai-help/page.tsx`
+
+3. Recorded the completed portal AI Help browser proof in the Phase 726 browser audit and runtime override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and portal app, then verify live health:
+	- `./start-api.ps1`
+	- `pnpm -C apps/portal dev`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+2. Sign in to the portal at `http://127.0.0.1:3002/` with `patient1 / Patient1!`.
+3. Open `/dashboard/ai-help` and confirm the `Lab Education` tab loads.
+4. Enter `Hemoglobin A1c` and `6.2%`, click `Explain`, and confirm the page renders the governed educational explanation and disclaimer.
+5. Switch to `Portal Help`, ask `How do I request a refill?`, and confirm the page renders the live navigation answer.
+6. Corroborate the backing portal AI routes from the authenticated browser context or cookie-backed client:
+	- `GET /portal/iam/csrf-token`
+	- `POST /ai/portal/education` with `{ "labName": "Hemoglobin A1c", "labValue": "6.2%" }`
+	- `POST /ai/portal/search` with `{ "question": "How do I request a refill?" }`
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the portal page posted the wrong request body to `/ai/portal/search`, expected the wrong response shape from both portal AI routes, and hit real auth/tenant failures because `/ai/portal/*` was still treated like clinician `/ai/*` traffic by the shared middleware.
+- After the fix, both AI Help tabs render live governed responses under the patient portal session, and direct in-browser route corroboration shows `POST /ai/portal/education` returning `ok:true` with `explanation` and `POST /ai/portal/search` returning `ok:true` with `answer`.
+
+## Follow-ups
+1. Re-audit the remaining portal dashboard routes in checklist order now that the portal AI boundary is aligned with the live backend contract.
+
+## Phase 726 Update - Preferences Slice
+
+## What changed
+1. Fixed `/cprs/settings/preferences` so the route now honors the CPRS session contract instead of exposing the editable preferences shell under unauthenticated access.
+- `apps/web/src/app/cprs/settings/preferences/page.tsx`
+
+2. Recorded the completed preferences browser proof in the Phase 726 browser audit and runtime override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and web app, then verify live health:
+	- `./start-api.ps1`
+	- `pnpm -C apps/web dev`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. In a fresh unauthenticated browser context, open `/cprs/settings/preferences` and confirm the route redirects to `/cprs/login?redirect=%2Fcprs%2Fsettings%2Fpreferences`.
+3. Authenticate as `PRO1234 / PRO1234!!` and confirm the preferences page renders the local controls for theme, density, layout mode, initial tab, and cover-sheet drag reorder.
+4. Confirm the route behaves as a local settings surface rather than claiming any live VistA-backed data dependency.
+5. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, `/cprs/settings/preferences` failed open and exposed editable local controls under an unauthenticated CPRS session.
+- After the fix, unauthenticated access redirects to login and authenticated access remains a truthful local preferences surface.
+
+## Follow-ups
+1. No immediate follow-up for this slice; future work here is configuration UX, not live clinical truthfulness.
+
+## Phase 726 Update - Remote Data Viewer Slice
+
+## What changed
+1. Fixed `/cprs/remote-data-viewer` so the route now honors the CPRS session contract instead of exposing a full viewer shell to unauthenticated users.
+- `apps/web/src/app/cprs/remote-data-viewer/page.tsx`
+
+2. Made the page truthful about the current stack by surfacing missing `/vista/remote-facilities` and `/vista/remote-data` routes plus unresolved tenant-backed registry state, instead of collapsing those failures into `No Remote Sources Available`.
+- `apps/web/src/app/cprs/remote-data-viewer/page.tsx`
+
+3. Recorded the completed remote-data-viewer browser proof in the Phase 726 browser audit and runtime override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and web app, then verify live health:
+	- `./start-api.ps1`
+	- `pnpm -C apps/web dev`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Corroborate the backing routes on the canonical stack:
+	- `curl.exe -s http://127.0.0.1:3001/vista/remote-facilities`
+	- `curl.exe -s -b login-cookies.txt "http://127.0.0.1:3001/vista/remote-facilities"`
+	- `curl.exe -s -b login-cookies.txt "http://127.0.0.1:3001/vista/remote-data?facility=test-source&domain=allergies&dfn=46"`
+	- `curl.exe -s -b login-cookies.txt "http://127.0.0.1:3001/admin/registry/default"`
+3. In a fresh unauthenticated browser context, open `/cprs/remote-data-viewer` and confirm the route redirects to `/cprs/login?redirect=%2Fcprs%2Fremote-data-viewer`.
+4. Authenticate as `PRO1234 / PRO1234!!` and return to `/cprs/remote-data-viewer`.
+5. Confirm the authenticated page shows the truthful unavailability banner naming the missing remote-data routes and unresolved tenant-backed registry state.
+6. Confirm the query action is disabled until a patient is selected and the results pane says `Remote source contracts unavailable` rather than `No Remote Sources Available`.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the page turned auth failures, `404` route misses, and the stale `admin/registry/default` tenant error into fake empty-source posture.
+- After the fix, the page redirects when signed out and shows the real stack blockers when signed in, with no fake facility/source inventory.
+
+## Follow-ups
+1. If real remote-data routes or tenant-backed registry resolution are added later, this page should be re-audited so it can distinguish configured remote sources from the current missing-contract posture.
+
+## Phase 726 Update - Order Sets Slice
+
+## What changed
+1. Fixed `/cprs/order-sets` so the route now honors the live CPRS session contract instead of rendering a full quick-order shell under unauthenticated access.
+- `apps/web/src/app/cprs/order-sets/page.tsx`
+
+2. Removed the hidden `DFN 1` fallback and made the page truthful about its role as local quick-order draft staging rather than live VistA order entry.
+- `apps/web/src/app/cprs/order-sets/page.tsx`
+
+3. Recorded the completed order-sets browser proof in the Phase 726 browser audit and runtime override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and web app, then verify live health:
+	- `./start-api.ps1`
+	- `pnpm -C apps/web dev`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Corroborate the live order-set catalogs so the page is classified against reality rather than assumption:
+	- `curl.exe -s -b login-cookies.txt "http://127.0.0.1:3001/admin/vista/clinical-setup/order-sets"`
+	- `curl.exe -s -b login-cookies.txt "http://127.0.0.1:3001/vista/admin/order-sets"`
+3. In a fresh unauthenticated browser context, open `/cprs/order-sets` and confirm the route redirects to `/cprs/login?redirect=%2Fcprs%2Forder-sets` instead of rendering the quick-order shell.
+4. Authenticate as `PRO1234 / PRO1234!!` and return to `/cprs/order-sets` without a currently selected patient.
+5. Confirm the authenticated page renders the truthful guarded state: `Select a patient to stage local quick-order drafts.`, the `Patient required.` banner, disabled `View Orders Tab`, and disabled template actions.
+6. Confirm the footer text now describes the page as local CPRS web draft-cache staging instead of claiming this page itself performs the live VistA order-entry contract.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, `/cprs/order-sets` failed open under unauthenticated access and silently substituted `Patient DFN: 1`, which made the page look like a live, ready-to-use order-entry surface even when no authenticated session or current patient existed.
+- After the fix, unauthenticated access redirects to login, authenticated access without a current patient stays non-actionable and truthful, and the page copy now matches its actual implementation as local quick-order draft staging.
+
+## Follow-ups
+1. If this route is later wired to live order-set retrieval or patient-scoped order creation, it should be re-audited so the UI can distinguish live VistA-backed catalogs from the current local template list.
+
+## Phase 726 Update - CPRS Login Slice
+
+## What changed
+1. Browser-proved `/cprs/login` against the live `/auth/session` and `/auth/login` contract on the canonical VEHU stack.
+- `apps/web/src/app/cprs/login/page.tsx`
+- `apps/web/src/stores/session-context.tsx`
+
+2. Recorded the completed login browser proof in the Phase 726 browser audit and runtime override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and web app, then verify live health:
+	- `./start-api.ps1`
+	- `pnpm -C apps/web dev`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. In a fresh unauthenticated browser context, open `/cprs/login` and confirm the sign-on form renders with the verified VEHU dev account `PRO1234 / PRO1234!!` plus the lane guidance note.
+3. Corroborate `GET /auth/session` returns `{"ok":false,"authenticated":false}` before login.
+4. Submit the verified credentials and confirm the browser lands on `/cprs/patient-search`.
+5. Corroborate `POST /auth/login` and authenticated `GET /auth/session` both return the live PROGRAMMER,ONE session payload with a `csrfToken`.
+6. In an authenticated browser context, open `/cprs/login` again and confirm it redirects straight to `/cprs/patient-search` instead of re-rendering the sign-on form.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- The page already matched the live auth contract on this stack, so no code change was required.
+- Unauthenticated `/cprs/login` rendered the truthful VEHU sign-on form, valid sign-on redirected to patient search, and authenticated revisits to `/cprs/login` redirected away based on the existing session check.
+
+## Follow-ups
+1. No immediate follow-up for this slice; it is a clean proof baseline for later auth and redirect regression checks.
+
+## Phase 726 Update - Inpatient Operations Slice
+
+## What changed
+1. Fixed `/cprs/inpatient` so the protected route now fails closed on bootstrap/auth failure instead of rendering the full inpatient shell, fake ward zero-state copy, and working-looking discharge-prep controls under unauthenticated access.
+- `apps/web/src/app/cprs/inpatient/page.tsx`
+
+2. Made the ADT and discharge-preparation workspace truthful on the current stack by parsing API errors strictly, separating live discharge-plan recovery from the missing `/vista/med-rec/*` route family, and disabling med-rec-specific actions behind an explicit integration-pending banner.
+- `apps/web/src/app/cprs/inpatient/page.tsx`
+
+3. Recorded the completed inpatient browser proof in the Phase 726 browser audit and runtime override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and web app, then verify live health:
+	- `./start-api.ps1`
+	- `pnpm -C apps/web dev`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate as `PRO1234 / PRO1234!!` and open `/cprs/inpatient`.
+3. Confirm the default Census tab shows the live ward buttons from `GET /vista/inpatient/wards`, and select `3 NORTH GU` to confirm the live `5` patient census from `GET /vista/inpatient/ward-census?ward=6`.
+4. Open `ADT & Discharge Prep` and confirm the workspace shows `Mixed: discharge live, med-rec pending`, disables `Start Med Rec`, and lists the live discharge plan recovered from `GET /vista/discharge/plans?dfn=46`.
+5. Load the recovered discharge plan and confirm the plan detail renders truthfully while medication reconciliation stays explicitly pending.
+6. Open `/cprs/inpatient` in a fresh unauthenticated browser context and confirm the route fails closed with `Unable to load inpatient operations. Authentication required` instead of the full inpatient workspace.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, unauthenticated access still rendered the inpatient shell and ADT workspace, while the authenticated ADT view falsely claimed medication reconciliation was live even though `/vista/med-rec/sessions` and `/vista/med-rec/start` returned `404 Not Found` on the canonical stack.
+- After the fix, the route boots behind a protected inpatient bootstrap, census and bedboard still match the live VistA reads, discharge-plan recovery stays live, and the missing `/vista/med-rec/*` contract is called out explicitly instead of being certified by fake zero-state workflow UI.
+
+## Follow-ups
+1. If medication reconciliation workflow routes are later added to the API, this page should be re-audited to re-enable the disabled controls and replace the current integration-pending banner with real session proof.
+
+## Phase 726 Update - Workflows Slice
+
+## What changed
+1. Fixed `/cprs/admin/workflows` so the route body now fails closed on protected admin bootstrap failure instead of rendering a fake loaded workflow console with empty-state Definitions, Instances, Packs, Stats, and Switchboard tabs under auth failure.
+- `apps/web/src/app/cprs/admin/workflows/page.tsx`
+
+2. Added strict tab-level error handling so real backend failures no longer collapse into fake empty or zero-state workflow UI.
+- `apps/web/src/app/cprs/admin/workflows/page.tsx`
+
+3. Recorded the completed workflows browser proof in the Phase 726 browser audit and runtime override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and web app, then verify live health:
+	- `./start-api.ps1`
+	- `pnpm -C apps/web dev`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate as `PRO1234 / PRO1234!!` and open `/cprs/admin/workflows`.
+3. Confirm Definitions shows the live `8` seeded workflow definitions.
+4. Confirm Packs shows the live `8` department workflow packs and Stats shows `8` total definitions, `8` active definitions, and `0` initial instances.
+5. Open Switchboard and confirm it shows `5` registered FSMs; select `department-workflow` and confirm the live state/transition detail appears.
+6. Start `ED Standard Visit` for DFN `46` and confirm the page switches to Instances with a live in-progress workflow instance and the expected step ladder.
+7. Open `/cprs/admin/workflows` in a fresh unauthenticated browser context and confirm the route body fails closed with `Unable to load workflow manager. Authentication required` instead of fake empty-state tabs.
+8. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, every protected tab swallowed auth failures and rendered fake empty-state UI such as `No workflow definitions found`, `No active workflow instances`, `No stats available`, and `Registered FSMs (0)` even though the backing routes had already returned `Authentication required`.
+- After the fix, the route body boots behind a protected admin check, authenticated tabs still match the live workflow and switchboard contracts, and unauthenticated access fails closed with explicit auth/load messaging.
+
+## Follow-ups
+1. This page has real write actions, so future slice work can extend from this truthful baseline into step completion and TIU-backed workflow note flows if deeper action proof is needed.
+
+## Phase 726 Update - Unified VistA Admin Console Slice
+
+## What changed
+1. Fixed `/cprs/admin/vista-admin` so the route body now fails closed on protected admin bootstrap failure instead of rendering a fake loaded console with a public green VistA status, visible terminal toggle, and inline `HTTP 401` content errors.
+- `apps/web/src/app/cprs/admin/vista-admin/page.tsx`
+
+2. Corrected the exercised System tab data flow by loading only the active subtab dataset and wiring Security Keys to the real `/vista/admin/keys` endpoint.
+- `apps/web/src/app/cprs/admin/vista-admin/page.tsx`
+
+3. Recorded the completed unified VistA admin console proof in the Phase 726 browser audit and runtime override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and web app, then verify live health:
+	- `./start-api.ps1`
+	- `pnpm -C apps/web dev`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate as `PRO1234 / PRO1234!!` and open `/cprs/admin/vista-admin`.
+3. Confirm the default Users view shows the live `/vista/admin/users` contract, including `100 users` headed by `.5 POSTMASTER`, `.6 SHARED,MAIL`, and `1 PROGRAMMER,ONE`.
+4. Open the Security Keys subtab and confirm it shows the live `/vista/admin/keys` list headed by `XUPROG`, `XUMGR`, and `XUPROGMODE` instead of `HTTP 404`.
+5. Open the embedded terminal and confirm it connects as `PROGRAMMER,ONE (DUZ 1, role: admin)`.
+6. Open `/cprs/admin/vista-admin` in a fresh unauthenticated browser context and confirm the route body fails closed with `Unable to load VistA admin console. Authentication required` instead of a usable-looking console shell.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, unauthenticated access still rendered the full console body with a public `VistA Connected` indicator and terminal toggle, while the authenticated Security Keys subtab hit a nonexistent route and the exercised System path did not stay aligned with the live backend contracts.
+- After the fix, the route body boots behind a protected admin check, the Users and Security Keys subtabs match the live `/vista/admin/users` and `/vista/admin/keys` routes, the embedded terminal still connects under an authenticated session, and unauthenticated access fails closed in the route body.
+
+## Follow-ups
+1. This page remains a large consolidated admin surface over many `/vista/admin/*` endpoints, so future slice work should continue tab by tab if additional visible truth defects appear beyond the exercised System and terminal path.
+
+## Phase 726 Update - VistA Hub Slice
+
+## What changed
+1. Fixed the VistA admin hub so protected quick stats now fail closed instead of rendering a fake loaded hub with placeholder metrics when the operational dashboard request fails with authentication errors.
+- `apps/web/src/app/cprs/admin/vista/page.tsx`
+
+2. Recorded the completed VistA hub browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and web app, then verify live health:
+	- `./start-api.ps1`
+	- `pnpm -C apps/web dev`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/vista`.
+3. Corroborate `GET /admin/vista/dashboard/operational` and confirm the browser quick-stats strip matches the live `users.total`, `clinics.total`, `wards.total`, and `pharmacy.drugs` values.
+4. Confirm the hub renders the static VistA administration navigation cards beneath those live stats.
+5. Open `/cprs/admin/vista` in a fresh unauthenticated browser context and confirm the route fails closed with `Unable to load VistA admin hub. Authentication required` instead of a fake loaded hub with placeholder stats.
+6. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the hub ignored auth/load failures from `/admin/vista/dashboard/operational` and reused placeholder `--` quick stats, which made unauthenticated access look like a successfully loaded admin workspace.
+- Direct authenticated route corroboration showed the real contract was a protected live metrics strip headed by `500` users, `565` clinics, `61` wards, and `1,000` drugs.
+- After the fix, the authenticated hub still matches those live values, while the unauthenticated page now fails closed with explicit auth/load messaging.
+
+## Follow-ups
+1. Keep protected summary hubs from treating placeholders as a neutral state; this slice needed strict quick-stats validation so auth failures cannot look like a normal empty dashboard.
+
+## Phase 726 Update - Terminal Slice
+
+## What changed
+1. Fixed the admin browser terminal route so protected terminal access now fails closed instead of mounting a fake loading terminal shell while the WebSocket is already failing authentication in the background.
+- `apps/web/src/app/cprs/admin/terminal/page.tsx`
+
+2. Recorded the completed terminal browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and web app, then verify live health:
+	- `./start-api.ps1`
+	- `pnpm -C apps/web dev`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/terminal`.
+3. Corroborate `GET /terminal/health` and `GET /terminal/sessions` and confirm the browser shows a connected terminal status against the live `ws://127.0.0.1:3001/ws/console` gateway.
+4. Confirm the authenticated terminal view renders the live console banner and the `Connected as PROGRAMMER,ONE (DUZ 1, role: admin)` gateway messages.
+5. Open `/cprs/admin/terminal` in a fresh unauthenticated browser context and confirm the route fails closed with `Unable to load terminal. Authentication required` instead of showing a loading terminal shell.
+6. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the terminal route mounted the protected shell unconditionally, so unauthenticated access sat on `Loading terminal...` while the WebSocket repeatedly failed auth, falsely implying the admin console was still loading.
+- Direct authenticated route corroboration showed the real contract was a healthy protected SSH bridge with zero active sessions and a working `/ws/console` terminal gateway.
+- After the fix, the authenticated browser page still matches that live contract, while the unauthenticated route now fails closed with explicit auth/load messaging.
+
+## Follow-ups
+1. Keep protected real-time admin surfaces from relying on socket failure alone; this slice needed an authenticated HTTP bootstrap before mounting the terminal UI.
+
+## Phase 726 Update - Templates Slice
+
+## What changed
+1. Fixed the templates admin page so protected templates, quick-text, stats, and specialty-pack surfaces now fail closed instead of rendering fake empty or zero-state content when their backend requests fail with authentication errors.
+- `apps/web/src/app/cprs/admin/templates/page.tsx`
+
+2. Recorded the completed templates browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and web app, then verify live health:
+	- `./start-api.ps1`
+	- `pnpm -C apps/web dev`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/templates`.
+3. Corroborate `GET /admin/templates`, `GET /admin/templates/quick-text`, and `GET /admin/templates/stats` with tenant `77371ffb-9929-4344-9fea-a0a7bbcc645e` and confirm the page matches the live protected zero-state data on the `Templates`, `Quick Text`, and `Stats` tabs.
+4. Confirm the authenticated `Specialty Packs` tab exposes only the seed action surface for the current tenant.
+5. Open `/cprs/admin/templates` in a fresh unauthenticated browser context and confirm every exercised tab fails closed with truthful auth/load messaging instead of fake empty-state or zero-state content.
+6. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the templates page ignored auth-failure JSON payloads and reused the authenticated zero-state UI, which made unauthenticated `Templates`, `Quick Text`, `Stats`, and `Specialty Packs` look loaded even though the backing routes had already returned `Authentication required`.
+- Direct authenticated route corroboration showed the real contract was a protected zero state for templates, quick text, and stats, plus a static specialty-pack seed action surface.
+- After the fix, the authenticated browser page still matches those exercised live routes, while the unauthenticated page now fails closed on every exercised tab with explicit auth/load messaging.
+
+## Follow-ups
+1. Keep protected tabbed admin pages from relying on raw `res.json()` fallthrough; this slice needed strict payload validation to prevent protected zero-state reuse under failed loads.
+
+## Phase 726 Update - Support Slice
+
+## What changed
+1. Fixed the support tooling page so protected diagnostics and tickets requests now fail closed instead of rendering fake diagnostics, a fake empty ticket list, or a working-looking create-ticket form under unauthenticated access.
+- `apps/web/src/app/cprs/admin/support/page.tsx`
+
+2. Recorded the completed support browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and web app, then verify live health:
+	- `./start-api.ps1`
+	- `pnpm -C apps/web dev`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/support`.
+3. Corroborate `GET /admin/support/diagnostics` and `GET /admin/support/tickets` with tenant `77371ffb-9929-4344-9fea-a0a7bbcc645e` and confirm the page matches the live diagnostics payload and ticket list.
+4. On the authenticated `Support Tickets` tab, create a ticket and confirm the new row matches the live post-create route output.
+5. Open `/cprs/admin/support` in a fresh unauthenticated browser context and confirm `System Diagnostics` shows `Unable to load diagnostics. Authentication required` while `Support Tickets` shows `Unable to load support tickets. Authentication required` with no create form or fake empty table.
+6. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the support page ignored auth-failure JSON payloads, so unauthenticated diagnostics rendered a bare loaded shell and unauthenticated tickets rendered a false `No tickets yet` workspace with the create-ticket form still visible.
+- Direct authenticated route corroboration showed the real contract was a protected diagnostics report plus a protected tenant-scoped tickets list that began empty and then reflected the browser-created proof ticket.
+- After the fix, the authenticated browser page still matches those exercised live routes, while the unauthenticated page now fails closed on both tabs with explicit auth/load messaging and no fake support workspace underneath.
+
+## Follow-ups
+1. Keep protected admin tooling pages from treating `ok:false` JSON responses as successful loads; this slice needed strict payload validation in addition to transport error handling.
+
+## Phase 726 Update - Verify Slice
+
+## What changed
+1. Recorded the completed `/cprs/verify` browser proof in the Phase 726 browser audit and runtime override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and web app, then verify live health:
+	- `./start-api.ps1`
+	- `pnpm -C apps/web dev`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Open `/cprs/verify` in a fresh unauthenticated browser context and confirm it redirects to `/cprs/login?redirect=%2Fcprs%2Fverify`.
+3. Authenticate in the browser as `PRO1234 / PRO1234!!` and return to `/cprs/verify`.
+4. Confirm the page heading reads `CPRS Web Replica - Verification` with subtitle `System Verification`.
+5. Click `Re-run All Checks` if needed and confirm the final settled browser result is `21/21 passed, 0 failed`, including the live ICD row at `230 result(s)`.
+6. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- The verify dashboard is now truthful on both auth states: signed-out access redirects to login, and the authenticated page reads the live payload shapes correctly for demographics, allergies, vitals, notes, medications, problems, ICD search, and the remaining route/contract checks.
+- A transient mid-run ICD mismatch was investigated before recording; direct authenticated route proof and in-browser fetch proof both showed `/vista/icd-search?q=diabetes` returning `ok:true`, `count:230`, and populated `results`, and a same-session rerun settled the page to the correct final all-pass state.
+
+## Follow-ups
+1. Keep this slice recorded as browser-proven only after the dashboard has fully settled; intermediate verification rows can lag the final authenticated route truth during an in-page run.
+
+## Phase 726 Update - Root Landing Slice
+
+## What changed
+1. Recorded the completed web-root landing-page browser proof in the Phase 726 browser audit and runtime override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical web app and API:
+	- `./start-api.ps1`
+	- `pnpm -C apps/web dev`
+2. Open `/` in a fresh browser context.
+3. Confirm the landing page shows `EHR -- Evolved`, `Hello System is running.`, and exactly three links: `CPRS Web Replica`, `Verification Dashboard`, and `Canonical CPRS Shell`.
+4. Click `CPRS Web Replica` and confirm it navigates to `/cprs/login` and renders the live sign-on page.
+5. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- The web root is a truthful static entry point on this stack, not a live protected dashboard. Browser proof matched source inspection and confirmed the primary login navigation works.
+
+## Follow-ups
+1. Keep the landing page treated as a simple unauthenticated shell in the audit; it does not need live-route grounding beyond its navigation targets.
+
+## Phase 726 Update - Portal Account Slice
+
+## What changed
+1. Fixed the portal account flow so the patient portal uses a consistent API host on the current lane, establishes both required portal session cookies at login, and clears both sessions on sign-out.
+- `apps/portal/src/lib/api-config.ts`
+- `apps/portal/src/app/page.tsx`
+- `apps/portal/src/components/portal-nav.tsx`
+
+2. Recorded the completed portal account browser proof in the Phase 726 browser audit and runtime override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and portal app:
+	- `Set-Location apps/api; npx tsx --env-file=.env.local src/index.ts`
+	- `pnpm -C apps/portal dev`
+2. Open `http://127.0.0.1:3002/dashboard/account` in a fresh browser context and confirm it fails closed to the portal sign-in page.
+3. Sign in as `patient1 / Patient1!` and confirm the app lands inside the portal dashboard with both the core portal session and IAM-backed account routes available.
+4. Open `/dashboard/account` and confirm the page renders live account data: `Name: patient1`, `Patient Profiles: 1`, `MFA: Not enabled`, and at least one active device row.
+5. Click `Sign Out` and confirm the portal returns to the sign-in page.
+6. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the portal mixed two auth contracts: login created only the Phase 26 `portal_session`, while the account page depended on the Phase 29 IAM cookie and therefore failed with `401` or `Failed to fetch`. The portal also defaulted to `http://localhost:3001`, which mismatched the audited `127.0.0.1` host and stranded cookies across hostnames.
+- After the fix, the portal derives its default API host from the browser hostname, login establishes both sessions before navigation, sign-out clears both sessions, and the account page loads truthful live account and device data in-browser.
+
+## Follow-ups
+1. Proxy/family-access should be rechecked under the repaired dual-session portal login, because it uses the same IAM cookie family that previously had no patient-facing bootstrap path.
+
+## Phase 726 Update - Portal Activity Slice
+
+## What changed
+1. Fixed the portal IAM logout route so it now returns effect proof instead of a bare `ok:true`, which prevents the no-fake-success middleware from crashing the API during portal sign-out.
+- `apps/api/src/portal-iam/portal-iam-routes.ts`
+
+2. Recorded the completed portal activity browser proof in the Phase 726 browser audit and runtime override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and portal app:
+	- `Set-Location apps/api; npx tsx --env-file=.env.local src/index.ts`
+	- `pnpm -C apps/portal dev`
+2. Sign in to the portal as `patient1 / Patient1!`.
+3. Open `http://127.0.0.1:3002/dashboard/activity` and confirm the page renders the `Activity Log` heading, filter controls, and at least one live `Sign In` row for `patient1`.
+4. Change the `Event Type` filter to `Sign Ins` and confirm the single sign-in row remains visible.
+5. Click `Sign Out` from the portal shell and confirm the browser returns to the portal login page.
+6. Confirm the API remains healthy after logout:
+	- `curl.exe -s http://127.0.0.1:3001/health`
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- The activity page now loads truthful patient-visible audit data from `/portal/iam/activity`, and the filter controls are wired to that live route rather than acting as static UI.
+- The earlier portal sign-out crash is fixed: `/portal/iam/logout` now carries explicit effect proof, so sign-out no longer terminates the API with `ERR_HTTP_HEADERS_SENT`.
+
+## Follow-ups
+1. Continue through the remaining portal routes with the repaired dual-session login and stable logout path in place; the next unresolved route is `/dashboard/ai-help`.
+
+## Phase 726 Update - Service Lines Slice
+
+## What changed
+1. Fixed the service-lines dashboard so protected ED, OR, and ICU tabs no longer hang on loading copy when their backend requests fail with authentication errors.
+- `apps/web/src/app/cprs/admin/service-lines/page.tsx`
+
+2. Recorded the completed service-lines browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and web app, then verify live health:
+	- `./start-api.ps1`
+	- `pnpm -C apps/web dev`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/service-lines`.
+3. Corroborate `GET /ed/board`, `GET /or/board`, and `GET /icu/metrics` and confirm they return the live zero-state ED, OR, and ICU metrics.
+4. Confirm the authenticated browser `ED`, `OR`, and `ICU` tabs match those live route values.
+5. Open `/cprs/admin/service-lines` in a fresh unauthenticated browser context and confirm each tab fails closed with truthful auth/load messaging instead of perpetual loading copy.
+6. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the protected tab loaders ignored auth failures, so unauthenticated `ED`, `OR`, and `ICU` views stayed on fake loading messages even though the underlying routes had already returned `Authentication required`.
+- Direct authenticated route corroboration showed the real contract was a truthful protected zero-state: all-zero ED metrics, all-zero OR metrics with six available rooms, and ICU metrics with `28` total beds and zero occupancy.
+- After the fix, the authenticated browser page still matches those exercised live routes, while the unauthenticated page now fails closed on every tab with explicit auth/load messaging.
+
+## Follow-ups
+1. Keep protected admin tab loaders from treating missing data as an indefinite loading state; this slice needed strict response validation on each tab rather than passive `d.ok && setState(...)` fetch chains.
+
+## Phase 726 Update - RPC Debug Slice
+
+## What changed
+1. Fixed the rpc-debug console so it no longer fetches the rpc-debug routes from the Next origin or render a fake zeroed debug workspace when those requests fail.
+- `apps/web/src/components/cprs/panels/RpcDebugPanel.tsx`
+
+2. Recorded the completed rpc-debug browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and web app, then verify live health:
+	- `./start-api.ps1`
+	- `pnpm -C apps/web dev`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/rpc-debug`.
+3. Corroborate `GET /vista/rpc-debug/actions`, `GET /vista/rpc-catalog`, and `GET /vista/rpc-debug/registry` and confirm they return the live action, catalog, and registry payloads.
+4. Confirm the authenticated browser summary cards, location filter, search box, and action table match those live route values, including visible rows such as `Load Allergies` and `Search Patients`.
+5. Open `/cprs/admin/rpc-debug` in a fresh unauthenticated browser context and confirm the route fails closed with `Authentication required` instead of rendering a zeroed debug console.
+6. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the rpc-debug panel fetched relative `/vista/*` URLs from Next and ignored non-OK responses, so both authenticated and unauthenticated loads collapsed into the same fake zeroed console even though the real API routes were populated and session-protected.
+- Direct authenticated route corroboration showed the real contract was live: `51` actions, `4585` catalog entries, and `424` registry entries.
+- After the fix, the authenticated browser page now matches those exercised live routes, while the unauthenticated route degrades honestly with `Authentication required` and no synthetic zero-state panel.
+
+## Follow-ups
+1. Keep CPRS admin panels off relative fetches to the Next origin when the real contract lives on the API server; this slice needed both API_BASE alignment and a fully fail-closed render path for protected debug tooling.
+
+## Phase 726 Update - Reports Slice
+
+## What changed
+1. Fixed the reports console so the authenticated Clinical Stats tab no longer calls dead route `/reports/clinical` and render `Not Found`; it now uses the real backend contract `/reports/clinical-activity`.
+- `apps/web/src/app/cprs/admin/reports/page.tsx`
+
+2. Recorded the completed reports browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and web app, then verify live health:
+	- `./start-api.ps1`
+	- `pnpm -C apps/web dev`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/reports`.
+3. Corroborate `GET /reports/operations`, `GET /reports/integrations`, `GET /reports/audit?limit=20`, `GET /reports/clinical-activity`, and `GET /reports/export/jobs` and confirm they return the live reports payloads.
+4. Confirm the authenticated browser `Operations`, `Integrations`, `Audit Trail`, `Clinical Stats`, and `Exports` tabs match those live route values, including the Clinical tab counts from `/reports/clinical-activity`.
+5. Open `/cprs/admin/reports` in a fresh unauthenticated browser context and confirm the route still fails closed with `Please log in to access reports.` instead of rendering a loaded reporting workspace.
+6. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the authenticated `Clinical Stats` tab requested dead route `/reports/clinical`, which produced a browser `404` and rendered `Not Found` even though the live backend route existed at `/reports/clinical-activity`.
+- Direct authenticated route corroboration showed the real reports contract was live and truthful: operations metrics with `ORQPT DEFAULT PATIENT LIST`, a zero-state integrations report, a mutable audit stream, clinical counts `0 / 26 / 0 / 1`, and zero export jobs.
+- After the fix, the authenticated browser page now matches those exercised live reporting routes, while the unauthenticated route continues to degrade honestly with `Please log in to access reports.`
+
+## Follow-ups
+1. Keep report-tab route keys aligned exactly with the backend contract; this slice did not need a new auth gate, only a strict correction from a dead frontend path to the live `/reports/clinical-activity` route.
+
+## Phase 726 Update - Reconciliation Slice
+
+## What changed
+1. Fixed the reconciliation console so unauthenticated access no longer renders a working remittance import workspace, and empty authenticated pagers no longer show `Page 1/0`.
+- `apps/web/src/app/cprs/admin/reconciliation/page.tsx`
+
+2. Recorded the completed reconciliation browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and web app, then verify live health:
+	- `./start-api.ps1`
+	- `pnpm -C apps/web dev`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/reconciliation`.
+3. Corroborate `GET /rcm/reconciliation/imports`, `/payments?page=1&limit=20`, `/matches/review`, `/underpayments?page=1&limit=20`, and `/stats` and confirm they return the live zero-state reconciliation payloads.
+4. Confirm the authenticated browser `Upload Remittance`, `Payments`, `Underpayments`, and `Dashboard` surfaces match those live route values, including `Page 1/1` on empty pagers.
+5. Open `/cprs/admin/reconciliation` in a fresh unauthenticated browser context and confirm the page shows `Unable to load reconciliation console. Authentication required` instead of a working upload form and fake protected tabs.
+6. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, unauthenticated reconciliation route failures were swallowed and the page still rendered a working import form plus protected empty-state tabs.
+- Direct authenticated route corroboration showed the real contract was a clean zero-state store: no imports, no payments, no matches, no underpayments, and all-zero stats.
+- After the fix, the authenticated browser page still matches that live zero-state contract, while the unauthenticated page now fails closed and the empty authenticated pagers render truthfully as `Page 1/1`.
+
+## Follow-ups
+1. Keep protected remittance/admin pages behind a route-level bootstrap gate; this slice also needed empty-pagination normalization so authenticated zero states stay truthful instead of displaying impossible page counts.
+
+## Phase 726 Update - RCM Slice
+
+## What changed
+1. Fixed the umbrella RCM admin console so unauthenticated access no longer treats auth-error payloads as live data and fabricates `OFFLINE`, `SQLite`, and empty RCM workspace state.
+- `apps/web/src/app/cprs/admin/rcm/page.tsx`
+
+2. Recorded the completed RCM browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and web app, then verify live health:
+	- `./start-api.ps1`
+	- `pnpm -C apps/web dev`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/rcm`.
+3. Corroborate `GET /rcm/health`, `GET /rcm/submission-safety`, and `GET /admin/payer-db/backend` and confirm they return the live `97`-payer subsystem health, `export_only` submission safety, and `backend: pg`.
+4. Corroborate `GET /rcm/claims?limit=100` plus `GET /rcm/claims/stats` and confirm they return an empty claim workqueue with zero totals.
+5. Corroborate `GET /rcm/payers?limit=20` plus `GET /rcm/payers/stats` and confirm they return the live payer catalog headed by `NZ-ACC`, `US-AETNA`, and `SG-AIA`, with `total: 97` and the live country/mode breakdown.
+6. Corroborate `GET /rcm/connectors`, `GET /rcm/connectors/health`, and `GET /rcm/audit/stats` and confirm they return the live connector health cards plus the single valid `directory.refreshed` audit chain entry.
+7. Confirm the authenticated browser `Claim Workqueue`, `Payer Registry`, `Connectors & EDI`, and `Audit Trail` surfaces match those live route values.
+8. Open `/cprs/admin/rcm` in a fresh unauthenticated browser context and confirm the route now fails closed with `Unable to load RCM console. Authentication required` instead of rendering fabricated RCM status badges and empty admin tabs.
+9. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, unauthenticated `/rcm/*` auth failures were being accepted as if they were live data, which made `/cprs/admin/rcm` render `OFFLINE`, `SQLite`, and fake empty RCM workspace content.
+- Direct authenticated route corroboration showed the real page contract was live and populated at the shell level: `97` payers, PostgreSQL backend, export-only submission safety, 10 connector health entries, and a valid single-entry audit chain.
+- After the fix, the authenticated browser page still matches the exercised live RCM contracts, while the unauthenticated page now fails closed at the route level instead of fabricating an RCM dashboard.
+
+## Follow-ups
+1. Keep large protected wrapper pages from mounting tab workspaces until their route-level bootstrap calls succeed; this slice needed a shell-level auth gate rather than another layer of tab-specific empty-state fallbacks.
+
+## Phase 726 Update - Queue Slice
+
+## What changed
+1. Fixed the queue admin console so protected queue tabs no longer swallow unauthenticated failures and render the same seed and empty-state UI used for a successfully loaded zero-state queue, while preserving the legitimately public display-board tab.
+- `apps/web/src/app/cprs/admin/queue/page.tsx`
+
+2. Recorded the completed queue browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/queue`.
+3. Corroborate `GET /queue/departments` and confirm it returns the 12 seeded department configurations for tenant `77371ffb-9929-4344-9fea-a0a7bbcc645e`.
+4. Corroborate `GET /queue/tickets?dept=primary-care` and `GET /queue/stats/primary-care` and confirm they return an empty queue plus zeroed statistics.
+5. Corroborate `GET /queue/display/primary-care` and confirm it returns the public zero-state display board with `waitingCount: 0` and `estimatedWaitMinutes: 0`.
+6. Confirm the authenticated browser `Active Queue`, `Display Board`, `Departments`, and `Statistics` tabs match those live route values.
+7. Open `/cprs/admin/queue` in a fresh unauthenticated browser context and confirm the protected tabs show truthful auth/load failure text while `Display Board` still renders the truthful public zero-state board.
+8. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, unauthenticated `/queue/departments`, `/queue/tickets`, and `/queue/stats` requests returned `401 Authentication required`, but the page swallowed those failures and rendered the same seed and empty-state queue admin UI used for a real zero-state load.
+- Direct authenticated route corroboration showed the real queue contract was a seeded department catalog with an empty `primary-care` queue, zeroed `primary-care` stats, and a public display board that remained accessible without authentication.
+- After the fix, the authenticated browser page still matches that live contract, while the unauthenticated protected tabs now fail closed with truthful auth/load messaging and the `Display Board` tab continues to reflect the live public route truthfully.
+
+## Follow-ups
+1. Keep mixed-auth admin pages split by route contract; this slice needed separate protected-tab and public-tab handling so the display board stayed accessible without certifying protected queue admin state.
+
+## Phase 726 Update - Payer Directory Slice
+
+## What changed
+1. Fixed the payer-directory console so unauthenticated registry, source, and merge-route failures no longer render the same empty-state UI used for a successfully loaded zero-state registry.
+- `apps/web/src/app/cprs/admin/payer-directory/page.tsx`
+
+2. Recorded the completed payer-directory browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/payer-directory`.
+3. Corroborate `GET /rcm/payerops/registry/health` and confirm it returns zeroed registry and matrix counts, including `totalPayers: 0` and `totalSources: 0`.
+4. Corroborate `GET /rcm/payerops/payers`, `GET /rcm/payerops/registry/sources`, and `GET /rcm/payerops/registry/snapshots` and confirm they each return empty arrays on the current tenant.
+5. Confirm the authenticated browser `Payer Registry`, `Ingestion Sources`, and `Merge Tool` tabs match those live zero-state routes.
+6. Open `/cprs/admin/payer-directory` in a fresh unauthenticated browser context and confirm the page shows truthful auth/load failure text instead of the loaded empty-state registry, source, and merge UI.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, all payer-directory routes returned `401 Authentication required` in an unauthenticated browser context, but the page swallowed those failures and rendered the same zero-state copy used for a genuinely empty payer registry.
+- Direct authenticated route corroboration showed the real contract was a clean zero-state registry: `0` payers, `0` sources, `0` snapshots, and a zero-candidate merge tool.
+- After the fix, the authenticated browser page still matches that live zero-state contract, while the unauthenticated page now fails closed with truthful auth/load messaging across all three tabs.
+
+## Follow-ups
+1. Keep zero-state admin registries from using empty arrays as the fallback for failed fetches; this slice needed strict response validation and tab-specific error rendering to avoid certifying auth failures as successful empty loads.
+
+## Phase 726 Update - Ops Slice
+
+## What changed
+1. Fixed the ops admin console so unauthenticated failures across overview, alerts, store inventory, and runbooks no longer render a silent blank admin shell.
+- `apps/web/src/app/cprs/admin/ops/page.tsx`
+
+2. Recorded the completed ops browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/ops`.
+3. Corroborate `GET /admin/ops/overview` and confirm it returns `overallScore: 94`, `passingGates: 32`, `totalGates: 34`, `storeCount: 470`, and `runbookCount: 212`.
+4. Corroborate `GET /admin/ops/alerts` and confirm it returns the warning `40 critical in-memory-only stores (data loss on restart)`.
+5. Corroborate `GET /admin/ops/store-inventory` and confirm it returns `total: 470`, `criticalInMemory: 40`, and populated classification/domain maps.
+6. Corroborate `GET /admin/ops/runbooks` and confirm it returns `212` indexed runbooks.
+7. Confirm the authenticated browser `Overview`, `Alerts`, `Store Inventory`, and `Runbooks` tabs match those live route values.
+8. Open `/cprs/admin/ops` in a fresh unauthenticated browser context and confirm the page no longer renders a blank loaded shell; on the recorded pass the visible final state was `Error: Too many requests` after initial `401 Authentication required` responses were followed by rate limiting.
+9. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, all four unauthenticated `/admin/ops/*` requests returned auth failures, but the page used a permissive parallel fetch path that swallowed them and rendered a blank normal-looking admin shell with tabs and no explanation.
+- Direct authenticated route corroboration showed the real ops contract was populated: overview `94 / 32 of 34 / 470 / 212`, one infrastructure warning for `40 critical in-memory-only stores`, a populated store inventory map, and `212` indexed runbooks.
+- After the fix, the authenticated browser page still matches those live routes, while the unauthenticated page now fails closed instead of certifying a loaded blank admin workspace.
+
+## Follow-ups
+1. Keep admin multi-route dashboards off permissive `Promise.allSettled` patterns that silently discard failed responses; this slice needed strict parallel response validation so auth failures could not masquerade as an empty loaded shell.
+
+## Phase 726 Update - Onboarding Slice
+
+## What changed
+1. Fixed the onboarding wizard so unauthenticated session-load failures no longer render the same empty-tenant workspace used for a successful authenticated zero state, and the modules step now loads the real module catalog instead of dead route `/api/modules`.
+- `apps/web/src/app/cprs/admin/onboarding/page.tsx`
+
+2. Recorded the completed onboarding browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/onboarding`.
+3. Corroborate `GET /admin/onboarding` and `GET /admin/onboarding/steps` and confirm the authenticated empty-session state plus the five wizard steps.
+4. Corroborate `GET /api/modules/status` and confirm it returns the live enabled module catalog for tenant `77371ffb-9929-4344-9fea-a0a7bbcc645e`; confirm `GET /api/modules` is not the real contract.
+5. Use the browser to start a new onboarding session, advance through Facility Setup and VistA Connection, and confirm the `Module Selection` step renders the live module cards from `/api/modules/status`.
+6. Advance through `User Provisioning` and `Review & Complete`, then confirm the final authenticated browser state shows `Onboarding Complete` and `Facility has been configured successfully.`
+7. Open `/cprs/admin/onboarding` in a fresh unauthenticated browser context and confirm the page shows `Unable to load onboarding sessions. Authentication required` instead of the fake empty-session state.
+8. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the unauthenticated onboarding page swallowed `401` responses and rendered the same `No onboarding sessions yet` zero-state used for a successful authenticated empty tenant, while the authenticated modules step fetched dead route `/api/modules` and silently omitted the real module catalog.
+- Direct route corroboration showed the real contracts were `/admin/onboarding*` for the wizard state and `/api/modules/status` for the module catalog; `/api/modules` is a live `404`.
+- After the fix, the authenticated browser wizard matches those live routes through to a completed onboarding flow, while the unauthenticated page now fails closed with truthful auth/load messaging.
+
+## Follow-ups
+1. Keep admin wizard loaders from treating failed initial fetches as legitimate zero-state workspaces, and keep page route contracts aligned with the real API endpoints rather than legacy path guesses.
+
+## Phase 726 Update - Module Validation Slice
+
+## What changed
+1. Fixed the module-validation console so unauthenticated route failures no longer hang on misleading loading states across the full report and every category tab.
+- `apps/web/src/app/cprs/admin/module-validation/page.tsx`
+
+2. Recorded the completed module-validation browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/module-validation`.
+3. Corroborate `GET /admin/module-validation/report` and confirm it returns `passed: true`, `errorCount: 0`, `warningCount: 5`, `infoCount: 16`, `activeSku: FULL_SUITE`, and tenant `77371ffb-9929-4344-9fea-a0a7bbcc645e`.
+4. Corroborate `GET /admin/module-validation/dependencies`, `GET /admin/module-validation/boundaries`, and `GET /admin/module-validation/coverage` and confirm they match the issue rows shown on each browser tab.
+5. Confirm the authenticated browser `Full Report`, `Dependencies`, `Boundaries`, and `Coverage` tabs match those live route values.
+6. Open `/cprs/admin/module-validation` in a fresh unauthenticated browser context and confirm the page shows truthful auth/load failure text on the default view and each tab instead of hanging on `Loading...` copy.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, all four unauthenticated `/admin/module-validation/*` requests returned `401 Authentication required`, but the page swallowed those failures and stayed on misleading perpetual loading text across the full report and category tabs.
+- Direct authenticated route corroboration showed the real contract was healthy and populated: `PASSED`, `0` errors, `5` warnings, `16` info, `DEP_OK` on dependencies, telehealth adapter plus health-endpoint findings on boundaries, and the `fhir` plus kernel/store-policy warnings on coverage.
+- After the fix, the authenticated browser page still matches those live module-validation routes, while the unauthenticated page now fails closed with truthful auth/load error messaging across every tab.
+
+## Follow-ups
+1. Keep admin validator surfaces from treating failed fetches as indefinite loading state; this slice needed the same strict response validation already applied to the other proven admin consoles.
+
+## Phase 726 Update - Denial Cases Slice
+
+## What changed
+1. Fixed the denial-cases console so auth/load failures no longer render the same loaded empty queue used for a successfully fetched empty denial store, and empty pagination no longer shows `Page 1/0`.
+- `apps/web/src/app/cprs/admin/denial-cases/page.tsx`
+
+2. Recorded the completed denial-cases browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/denial-cases`.
+3. Corroborate `GET /rcm/denials?page=1&limit=20` with the authenticated session plus `x-tenant-id: 77371ffb-9929-4344-9fea-a0a7bbcc645e` and confirm it returns `items: []`, `total: "0"`, and `totalPages: 0`.
+4. Corroborate `GET /rcm/denials/stats` with the same session and tenant context and confirm it returns `stats: {}`.
+5. Confirm the authenticated browser `Work Queue` tab shows `0 total | Page 1/1`, `No denial cases found`, and disabled `Prev` and `Next` controls.
+6. Switch to `Dashboard` and confirm all eight denial status cards show `0` with `Total: 0 denial cases`.
+7. Open `/cprs/admin/denial-cases` in a fresh unauthenticated browser context and confirm the page shows `Unable to load denial dashboard. Authentication required` instead of rendering `No denial cases found`.
+8. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, unauthenticated denial-case loads swallowed `401` failures and rendered the same empty queue copy used for a successful empty denial dataset, falsely implying the workspace had loaded.
+- Direct authenticated route corroboration showed the real tenant-scoped contract was an empty denial queue and empty stats payload.
+- After the fix, the authenticated browser page matches that live empty route truth while normalizing the pager to `Page 1/1`, and the unauthenticated page now fails closed with truthful auth messaging.
+
+## Follow-ups
+1. Keep admin work-queue pages from treating failed fetches and successful empty datasets as the same render branch; this slice needed both fail-closed load handling and a stable empty-page normalization.
+
+## Phase 726 Update - Coverage Slice
+
+## What changed
+1. Fixed the specialty coverage dashboard so auth/load failures no longer crash the CPRS content boundary from malformed overview state.
+- `apps/web/src/app/cprs/admin/coverage/page.tsx`
+
+2. Recorded the completed coverage browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/coverage`.
+3. Corroborate `GET /admin/coverage/score` and confirm it returns `overallScore: 82`, `overallGrade: B`, and distribution `A:4, B:38, C:3, D:0, F:0`.
+4. Corroborate `GET /admin/coverage/specialties` and confirm it returns `45` specialty rows, including `primary-care 92 A` and the other leading specialties.
+5. Corroborate `GET /admin/coverage/gaps` and confirm it returns `gapCount: 0` with no improvement-priority entries.
+6. Corroborate `GET /admin/coverage/qa-ladder` and confirm it returns gate `G-SPECIALTY-COVERAGE`, aggregate score `82 (B)`, `status: warn`, `passCount: 0`, `warnCount: 45`, and `failCount: 0`.
+7. Confirm the authenticated browser `Overview`, `Specialties`, `Gaps`, and `QA Ladder` tabs match those live route values.
+8. Open `/cprs/admin/coverage` in a fresh unauthenticated browser context and confirm the page shows `Unable to load coverage dashboard. Authentication required` instead of crashing with `Cannot read properties of undefined (reading 'A')`.
+9. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, unauthenticated coverage loads ignored failed API responses and then crashed in `OverviewTab` while reading a missing grade-distribution object, surfacing `Error in CPRS Content` instead of a truthful auth failure.
+- Direct authenticated route corroboration showed the real coverage contract was healthy and populated: score `82 (B)`, 45 specialties, zero gaps, and a `WARN` QA ladder with 45 warning checks.
+- After the fix, the authenticated browser page matches that live route truth across all four tabs, while the unauthenticated page now fails closed with truthful auth messaging instead of throwing.
+
+## Follow-ups
+1. Keep admin scorecards from assuming route payload shape after failed loads; this surface needed the same strict response validation used on the other proven admin consoles.
+
+## Phase 726 Update - Contracting Hub Slice
+
+## What changed
+1. Fixed the contracting hub so it now calls the real API server, renders the live contracting dashboard, and fails closed on auth/load errors instead of crashing on HTML 404 responses or hanging on `Loading contracting data...`.
+- `apps/web/src/app/cprs/admin/contracting-hub/page.tsx`
+
+2. Recorded the completed contracting hub browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/contracting-hub`.
+3. Corroborate `GET /rcm/hmo/contracting` and confirm it returns `totalPayers: 27`, `totalTasks: 0`, zero counts in `byStatus`, and 27 payer rows with `tasks: []`.
+4. Confirm the authenticated browser summary strip shows `Payers 27`, `Total Tasks 0`, `open 0`, `in progress 0`, `blocked 0`, and `done 0`.
+5. Confirm the payer list renders the live PH HMO payer IDs with `No tasks -- click to init`.
+6. Click `PH-MAXICARE` and confirm the detail panel shows `No tasks yet. Click "Init Tasks" to create standard onboarding tasks.`
+7. Open `/cprs/admin/contracting-hub` in a fresh unauthenticated browser context and confirm the page shows `Error: Authentication required` instead of hanging on `Loading contracting data...` or crashing on invalid JSON.
+8. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the page fetched relative `/rcm/hmo/contracting*` URLs from Next, received HTML `404` responses, and crashed with `Unexpected token '<'`; unauthenticated loads could also remain stuck on `Loading contracting data...` under `401` failures.
+- Direct authenticated route corroboration showed the live dashboard contract was a truthful 27-payer zero-task state with zero open, in-progress, blocked, and done tasks.
+- After the fix, the authenticated browser page matches that live contracting route truth, and the unauthenticated page now fails closed with `Authentication required` instead of crashing or hanging.
+
+## Follow-ups
+1. Keep admin RCM dashboards on the shared `API_BASE` path; this surface had drifted to relative Next fetches, which converted routine route failures into browser-visible parse crashes.
+
+## Phase 726 Update - Compliance Slice
+
+## What changed
+1. Fixed the compliance dashboard so it now uses the real regulatory API contract, resolves tenant context, and fails closed on auth/load errors instead of hanging on `Loading...` or rendering a blank shell.
+- `apps/web/src/app/cprs/admin/compliance/page.tsx`
+
+2. Recorded the completed compliance browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/compliance`.
+3. Corroborate `GET /admin/my-tenant` and confirm it returns tenant `77371ffb-9929-4344-9fea-a0a7bbcc645e` for the active admin session.
+4. Corroborate `GET /regulatory/posture`, `GET /regulatory/frameworks`, `GET /regulatory/attestations/summary`, and `GET /regulatory/validators` with the same authenticated cookies plus `x-tenant-id: 77371ffb-9929-4344-9fea-a0a7bbcc645e` where required.
+5. Confirm the authenticated browser `Posture` tab shows tenant `77371ffb-9929-4344-9fea-a0a7bbcc645e`, country `US`, frameworks `HIPAA, NIST_800_53`, `Validators 3`, valid chains, and supported countries `US, PH, GH`.
+6. Switch to `Frameworks` and confirm the browser renders the five live framework rows.
+7. Switch to `Attestations` and confirm the browser shows `No attestations recorded yet.` matching the current zero-attestation route state.
+8. Switch to `Validators` and confirm the browser renders the three live validator rows for `US`, `PH`, and `GH`.
+9. Open `/cprs/admin/compliance` in a fresh unauthenticated browser context and confirm the page shows `Unable to load compliance dashboard. Authentication required` instead of hanging on `Loading...`.
+10. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the page fetched nonexistent `/api/regulatory/*` endpoints, so authenticated loads returned repeated `404` responses and rendered only a blank shell while unauthenticated loads mixed `401` and `404` failures and stayed on `Loading...`.
+- Direct authenticated route corroboration showed the real dashboard contract lives at `/regulatory/*`, with tenant-scoped posture plus live framework and validator catalogs.
+- After the fix, the authenticated browser page matches the live `Posture`, `Frameworks`, `Attestations`, and `Validators` route truth, while the unauthenticated page now fails closed with truthful auth messaging.
+
+## Follow-ups
+1. Keep admin dashboards off nonexistent Next-local `/api/*` assumptions; this surface needed the same `API_BASE` plus tenant-resolution pattern already used by the other proven admin consoles.
+
+## Phase 726 Update - QA Dashboard Slice
+
+## What changed
+1. Fixed the QA dashboard so tenant-required and authentication failures no longer collapse into the false `QA Routes Disabled` state.
+- `apps/web/src/app/cprs/admin/qa-dashboard/page.tsx`
+
+2. Recorded the completed QA dashboard browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/qa-dashboard`.
+3. Corroborate `GET /admin/my-tenant` and confirm it returns tenant `77371ffb-9929-4344-9fea-a0a7bbcc645e` for the active admin session.
+4. Corroborate `GET /qa/status`, `GET /qa/traces/stats`, `GET /qa/flows`, `GET /qa/results`, and `GET /qa/dead-clicks` with the same authenticated cookies plus `x-tenant-id: 77371ffb-9929-4344-9fea-a0a7bbcc645e`.
+5. Confirm the authenticated browser `Traces` tab shows the same live metrics: `Buffer 108/5000`, `Avg 405.84ms`, `P95 1097ms`, `Error Rate 0.0%`, and top RPCs led by `ORQPT DEFAULT PATIENT LIST`.
+6. Switch to `Flows` and confirm the browser renders the live 17-row flow catalog.
+7. Switch to `Results` and confirm the browser shows `No flow results yet. Run a flow first.` matching the current no-results route state.
+8. Switch to `Dead Clicks` and confirm the browser shows `No dead clicks detected` matching the current zero dead-click route state.
+9. Open `/cprs/admin/qa-dashboard` in a fresh unauthenticated browser context and confirm the page shows `Unable to load QA dashboard status. Authentication required` instead of `QA Routes Disabled`.
+10. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, both authenticated and unauthenticated browser passes falsely showed `QA Routes Disabled` even though the real authenticated tenant-scoped `/qa/status` route returned `qaEnabled:true`; the page was omitting tenant context and conflating tenant/auth failures with the disabled feature state.
+- Direct authenticated route corroboration showed the current live QA contract for tenant `77371ffb-9929-4344-9fea-a0a7bbcc645e`: trace stats `108` total calls with `0` failures, `17` flows, `no_results`, and `0` dead clicks.
+- After the fix, the authenticated browser page matches that live tenant-scoped contract across `Traces`, `Flows`, `Results`, and `Dead Clicks`, while the unauthenticated page now fails closed with truthful auth messaging instead of certifying a false disabled state.
+
+## Follow-ups
+1. Keep tenant-scoped admin consoles from collapsing `TENANT_REQUIRED` and `401` failures into feature-flag booleans; this surface needed explicit tenant resolution before it could safely decide whether QA was actually disabled.
+
+## Phase 726 Update - Pilot Slice
+
+## What changed
+1. Fixed the pilot readiness console so unauthenticated load failures no longer render the same empty-site and preflight guidance used for a genuinely empty pilot site store.
+- `apps/web/src/app/cprs/admin/pilot/page.tsx`
+
+2. Recorded the completed pilot browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/pilot`.
+3. Corroborate the `Sites` tab against `GET /admin/pilot/sites` and confirm it returns `sites: []`, matching the browser row `No pilot sites configured`.
+4. Corroborate `GET /admin/pilot/summary` and confirm it returns `total: 0` with empty `byStatus` and `byEnvironment` objects for the current tenant.
+5. Switch to the `Preflight` tab and confirm the browser shows `Select a site and run preflight checks from the Sites tab.` because no site exists to preflight.
+6. Open `/cprs/admin/pilot` in a fresh unauthenticated browser context and confirm the `Sites` tab shows `Authentication required` instead of `No pilot sites configured`.
+7. Switch the unauthenticated page to `Preflight` and confirm it shows `Unable to load pilot sites. Authentication required` instead of the generic select-a-site guidance.
+8. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the unauthenticated pilot page swallowed `401` responses and rendered the same `No pilot sites configured` and `Select a site and run preflight checks from the Sites tab.` copy used for a successfully loaded empty pilot store.
+- Direct authenticated route corroboration showed the real contract was a truthful zero-state tenant: `GET /admin/pilot/sites` returned `sites: []` and `GET /admin/pilot/summary` returned `total: 0` with empty status and environment maps.
+- After the fix, the authenticated browser page still matches that live zero-state route contract, while the unauthenticated page now fails closed with truthful auth/load messaging on both tabs.
+
+## Follow-ups
+1. Keep admin zero-state pages from treating initial list-load failure and empty-data success as the same render branch; this surface had both a list tab and a secondary guidance tab that could otherwise certify themselves falsely under `401`.
+
+## Phase 726 Update - PhilHealth Setup Slice
+
+## What changed
+1. Fixed the PhilHealth setup console so unauthenticated load failures no longer render a fake blank facility workspace, fake provider zero-state, or fake readiness counters.
+- `apps/web/src/app/cprs/admin/philhealth-setup/page.tsx`
+
+2. Recorded the completed PhilHealth setup browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/philhealth-setup`.
+3. Corroborate the page against `GET /rcm/philhealth/setup` and confirm it shows blank facility details, zero providers, and `0 of 8 complete` readiness with the same eight incomplete items returned by the route.
+4. Corroborate `GET /rcm/philhealth/stats` and confirm it returns `facilitySetups: 1` and zero claim drafts on this tenant.
+5. Open `/cprs/admin/philhealth-setup` in a fresh unauthenticated browser context and confirm the page shows `Unable to load PhilHealth setup. Authentication required` instead of a blank editable facility form.
+6. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the unauthenticated setup page showed `Authentication required` but still rendered blank facility fields, `Provider Accreditations (0)`, and `0 of 0 complete`, which falsely implied the setup workspace had loaded.
+- Direct authenticated route corroboration showed the real zero-state setup contract: default facility record, zero providers, and eight incomplete readiness items.
+- After the fix, the authenticated browser page still matches that live route, while the unauthenticated page now fails closed with a truthful setup load error.
+
+## Follow-ups
+1. Keep configuration pages from using uncontrolled local form state as a fallback render after failed initial loads; otherwise auth failures can look like editable empty configuration.
+
+## Phase 726 Update - PhilHealth eClaims3 Slice
+
+## What changed
+1. Fixed the PhilHealth eClaims 3.0 console so auth/load failures no longer collapse into fake zero-state or loading UI across Build, Submissions, Denials, and Spec.
+- `apps/web/src/app/cprs/admin/philhealth-eclaims3/page.tsx`
+
+2. Recorded the completed PhilHealth eClaims3 browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/philhealth-eclaims3`.
+3. Corroborate `Build & Export` against `GET /rcm/philhealth/claims` and confirm it returns `count: 0` with `drafts: []`, matching `No claim drafts available. Create one in PH Claims first.`
+4. Corroborate the header and `Spec Gates` tab against `GET /rcm/eclaims3/status` and `GET /rcm/eclaims3/spec-gates`, confirming `XML spec: Pending`, manual-only submission mode, and `0 of 5` gates completed with all five gates `not_started`.
+5. Corroborate `Submissions` and `Denials` against `GET /rcm/eclaims3/submissions` and confirm they return `total: 0`, matching the browser zero-state messages.
+6. Open `/cprs/admin/philhealth-eclaims3` in a fresh unauthenticated browser context and confirm the page shows truthful adapter, drafts, submissions, denials, and spec-gate auth failure messaging instead of fake zero-state content or loading text.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, unauthenticated eClaims3 loads swallowed `401` responses and fell through into fake zero-state content: `XML spec: Loading...`, `No claim drafts available`, `No submissions yet`, and misleading spec-progress metrics.
+- Direct authenticated route corroboration showed the real zero-state/manual-only contract: no drafts, no submissions, zero denials, `specAvailable:false`, and five `not_started` spec gates with `0/5` progress.
+- After the fix, the authenticated browser page still matches that live contract on all four tabs, while the unauthenticated page now fails closed with truthful auth/load failure messages.
+
+## Follow-ups
+1. Keep multi-tab adapter consoles from using silent fetchers; this surface had four independent data areas, and each one was previously capable of masquerading as valid empty state under `401`.
+
+## Phase 726 Update - PhilHealth Claims Slice
+
+## What changed
+1. Fixed the PhilHealth claims console so auth/load failures no longer render the same empty-drafts state used for a genuinely empty claim store.
+- `apps/web/src/app/cprs/admin/philhealth-claims/page.tsx`
+
+2. Recorded the completed PhilHealth claims browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/philhealth-claims`.
+3. Corroborate the list against `GET /rcm/philhealth/claims` and confirm it returns `count: 0` with `drafts: []`, matching the browser message `No claim drafts yet. Create one to get started.`
+4. Open `/cprs/admin/philhealth-claims` in a fresh unauthenticated browser context and confirm the page shows `Authentication required` plus `Unable to load claim drafts.` instead of the loaded zero-drafts message.
+5. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the unauthenticated page showed `Authentication required` but still rendered `No claim drafts yet. Create one to get started.`, which falsely implied the claim list had loaded successfully.
+- Direct authenticated route corroboration showed a truthful zero-draft contract from `GET /rcm/philhealth/claims` with `count: 0` and `drafts: []`.
+- After the fix, the authenticated browser page still matches that live zero-state route, while the unauthenticated page now renders `Unable to load claim drafts.` instead of collapsing into the loaded empty-state message.
+
+## Follow-ups
+1. Keep zero-state admin workspaces from sharing the same render branch for `empty` and `failed` list loads; this surface showed the same failure pattern as the other RCM admin consoles.
+
+## Phase 726 Update - PH Market Slice
+
+## What changed
+1. Fixed the PH market dashboard so it now calls the real API server, renders the live populated HMO market data, and surfaces truthful auth/load failures instead of crashing on HTML 404 responses or hanging on loading state.
+- `apps/web/src/app/cprs/admin/ph-market/page.tsx`
+
+2. Recorded the completed PH market browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/ph-market`.
+3. Corroborate the `overview` tab against `GET /rcm/hmo/market-summary` and confirm it shows `27` HMOs, `5` portal adapters, `20%` capability coverage, `27` LOA templates, `27` claim configs, and payer-type counts `L3 19` and `L1 8`.
+4. Switch to `hmos` and confirm it renders the live manifest rows from `GET /rcm/hmo/manifest`, including entries such as `PH-ASIANLIFE`, `PH-INTELLICARE`, and `PH-MAXICARE` with truthful adapter badges and capability percentages.
+5. Switch to `contracting` and confirm it matches the live zero-task summary from `summary.contracting` with all counts at `0`.
+6. Open `/cprs/admin/ph-market` in a fresh unauthenticated browser context and confirm the page shows `Unable to load PH market data. Authentication required` instead of crashing on a JSON parse error or staying on `Loading PH market data...`.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the page fetched relative `/rcm/hmo/*` URLs from Next, received HTML `404` responses, and crashed with `Unexpected token '<'`; unauthenticated loads could also remain stuck on `Loading PH market data...` under `401` failures.
+- Direct authenticated route corroboration showed a live populated PH market contract: `27` HMOs, `5` portal adapters, `3` generic manual adapters, `19` manual-only payers, `20%` capability coverage, `27` LOA templates, `27` claim packet configs, and `0` contracting tasks.
+- After the fix, the authenticated browser page matches that live populated route data across `overview`, `hmos`, and `contracting`, while the unauthenticated page now degrades honestly with `Authentication required`.
+
+## Follow-ups
+1. Keep admin dashboards on the shared `API_BASE` contract; this page had drifted to relative Next fetches, which turned a normal route failure into a browser-visible parse crash.
+
+## Phase 726 Update - Performance Slice
+
+## What changed
+1. Fixed the performance dashboard so auth/load failures no longer render a fake loading state or the same zero-state copy used for a genuinely empty performance store.
+- `apps/web/src/app/cprs/admin/performance/page.tsx`
+
+2. Recorded the completed performance browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Open `/cprs/admin/performance` in a fresh unauthenticated browser context and confirm the `Summary` tab shows `Unable to load performance summary. Authentication required` instead of sitting on `Loading...`.
+3. Switch the unauthenticated page through `Route Profiles`, `Budgets`, and `Slow Queries` and confirm each tab shows its truthful auth failure message instead of a loaded zero-state.
+4. Authenticate in the browser as `PRO1234 / PRO1234!!` and reopen `/cprs/admin/performance`.
+5. Corroborate the `Summary` tab against `GET /admin/performance/summary` and confirm it returns the truthful zero-state summary with `healthScore: 100`, `systemP95Ms: 0`, `systemAvgMs: 0`, and `budgetCount: 0`.
+6. Corroborate the `Route Profiles`, `Budgets`, and `Slow Queries` tabs against `GET /admin/performance/profiles`, `GET /admin/performance/budgets`, and `GET /admin/performance/slow-queries`, confirming all three return empty arrays on this stack.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the unauthenticated performance page sat on `Loading...` in Summary and rendered loaded zero-state copy on Route Profiles, Budgets, and Slow Queries even though the underlying requests had failed with `401`.
+- Direct authenticated route corroboration showed a truthful zero-state performance store: summary `100/100` with zero route telemetry, empty route profiles, empty budgets, and empty slow-query log.
+- After the fix, unauthenticated browser passes show truthful auth failure messaging on all four tabs, while the authenticated browser page still matches the live performance route contracts exactly.
+
+## Follow-ups
+1. Keep admin telemetry dashboards strict about non-OK response handling; this surface had four independent read tabs, and silent fetch fallthrough was allowing auth failures to masquerade as clean performance data.
+
+## Phase 726 Update - Exports Slice
+
+## What changed
+1. Fixed the exports console so auth/load failures no longer render the same empty source-catalog state used for a genuinely loaded exports registry.
+- `apps/web/src/app/cprs/admin/exports/page.tsx`
+
+2. Recorded the completed exports browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/exports`.
+3. Corroborate the `Sources` tab against `GET /admin/exports/sources` and confirm it returns the live sources `platform-audit`, `analytics-events`, and `analytics-aggregated` plus supported formats `csv`, `json`, `jsonl`, and `ndjson`.
+4. Corroborate the `Jobs` tab against `GET /admin/exports/jobs?limit=50` and confirm it returns `jobs: []`, matching the browser message `No export jobs`.
+5. Corroborate the `Stats` tab against `GET /admin/exports/stats` and confirm it returns zero counts for `totalJobs`, `completed`, `failed`, and `active`.
+6. Open `/cprs/admin/exports` in a fresh unauthenticated browser context and confirm the page shows `Unable to load export sources. Authentication required` instead of `No sources registered`.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the unauthenticated exports page swallowed `401` failures and rendered the same `No sources registered` empty-state used for a successful empty source catalog, falsely implying the exports registry had loaded.
+- Direct authenticated route corroboration showed the real live contract was three sources, zero jobs, and zero stats for the active tenant.
+- After the fix, the authenticated browser page still matches that live route truth, while the unauthenticated page now fails closed with `Unable to load export sources. Authentication required`.
+
+## Follow-ups
+1. Keep admin source-registry pages strict about initial load failures versus genuine empty-state success; this surface needed separate page-load and action-error handling so `401` responses could not certify the registry as empty.
+
+## Phase 726 Update - HMO Portal Slice
+
+## What changed
+1. Fixed the HMO portal dashboard so auth/load failures no longer render fake empty adapter, specialty, submissions, or stats states.
+- `apps/web/src/app/cprs/admin/hmo-portal/page.tsx`
+
+2. Recorded the completed HMO portal browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/hmo-portal`.
+3. Corroborate the `Adapters` tab against `GET /rcm/hmo-portal/adapters` and confirm it returns the five live portal adapters `PH-MAXICARE`, `PH-MEDICARD`, `PH-INTELLICARE`, `PH-PHILCARE`, and `PH-VALUCARE`.
+4. Corroborate the `LOA Builder` tab against `GET /rcm/hmo-portal/specialties` and confirm it returns the live specialty-template catalog including `general_medicine`, `surgery`, and the rest of the portal-supported specialties.
+5. Corroborate the `Submissions` tab against `GET /rcm/hmo-portal/submissions` and confirm it returns `submissions: []`, matching the browser message `No submissions yet. Build and submit an LOA or claim packet to get started.`
+6. Corroborate the `Stats` tab against `GET /rcm/hmo-portal/submissions/stats` and confirm all submission-state counters return `0`.
+7. Open `/cprs/admin/hmo-portal` in a fresh unauthenticated browser context and confirm the route-backed tabs show truthful auth failures such as `Unable to load adapters. Authentication required`, `Unable to load specialty templates. Authentication required`, `Unable to load submissions. Authentication required`, and `Unable to load stats. Authentication required`.
+8. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the unauthenticated HMO portal page swallowed `401` failures and rendered fake loaded states such as `No adapters registered` and the same empty submissions copy used for a genuine zero-state tenant.
+- Direct authenticated route corroboration showed the real live contract was five portal adapters, a populated specialty-template catalog, zero submissions, and zeroed submission stats for the active tenant.
+- After the fix, the authenticated browser page still matches that live route truth, while the unauthenticated page now fails closed on the route-backed tabs with truthful auth/load failure messaging.
+
+## Follow-ups
+1. Keep shared admin fetch helpers strict about non-OK responses; this surface used a single permissive helper across four route-backed tabs, which let one auth failure pattern masquerade as multiple valid empty-state views.
+
+## Phase 726 Update - LOA Queue Slice
+
+## What changed
+1. Fixed the LOA work queue so auth/load failures no longer render the same empty queue used for a genuinely empty tenant.
+- `apps/web/src/app/cprs/admin/loa-queue/page.tsx`
+
+2. Recorded the completed LOA queue browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/loa-queue`.
+3. Corroborate the queue against `GET /rcm/payerops/loa-queue?sortBy=slaDeadline&sortDir=asc` and confirm it returns `items: []`, `total: 0`, and zeroed `slaBreakdown` values.
+4. Corroborate the backing list route against `GET /rcm/payerops/loa` and confirm it returns `count: 0` and `loaCases: []`.
+5. Confirm the authenticated browser page shows `Total Active: 0`, all SLA counters at `0`, and `No active LOA cases match the current filters.`
+6. Open `/cprs/admin/loa-queue` in a fresh unauthenticated browser context and confirm the page shows `Unable to load LOA queue. Authentication required` instead of the loaded empty queue state.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the unauthenticated LOA queue page swallowed `401` failures and rendered the same empty queue summary and `No active LOA cases match the current filters.` copy used for a genuine zero-case tenant.
+- Direct authenticated route corroboration showed the real live contract was a truthful zero-state LOA queue with zeroed SLA counters and no LOA cases for the active tenant.
+- After the fix, the authenticated browser page still matches that live route truth, while the unauthenticated page now fails closed with `Unable to load LOA queue. Authentication required`.
+
+## Follow-ups
+1. Keep queue-style admin pages from reusing empty-state branches for failed initial loads; this surface needed the queue summary, filters, and empty table view suppressed whenever the first route fetch fails.
+
+## Phase 726 Update - LOA Workbench Slice
+
+## What changed
+1. Fixed the LOA workbench so unauthenticated list and stats failures no longer collapse into the same empty-state or loading UI used for a genuinely empty LOA request store.
+- `apps/web/src/app/cprs/admin/loa-workbench/page.tsx`
+
+2. Recorded the completed LOA workbench browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/loa-workbench`.
+3. Corroborate the default `Active LOAs` tab against `GET /rcm/loa` and confirm it returns `requests: []` with `total: 0`.
+4. Switch to `Stats` and corroborate `GET /rcm/loa/stats`, confirming it returns `total: 0` with `byStatus: {}`.
+5. Confirm the authenticated browser `Active LOAs` tab shows `No LOA requests found. Create one from the Create LOA tab.` and the `Stats` tab shows `Total LOAs 0`.
+6. Open `/cprs/admin/loa-workbench` in a fresh unauthenticated browser context and confirm the default tab shows `Unable to load LOA requests. Authentication required` instead of the loaded empty request state.
+7. Switch the unauthenticated page to `Stats` and confirm it shows `Unable to load LOA stats. Authentication required` instead of lingering on `Loading stats...`.
+8. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the unauthenticated LOA workbench swallowed `401` failures from `/rcm/loa`, rendered `No LOA requests found. Create one from the Create LOA tab.`, and left the stats tab on `Loading stats...`, which falsely implied a loaded empty workbench.
+- Direct authenticated route corroboration showed the real live contract was a truthful zero-state LOA request list plus zeroed stats for the active tenant.
+- After the fix, the authenticated browser page still matches that live route truth, while the unauthenticated page now fails closed with explicit auth failures on both the list and stats tabs.
+
+## Follow-ups
+1. Keep zero-state admin workbenches from sharing the same render branch for failed initial loads and successful empty datasets; this slice needed separate failure handling for both the list and stats fetches.
+
+## Phase 726 Update - Migration Slice
+
+## What changed
+1. Fixed the migration console so unauthenticated route failures no longer render fake `OFFLINE` health, fake empty import/export job tables, or a fake empty template selector.
+- `apps/web/src/app/cprs/admin/migration/page.tsx`
+
+2. Recorded the completed migration browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/migration`.
+3. Corroborate `GET /migration/health` and `GET /migration/stats`, confirming both return `totalJobs: 0`, empty `byStatus` and `byDirection`, and `templateCount: 22`.
+4. Corroborate `GET /migration/templates` and confirm it returns the live 22-template built-in catalog.
+5. Corroborate `GET /migration/jobs?direction=import` and `GET /migration/jobs?direction=export`, confirming both return `jobs: []` with `total: 0`.
+6. Confirm the authenticated browser `Import Jobs`, `Export Jobs`, `Mapping Templates`, and `Status` tabs match those live values, including `ONLINE`, the populated template catalog, and zero job counts.
+7. Open `/cprs/admin/migration` in a fresh unauthenticated browser context and confirm the header shows `Authentication required` instead of `OFFLINE`.
+8. Confirm the unauthenticated `Import Jobs`, `Export Jobs`, `Mapping Templates`, and `Status` tabs show their truthful auth failure messages instead of fake empty-state content.
+9. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the unauthenticated migration console swallowed `401` failures from `/migration/health`, `/migration/templates`, `/migration/jobs`, and `/migration/stats`, then misreported the console as `OFFLINE` and rendered fake empty import/export/template states.
+- Direct authenticated route corroboration showed the real live contract was `ONLINE`, `22` built-in templates, zero import/export jobs, and zeroed migration status cards.
+- After the fix, the authenticated browser page still matches that live route truth, while the unauthenticated page now fails closed with explicit auth failures across the header and each route-backed tab.
+
+## Follow-ups
+1. Keep admin toolkit consoles from interpreting auth errors as subsystem health or zero-state data; this surface needed explicit separation between failed health checks and a truly offline migration service.
+
+## Phase 726 Update - Module Disabled Slice
+
+## What changed
+1. Browser-proved the static module-disabled guard page and confirmed no code change was required.
+- `apps/web/src/app/cprs/admin/module-disabled/page.tsx`
+
+2. Recorded the completed module-disabled browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Open `/cprs/admin/module-disabled?module=Imaging` in an authenticated browser session.
+3. Confirm the page shows `Module Not Enabled`, interpolates `Imaging` into the warning message, links `Module Administration` to `/cprs/admin/modules`, and links `Return to CPRS` to `/cprs`.
+4. Open the same URL in a fresh unauthenticated browser context and confirm the same truthful static guard page renders.
+5. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- The page is a static query-driven guard surface with no backing API calls.
+- Authenticated and unauthenticated browser passes both rendered the same truthful contract for `module=Imaging`, with no fake live data or mutation affordances.
+- No truth defect was found, so no code change was required for this slice.
+
+## Follow-ups
+1. Keep disabled-module guard pages simple and static; this slice is only truthful because it does not pretend to resolve entitlements or facility state dynamically.
+
+## Phase 726 Update - PayerOps Slice
+
+## What changed
+1. Fixed the payerops console so auth/load failures no longer render a fake offline badge or the same empty-state copy used for a genuinely empty payer-operations workspace.
+- `apps/web/src/app/cprs/admin/payerops/page.tsx`
+
+2. Recorded the completed payerops browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Open `/cprs/admin/payerops` in a fresh unauthenticated browser context and confirm the header shows `Unable to load payer operations status.` with `Authentication required` instead of a fake `OFFLINE` badge.
+3. Switch the unauthenticated page through `Enrollments`, `LOA Cases`, `Credential Vault`, and `Adapters` and confirm each tab shows its truthful auth failure message instead of a loaded empty-state.
+4. Authenticate in the browser as `PRO1234 / PRO1234!!` and reopen `/cprs/admin/payerops`.
+5. Corroborate the header and stats strip against `GET /rcm/payerops/health` and `GET /rcm/payerops/stats`, confirming `ONLINE`, `encryption: healthy`, `portalConfigs: 0`, and zeroed counts.
+6. Corroborate the `Enrollments`, `LOA Cases`, `Credential Vault`, and `Adapters` tabs against `GET /rcm/payerops/enrollments`, `GET /rcm/payerops/loa`, `GET /rcm/payerops/credentials`, `GET /rcm/payerops/credentials/expiring?days=60`, and `GET /rcm/payerops/adapters`.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the unauthenticated payerops page swallowed `401` failures, rendered a fake `OFFLINE` status, and fell through to the same empty-state copy used for genuine zero enrollments, LOA cases, credentials, and adapters.
+- Direct authenticated route corroboration showed a truthful healthy zero-state stack: payerops health `ok:true`, zeroed aggregate stats, zero enrollments, zero LOA cases, zero credentials, zero expiring credentials, and two live adapters with `portalConfigs: 0`.
+- After the fix, unauthenticated browser passes show truthful auth failure messaging in the header and across all four tabs, while the authenticated browser page still matches the live payerops route contracts.
+
+## Follow-ups
+1. Keep admin workspaces with shared fetch helpers strict about non-OK response handling; this page was reusing one JSON helper that turned every auth failure into silent fake zero-state UI.
+
+## Phase 726 Update - Payer Registry Slice
+
+## What changed
+1. Fixed the payer-registry console so auth/load failures no longer render the same zero-state or loading-state copy used for a genuinely empty persistent registry.
+- `apps/web/src/app/cprs/admin/payer-registry/page.tsx`
+
+2. Recorded the completed payer-registry browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Open `/cprs/admin/payer-registry` in a fresh unauthenticated browser context and confirm the `registry` tab shows `Unable to load payer registry.` with `Authentication required` instead of `No payers in persistent store`.
+3. Switch the unauthenticated page through `evidence`, `audit`, and `stats` and confirm each tab shows its truthful auth failure message instead of loaded zero-state or loading copy.
+4. Authenticate in the browser as `PRO1234 / PRO1234!!` and reopen `/cprs/admin/payer-registry`.
+5. Corroborate the `registry` tab against `GET /admin/payers` and confirm it returns `count: 0`, `total: 0`, and `payers: []`.
+6. Corroborate the `evidence` and `stats` tabs against `GET /admin/payers/stats` and confirm the page shows zeroed evidence coverage and zeroed registry stats.
+7. Corroborate the `audit` tab against `GET /admin/payers/audit/verify` and confirm it shows `CHAIN VALID: Empty audit trail`.
+8. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the unauthenticated payer-registry page swallowed `401` failures and rendered the same registry zero-state copy used for a genuine empty persistent store, which falsely implied the registry had loaded successfully.
+- Direct authenticated route corroboration showed `GET /admin/payers` returning a truthful empty registry, `GET /admin/payers/stats` returning zeroed stats and evidence coverage, and `GET /admin/payers/audit/verify` returning `Empty audit trail`.
+- After the fix, unauthenticated browser passes on `registry`, `evidence`, `audit`, and `stats` show truthful auth failure messaging, while the authenticated browser page still matches the live zero-state payer-registry routes.
+
+## Follow-ups
+1. Keep admin registry consoles strict about non-OK response handling on every tab; this page had four independent route-backed surfaces, and silent catch blocks were allowing auth failures to masquerade as clean empty-state data.
+
+## Phase 726 Update - Remittance Intake Slice
+
+## What changed
+1. Fixed the remittance-intake dashboard so auth/load failures no longer render the same empty-state or loading-state copy used for genuinely empty remittance data.
+- `apps/web/src/app/cprs/admin/remittance-intake/page.tsx`
+
+2. Fixed the remittance-intake tab styles so live tab switching no longer emits the React shorthand-border warning.
+- `apps/web/src/app/cprs/admin/remittance-intake/page.tsx`
+
+3. Recorded the completed remittance-intake browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Open `/cprs/admin/remittance-intake` in a fresh unauthenticated browser context and confirm the `Documents` tab shows `Authentication required` instead of `No remittance documents. Upload one from the Upload tab.`
+3. Switch the unauthenticated page to `Stats` and confirm it shows `Authentication required` instead of lingering on `Loading stats...`
+4. Authenticate in the browser as `PRO1234 / PRO1234!!` and reopen `/cprs/admin/remittance-intake`.
+5. Corroborate the `Documents` tab against `GET /rcm/remittance` and confirm it returns `documents: []` and `total: 0`.
+6. Corroborate the `Stats` tab against `GET /rcm/remittance/stats` and confirm it returns `total: 0`, `totalPaid: 0`, `underpaymentCount: 0`, and `underpaymentTotal: 0`.
+7. Switch through `Documents`, `Upload`, and `Stats` and confirm the tab switch no longer emits the prior React border warning.
+8. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the unauthenticated remittance page swallowed `401` failures and rendered the same zero-documents copy used for real empty remittance data, while the `Stats` tab could remain on a misleading loading state.
+- Direct authenticated route corroboration showed `GET /rcm/remittance` returning a truthful zero document list and `GET /rcm/remittance/stats` returning truthful zero totals for this tenant.
+- After the fix, unauthenticated browser passes on `Documents` and `Stats` show truthful auth failure messaging, while the authenticated browser page still matches the live zero-state remittance routes.
+- The React tab-style warning seen during the initial browser pass no longer reproduced after normalizing the tab border styles.
+
+## Follow-ups
+1. Keep mixed workflow pages with independent fetch paths strict about route-failure handling; this page had one live list tab and one live stats tab, and both were previously misreporting auth failures as real empty-state UI.
+
+## Phase 726 Update - PH HMO Console Slice
+
+## What changed
+1. Fixed the PH HMO Console so auth/load failures no longer render fake empty or partially loaded states across Registry, Capabilities, Packets, and Validation.
+- `apps/web/src/app/cprs/admin/ph-hmo-console/page.tsx`
+
+2. Recorded the completed PH HMO Console browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Open `/cprs/admin/ph-hmo-console` in a fresh unauthenticated browser context and confirm each tab now shows `Authentication required` instead of fake loaded states such as `No HMOs match the current filter` or `Validation data unavailable`.
+3. Authenticate in the browser as `PRO1234 / PRO1234!!` and reopen `/cprs/admin/ph-hmo-console`.
+4. Corroborate the `Registry` tab against `GET /rcm/payers/ph/hmos` and `GET /rcm/payers/ph/hmos/stats`, confirming the page shows `27` total HMOs, `5` with portal support, `22` contracting-needed, and live registry rows.
+5. Corroborate the `Validation` tab against `GET /rcm/payers/ph/hmos/validate`, confirming it shows `Registry Valid YES`, `HMO Count 27`, `Errors 0`, and `Warnings 17`.
+6. On the `Packets` tab, select `Maxicare (PH-MAXICARE)` and generate a LOA packet, then corroborate it against `GET /rcm/payers/ph/hmos/PH-MAXICARE/loa-packet`.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the unauthenticated PH HMO Console swallowed `401` failures and rendered fake loaded states across all four tabs: an empty registry state, an empty capability matrix, a packet selector with no HMO options, and `Validation data unavailable`.
+- Direct authenticated route corroboration showed a live 27-row PH HMO registry with stats `withPortal: 5` and `contractingNeeded: 22`, a valid 27-row validation report with `17` warnings, and a live Maxicare LOA packet under `/rcm/payers/ph/hmos/PH-MAXICARE/loa-packet`.
+- After the fix, unauthenticated browser passes on every tab show truthful auth failure messaging, while the authenticated browser page still matches the live registry, validation, and packet-generation routes.
+
+## Follow-ups
+1. Keep multi-tab admin consoles strict about non-OK response handling; silent catch blocks were causing this page to misrepresent auth failures as loaded registry data on every tab.
+
+## Phase 726 Update - Payer Intelligence Slice
+
+## What changed
+1. Fixed the payer-intelligence dashboard so auth/load failures no longer render the same empty-state copy used for successfully loaded KPI and aging zero-states.
+- `apps/web/src/app/cprs/admin/payer-intelligence/page.tsx`
+
+2. Recorded the completed payer-intelligence browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Open `/cprs/admin/payer-intelligence` in a fresh unauthenticated browser context and confirm the default `Payer KPIs` section shows `Authentication required` together with `Unable to load payer intelligence.` instead of `No payer data in selected period.`
+3. Switch the unauthenticated page to `Aging Summary` and confirm it shows `Unable to load aging data.` instead of `No aging data.`
+4. Authenticate in the browser as `PRO1234 / PRO1234!!` and reopen `/cprs/admin/payer-intelligence`.
+5. Corroborate the `Payer KPIs` section against `GET /payerops/analytics/payer-intelligence` and confirm it returns `report.payers: []` for the active tenant on this stack.
+6. Corroborate the `Aging Summary` section against `GET /payerops/analytics/aging` and confirm it returns a zeroed five-bucket aging report with `totalOutstanding: 0` and `totalClaims: 0`.
+7. Switch between `Payer KPIs` and `Aging Summary` and confirm the browser remains aligned with those live route-backed zero-states.
+8. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the unauthenticated payer-intelligence page showed `Authentication required` while still rendering the loaded empty-state copy `No payer data in selected period.` on the KPI section and `No aging data.` on the aging section, which falsely implied successful data loads.
+- Direct authenticated route corroboration showed `GET /payerops/analytics/payer-intelligence` returning a truthful zero KPI report with `payers: []`, while `GET /payerops/analytics/aging` returned a truthful zero aging report with `totalOutstanding: 0`, `totalClaims: 0`, and five zeroed buckets.
+- After the fix, the unauthenticated browser page renders section-specific load-failure messages, and the authenticated browser page matches the live zero-state contracts for both KPI and aging sections.
+
+## Follow-ups
+1. Keep analytics pages strict about separating auth/load failures from true zero-data states, especially when multiple sections share one top-level error flag.
+
+## Phase 726 Update - Payments Slice
+
+## What changed
+1. Fixed the payments dashboard so auth/load failures no longer render the same empty-state copy used for successfully loaded zero-data tabs.
+- `apps/web/src/app/cprs/admin/payments/page.tsx`
+
+2. Recorded the completed payments browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Open `/cprs/admin/payments` in a fresh unauthenticated browser context and confirm the default `batches` tab shows `Authentication required` together with `Unable to load remittance batches.` instead of `No batches yet. Create one to get started.`
+3. Switch the unauthenticated page through `reconciliation`, `aging`, and `underpayments` and confirm each tab shows truthful load-failure copy rather than loaded zero-state copy.
+4. Authenticate in the browser as `PRO1234 / PRO1234!!` and reopen `/cprs/admin/payments`.
+5. Corroborate the `batches` tab against `GET /payerops/payments/batches` and confirm it returns `items: []` and `total: 0`.
+6. Corroborate the `reconciliation` tab against `GET /payerops/payments/reconciliation` and confirm it returns `items: []` and `total: 0`.
+7. Corroborate the `aging` tab against `GET /payerops/analytics/aging` and confirm it returns a zeroed five-bucket aging report with `totalOutstanding: 0` and `totalClaims: 0`.
+8. Corroborate the `underpayments` tab against `GET /payerops/payments/underpayments` and confirm it returns `items: []` and `total: 0`.
+9. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the unauthenticated payments page swallowed `401` failures and rendered the same empty-state copy used for genuine zero-data tabs, starting with `No batches yet. Create one to get started.` on the default tab.
+- Direct authenticated route corroboration showed `batches`, `reconciliation`, and `underpayments` all returning `{"ok":true,"items":[],"total":0}`, while `GET /payerops/analytics/aging` returned a truthful zero aging report.
+- After the fix, the unauthenticated browser page renders tab-specific load-failure messages, and the authenticated browser page matches the live zero-state route contracts for all four tabs.
+
+## Follow-ups
+1. Keep multi-tab workbench pages defensive per tab; this surface had four independent fetch paths and all four needed explicit failure handling to avoid fake empty-state claims.
+
+## Phase 726 Update - Denials Slice
+
+## What changed
+1. Fixed the denials workbench so auth/load failures no longer render the same empty-state copy used for a genuinely empty resolved denial queue.
+- `apps/web/src/app/cprs/admin/denials/page.tsx`
+
+2. Recorded the completed denials browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Open `/cprs/admin/denials` in a fresh unauthenticated browser context and confirm the page shows `Authentication required` together with `Unable to load denials.` instead of `No denials found. All denials have been resolved.`
+3. Authenticate in the browser as `PRO1234 / PRO1234!!` and reopen `/cprs/admin/denials`.
+4. Corroborate the default unresolved view against `GET /rcm/claims/lifecycle/denials?resolved=false&limit=25&offset=0` and confirm it returns `items: []` and `total: 0`.
+5. Corroborate the resolved view against `GET /rcm/claims/lifecycle/denials?resolved=true&limit=25&offset=0` and confirm it also returns `items: []` and `total: 0` on this tenant.
+6. Click `Refresh` and confirm the page stays aligned with the live unresolved zero-state route.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the unauthenticated denials page rendered both `Authentication required` and `No denials found. All denials have been resolved.`, which falsely implied the queue had loaded and been confirmed empty even though the underlying route call had failed with `401`.
+- Direct authenticated route corroboration showed both unresolved and resolved lifecycle denial routes returning a truthful zero-state: `{"ok":true,"items":[],"total":0}`.
+- After the fix, a fresh unauthenticated browser pass showed `Authentication required` with `Unable to load denials.`, while the authenticated browser page matched the live unresolved zero-state route and `Refresh` preserved that alignment.
+
+## Follow-ups
+1. Keep RCM workbench pages strict about separating auth/load failures from resolved-empty-state copy; the same message cannot truthfully represent both conditions.
+
+## Phase 726 Update - Claims Workbench Slice
+
+## What changed
+1. Fixed the claims-workbench console so auth/load failures render honest error states instead of collapsing into fake zero-state copy.
+- `apps/web/src/app/cprs/admin/claims-workbench/page.tsx`
+
+2. Fixed the claims-workbench tab styles to remove the shorthand-border React warning exposed during live tab switching.
+- `apps/web/src/app/cprs/admin/claims-workbench/page.tsx`
+
+3. Replaced stale invalid VEHU example values on the create form with truthful current sandbox examples.
+- `apps/web/src/app/cprs/admin/claims-workbench/page.tsx`
+
+4. Recorded the completed claims-workbench browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Open `/cprs/admin/claims-workbench` in a fresh unauthenticated browser context and confirm the page shows `Error: Authentication required` plus a truthful load-failure message such as `Unable to load claims board.` instead of `No claims data yet.`
+3. Authenticate in the browser as `PRO1234 / PRO1234!!` and reopen `/cprs/admin/claims-workbench`.
+4. Corroborate the `Status Board` tab against `GET /rcm/claims/hmo/board` and confirm it shows `Total Claims 0` with no fabricated claim states or denial rows.
+5. Click `VistA Sources` and corroborate the page against `GET /rcm/claims/source-map`, confirming the page shows `Total Fields 23`, `Available 11`, `Awaiting Config 8`, and `Not Applicable 4`.
+6. Click `Rulepacks` and corroborate the page against `GET /rcm/payers/rulepacks`, confirming the five live payer rulepack cards render.
+7. Click `Create Claim` and confirm the form now uses truthful VEHU examples `e.g. 46` and `e.g. ZZZRETFOURNINETYFOUR,PATIENT`.
+8. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the unauthenticated claims-workbench page swallowed `401` responses from its backing routes and rendered the false zero-state `No claims data yet.` even though the board, source-map, and rulepack requests had all failed.
+- Direct authenticated route corroboration showed `GET /rcm/claims/hmo/board` returning a truthful zero board, `GET /rcm/claims/source-map` returning `23` entries with stats `11/8/4`, and `GET /rcm/payers/rulepacks` returning `5` live payer rulepacks.
+- After the fix, the unauthenticated browser page renders `Error: Authentication required` and tab-specific load-failure messages, while the authenticated browser page matches the live board, source-map, and rulepack routes.
+- The tab-switch React warning is gone after normalizing the tab border styles, and the `Create Claim` form no longer suggests invalid VEHU test data.
+
+## Follow-ups
+1. Keep workflow dashboards strict about distinguishing load/auth failures from true zero-data states; this page had three different live-backed tabs, and all of them were being misrepresented by silent catch blocks.
+
+## Phase 726 Update - Claims Queue Slice
+
+## What changed
+1. Fixed the claims-queue console so auth failures no longer render the same empty-state copy used for a genuinely empty queue.
+- `apps/web/src/app/cprs/admin/claims-queue/page.tsx`
+
+2. Recorded the completed claims-queue browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Open `/cprs/admin/claims-queue` in a fresh unauthenticated browser context and confirm the page shows `Authentication required` without also showing `No claims found. Create one to get started.`
+3. Authenticate in the browser as `PRO1234 / PRO1234!!` and reopen `/cprs/admin/claims-queue`.
+4. Corroborate the page against `GET /rcm/claims/lifecycle?limit=5` and confirm it returns `items: []` and `total: 0`.
+5. Corroborate the summary cards against `GET /rcm/claims/lifecycle/stats` and confirm the page shows `Total Claims 0`, `Unresolved Denials 0`, `Scrub Pass Rate 0%`, and `Total Denials 0`.
+6. Click `Refresh` and confirm the page stays aligned with the live lifecycle and stats routes.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the unauthenticated claims queue page rendered both `Authentication required` and `No claims found. Create one to get started.`, which falsely implied a confirmed empty queue even though the underlying route calls had failed with `401`.
+- Direct authenticated route corroboration showed `GET /rcm/claims/lifecycle?limit=5` returning `{"ok":true,"items":[],"total":0}` and `GET /rcm/claims/lifecycle/stats` returning zeroed lifecycle metrics for this stack.
+- After the fix, a fresh unauthenticated browser pass showed only `Authentication required`, while the authenticated browser page matched the live zero-state route contract exactly and `Refresh` preserved that alignment.
+
+## Follow-ups
+1. Keep admin queue pages strict about separating load/auth failures from true empty-data states; the same copy cannot truthfully represent both conditions.
+
+## Phase 726 Update - Certification Slice
+
+## What changed
+1. Fixed the certification console so auth failures and malformed posture payloads surface as page errors instead of crashing the CPRS content boundary.
+- `apps/web/src/app/cprs/admin/certification/page.tsx`
+
+2. Recorded the completed certification browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Open `/cprs/admin/certification` in a fresh unauthenticated browser context and confirm the page shows `Error: Authentication required` instead of crashing.
+3. Authenticate in the browser as `PRO1234 / PRO1234!!` and reopen `/cprs/admin/certification`.
+4. Corroborate the page against `GET /posture/certification` and confirm it shows `100%`, `PRODUCTION`, `10/10 certification gates pass (production)`, and the same 10 gate rows.
+5. Click `Refresh` and confirm the page stays aligned with the live certification posture payload.
+6. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the unauthenticated certification page crashed with `TypeError: Cannot read properties of undefined (reading 'filter')` because it assumed `posture.gates` existed even when the route returned an auth error payload.
+- After the fix, the same unauthenticated page load renders `Error: Authentication required`, which is truthful for the `/posture/*` admin auth contract.
+- Authenticated route corroboration showed `GET /posture/certification` returning `score: 100`, `readinessLevel: production`, `summary: 10/10 certification gates pass (production)`, and 10 passing gates.
+- The authenticated browser page matched that route contract exactly, and clicking `Refresh` kept the browser aligned with the live route response.
+
+## Follow-ups
+1. Keep posture-backed admin pages defensive about auth and malformed payloads; these routes should degrade into error states rather than crashing the content pane.
+
+## Phase 726 Update - Capability Matrix Slice
+
+## What changed
+1. Recorded the completed capability-matrix browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/capability-matrix`.
+3. Confirm the page shows the live Phase 88 header and, on this stack, the truthful zero-state `No capability data yet. Run ingestion from Payer Directory first, then configure capabilities here.`
+4. Corroborate the page against `GET /rcm/payerops/capability-matrix` and confirm it returns `count: 0`, `matrix: []`, and zeroed stats.
+5. Corroborate the guidance against `GET /rcm/payerops/payers?limit=5` and confirm the payer registry is also empty on this stack.
+6. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Authenticated route corroboration showed `GET /rcm/payerops/capability-matrix` returning `ok: true`, zero matrix rows, the five expected capability types, and zeroed stats.
+- The browser page matched that live route contract with `0 cells, 0 active+proven`, no grid rows, and the same empty-state guidance.
+- A follow-up authenticated route check showed `GET /rcm/payerops/payers?limit=5` also returning `count: 0` and `payers: []`, confirming the browser guidance about running ingestion from Payer Directory is truthful rather than stale copy.
+- No product truth defect was found in this slice; the page accurately reflects the live empty capability registry.
+
+## Follow-ups
+1. When payer ingestion populates the registry on this stack, rerun this slice to cover the interactive cell drawer and evidence-enforcement behavior with live data.
+
+## Phase 726 Update - Branding Slice
+
+## What changed
+1. Fixed the admin branding console so it resolves the current session tenant instead of hardcoding `default`, which was triggering cross-tenant admin validation failures.
+- `apps/web/src/app/cprs/admin/branding/page.tsx`
+
+2. Made the branding page surface real API failures instead of silently rendering a shell when the backing admin routes reject the request.
+- `apps/web/src/app/cprs/admin/branding/page.tsx`
+
+3. Recorded the completed branding browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/branding`.
+3. Confirm the page resolves the active tenant from the live session and no longer hangs on `Loading...`.
+4. Corroborate the `Branding` tab against `GET /admin/branding/<tenantId>` and confirm the blank disabled branding state matches the live payload.
+5. Click `Theme` and confirm `Modern Default` is selected, matching `GET /admin/ui-defaults/<tenantId>`.
+6. Click `Preview` and confirm the fallback `VistA-Evolved` header/footer render for the disabled branding configuration.
+7. On the `Theme` tab, click `Save Default Theme` with the current selection and confirm the success banner plus a follow-up `GET /admin/ui-defaults/<tenantId>` response showing `themePack: modern-default`.
+8. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the authenticated branding page called `/admin/branding/default` and `/admin/ui-defaults/default`, which the live backend rejected with `400 reason is required for cross-tenant admin actions`, leaving the page on a fake loading state.
+- After the fix, the page resolved tenant `77371ffb-9929-4344-9fea-a0a7bbcc645e` from `/admin/my-tenant`, and the browser page matched the live branding payload (`enabled: false`, empty visual overrides) and live UI defaults payload (`themePack: modern-default`, `theme: light`, `density: comfortable`, `layoutMode: cprs`).
+- A safe live `Save Default Theme` action succeeded in the browser and the follow-up route check confirmed `themePack: modern-default` remained persisted for the active tenant.
+
+## Follow-ups
+1. Keep tenant-targeted admin pages aligned with the session tenant or with explicit tenant-resolution UX; hardcoding `default` is not compatible with the current admin cross-tenant guardrails.
+
+## Phase 726 Update - Billing Slice
+
+## What changed
+1. Fixed the admin billing console so it uses the real live billing API contract instead of a nonexistent `/admin/billing/*` route family.
+- `apps/web/src/app/cprs/admin/billing/page.tsx`
+
+2. Added a truthful session-scoped usage endpoint backed by the metering snapshot store so the `Usage` tab can render live counters.
+- `apps/api/src/billing/billing-routes.ts`
+
+3. Recorded the completed billing browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/billing`.
+3. Confirm the `Plans` tab shows the five live billing plans with monthly pricing, entity types, provider limits, and feature summaries.
+4. Click `Subscription` and confirm the page shows the current tenant subscription with plan, status, period dates, and the disabled cancel button when already cancelled.
+5. Click `Usage` and confirm the page shows the metering snapshot note plus the live counter table from `/billing/usage`.
+6. Click `Health` and confirm the page shows the live provider/configuration payload from `/billing/health`.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Before the fix, the browser billing page rendered `No plans available` and emitted 404s because it called a nonexistent `/admin/billing/*` API family while the live backend exposed `/billing/*` routes only.
+- Direct authenticated route corroboration showed `GET /billing/plans`, `GET /billing/subscription`, and `GET /billing/health` all returned 200, while `GET /admin/billing/plans` returned 404.
+- After the fix, authenticated browser-session route corroboration showed `GET /billing/plans` returning five live plans, `GET /billing/subscription` returning the current cancelled enterprise subscription for tenant `77371ffb-9929-4344-9fea-a0a7bbcc645e`, `GET /billing/usage` returning a truthful `metering-snapshot` payload with live counters, and `GET /billing/health` returning `{ ok: true, provider: "mock", configured: false }`.
+- The browser `Plans`, `Subscription`, `Usage`, and `Health` tabs matched those live route payloads in the audited session.
+- The billing tab-strip style warning found during interaction was fixed by removing the shorthand/longhand border conflict in the tab styles.
+
+## Follow-ups
+1. Keep the billing admin surface explicitly session-scoped unless a real admin cross-tenant billing API is added; the original editable tenant box implied capabilities the backend does not provide.
+
+## Phase 726 Update - Analytics Slice
+
+## What changed
+1. Fixed the analytics event-buffer stats contract so the admin analytics page no longer renders `NaN%` for live buffer usage.
+- `apps/api/src/services/analytics-store.ts`
+
+2. Recorded the completed analytics browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/analytics`.
+3. Confirm the `Ops Dashboard` tab shows a numeric `Buffer Usage` value and a visible event-category table instead of `NaN%`.
+4. Click `Clinical Utilization` and confirm the page matches the live zero-state utilization metrics.
+5. Click `Events Explorer` and confirm the page shows the live `usage.report / dashboard_ops_view` event rows.
+6. Click `Export`, then click `Run Aggregation Now`, and confirm the page shows `Aggregation triggered successfully` while the hourly and daily bucket counts update.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Canonical API health during the analytics slice remained clean with `{"ok":true,...,"platformPg":{"ok":true}}`, and `/vista/ping` returned `{"ok":true,"vista":"reachable","port":9431}`.
+- Before the fix, both the browser `Ops Dashboard` and `Export` tabs rendered `Buffer Usage: NaN%` because the live event-buffer stats helper returned `categoryCounts` only and no `bufferUsage` compatibility field.
+- After the fix and canonical API restart, `GET /analytics/health` returned `eventBuffer.bufferUsage: 0.00008`, `categories: {"usage.report":4}`, `hourlyBuckets: 2`, and `dailyBuckets: 2`, and the browser `Export` tab matched those values with truthful rounded display.
+- Direct authenticated API corroboration showed `GET /analytics/dashboards/clinical` returning a truthful zero-state contract, and the browser `Clinical Utilization` tab matched that route output exactly.
+- Direct authenticated API corroboration showed `GET /analytics/events?limit=10` returning four `usage.report` events for `dashboard_ops_view`, and the browser `Events Explorer` tab rendered the same four rows.
+- Clicking the browser `Run Aggregation Now` control returned `Aggregation triggered successfully`, and both the browser and the live `/analytics/health` route immediately reflected the updated aggregation bucket counts.
+
+## Follow-ups
+1. Keep analytics route payloads backward-compatible where admin dashboards already depend on field names that were shipped earlier; this slice failed because the helper and page drifted apart on stats naming.
+
+## Phase 726 Update - Alignment Slice
+
+## What changed
+1. Recorded the completed alignment browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/alignment`.
+3. Confirm the `Score` tab shows `79` global score plus the live registry summary cards and panel rows.
+4. Click `Gates` and confirm the page shows `Pass: 8`, `Fail: 0`, `Warn: 0`, with the same gate rows returned by `/admin/alignment/gates`.
+5. Click `Tripwires`, verify the initial zero-state if clean, then click `Seed Defaults` and confirm the page shows the five default tripwire rows.
+6. Click `Snapshots`, verify the initial zero-state if clean, then click `Capture Now` and confirm the page shows the new live snapshot row with `registrySize: 424` and `passRate: 100%`.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Canonical API health during the alignment slice remained clean with `{"ok":true,...,"platformPg":{"ok":true}}`, and `/vista/ping` returned `{"ok":true,"vista":"reachable","port":9431}`.
+- Direct authenticated API corroboration showed `GET /admin/alignment/summary` returning `globalScore: 79`, `fullyWiredPanels: 9`, `partiallyWiredPanels: 6`, `noVistaPanels: 4`, `registrySize: 424`, `exceptionCount: 421`, `gatesPass: 8`, `gatesFail: 0`, `gatesWarn: 0`, and initial zero-state counts for snapshots and tripwires.
+- The browser `Score` and `Gates` tabs matched those live contracts exactly, including the visible panel rows and eight passing gate checks.
+- The browser `Tripwires` tab matched the initial empty state from `/admin/alignment/tripwires`, and clicking `Seed Defaults` created the five expected live tripwire rows, which the route returned immediately after the browser action.
+- The browser `Snapshots` tab matched the initial empty state from `/admin/alignment/snapshots`, and clicking `Capture Now` created a live snapshot row with `registrySize: 424`, `passRate: 100`, and `capturedBy: admin`, which the route returned immediately after the browser action.
+- No product truth defect was found in this slice; the page matched the live alignment contracts before and after safe browser-driven interactions.
+
+## Follow-ups
+1. Keep alignment interactions safe and state-light during browser audits; tripwire seeding and snapshot capture are sufficient proof paths without introducing synthetic failure events.
+
+## Phase 726 Update - Adapters Slice
+
+## What changed
+1. Fixed the adapters RPC Coverage tab so it matches the live runtime-matrix payload and no longer renders blank RPC names or duplicate undefined keys.
+- `apps/web/src/app/cprs/admin/adapters/page.tsx`
+
+2. Recorded the completed adapters browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/adapters`.
+3. Confirm the `Adapter Health` tab shows `ALL HEALTHY` plus the five live adapter rows.
+4. Click `Domain Matrix` and confirm the page shows `88 available`, `0 missing`, `88 total RPCs`, `Instance: worldvista-docker`, and the live domain coverage rows.
+5. Click `RPC Coverage` and confirm the table renders real RPC names such as `ORWPT LIST ALL`, `ORQQAL LIST`, `ORQQVI VITALS`, and `ORWDX SAVE` instead of blank names.
+6. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Canonical API health during the adapters slice remained clean with `{"ok":true,...,"platformPg":{"ok":true}}`, and `/vista/ping` returned `{"ok":true,"vista":"reachable","port":9431}`.
+- Direct authenticated API corroboration showed `GET /api/adapters/health` returning five healthy non-stub adapters: `clinical-engine`, `scheduling`, `billing`, `imaging`, and `messaging`.
+- The browser `Adapter Health` tab matched that live route state with `ALL HEALTHY` and the same five rows.
+- Direct authenticated API corroboration showed `GET /vista/runtime-matrix` returning `instanceId: worldvista-docker`, `totalAvailable: 88`, `totalMissing: 0`, and `totalKnown: 88`, and the browser `Domain Matrix` tab matched those live values.
+- The initial browser `RPC Coverage` pass exposed a real contract defect: the live payload uses `rpcName`, but the UI rendered `name`, leaving the `RPC Name` column blank and generating duplicate keys like `patient-undefined`.
+- After the fix, the browser `RPC Coverage` tab rendered truthful RPC names for all `89` visible entries and no longer showed blank-name rows.
+
+## Follow-ups
+1. Keep the adapters page tolerant of runtime payload aliases where route contracts already expose both historical and current field names.
+
+## Phase 726 Update - Break-Glass Slice
+
+## What changed
+1. Recorded the completed break-glass browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/break-glass`.
+3. Confirm the Sessions tab reflects the current live route state.
+4. Click `Posture` and confirm the page shows truthful IAM posture values plus the same break-glass counts returned by `/admin/iam/posture`.
+5. Click `Request`, submit a controlled request, return to `Sessions`, and verify the row appears with live `Approve` and `Deny` controls.
+6. Deny the pending request and confirm the final live stats return `activeCount: 0`, `pendingCount: 0`, and `byStatus.denied` incremented.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Canonical API health during the break-glass slice returned `{"ok":true,...,"platformPg":{"ok":true}}`, and `/vista/ping` returned `{"ok":true,"vista":"reachable","port":9431}`.
+- Direct authenticated API corroboration on initial load showed `GET /admin/break-glass/active` returning `sessions: []`, `GET /admin/break-glass/stats` returning `total: 0`, and `GET /admin/iam/posture` returning matching zeroed `breakGlass` posture values.
+- The browser Sessions and Posture tabs matched that zero-state and posture-state contract exactly.
+- A browser-originated submit on the Request tab created session `4a203f31-46ae-4dbb-8a2b-cbbef3a7b656`, and the live route immediately reflected that new `pending` session with the same module, permission, DFN, and reason shown in the browser.
+- Clicking the browser `Deny` control on the pending row moved the session into denied history, and the final live stats returned `total: 2`, `byStatus.denied: 2`, `activeCount: 0`, and `pendingCount: 0`.
+- No product truth defect was found in this slice; the page matched the live route contracts across zero-state, posture, request creation, and deny-state transitions.
+
+## Follow-ups
+1. Keep break-glass verification using deny-state cleanup so future browser audits do not leave pending or active elevated-access sessions behind.
+
+## Phase 726 Update - Modules Slice
+
+## What changed
+1. Fixed the modules Entitlements tab so it matches the real admin catalog contract and no longer crashes on live data.
+- `apps/web/src/app/cprs/admin/modules/page.tsx`
+
+2. Recorded the completed modules browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/modules`.
+3. Confirm the Modules tab shows `14 modules enabled` and live rows for the current tenant.
+4. Click `Entitlements` and confirm the page renders the live entitlement table instead of crashing.
+5. Click `Feature Flags` and confirm the page shows the truthful empty state `No feature flags set for this tenant.`.
+6. Click `Audit Log` and confirm the page shows the single live `entitlement/api.modules.override` row.
+7. Click `Status` and confirm the page shows `Total Modules: 14`, `Enabled: 14`, `Always On: 1`, `Active SKU: FULL_SUITE`, `Total Tenants: 2`, and `Active Connectors: 4`.
+8. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Canonical API health during the modules slice returned `{"ok":true,...,"platformPg":{"ok":true}}`.
+- Direct authenticated API corroboration showed `GET /api/modules/manifests` returning `14` enabled module manifests for tenant `77371ffb-9929-4344-9fea-a0a7bbcc645e`.
+- Direct authenticated API corroboration showed `GET /api/marketplace/config` returning the same `14` enabled modules and `2` active connectors for the sandbox jurisdiction, and `GET /api/marketplace/summary` returning `activeSku: FULL_SUITE`, `totalTenants: 2`, and `totalConnectors: 4`.
+- Direct authenticated API corroboration showed `GET /admin/modules/feature-flags` returning `flags: []`, and the browser Feature Flags tab matched that truthful zero-state.
+- Direct authenticated API corroboration showed `GET /admin/modules/audit` returning a single live legacy override entry for `entitlement/api.modules.override`, and the browser Audit Log tab rendered the same row.
+- Before the fix, clicking the browser Entitlements tab crashed with `TypeError: Cannot read properties of undefined (reading 'name')` because the UI treated `/admin/modules/catalog` rows as `manifest` objects.
+- After the fix, the Entitlements tab renders the full live table using the flat catalog shape and no longer crashes.
+
+## Follow-ups
+1. Keep the admin modules page explicit about its split backend contract; the marketplace routes and the Phase 109 entitlement routes should not be treated as interchangeable payload shapes.
+
+## Phase 726 Update - Audit Viewer Slice
+
+## What changed
+1. Fixed the immutable-audit stats contract so the audit viewer no longer shows a false broken hash-chain state.
+- `apps/api/src/routes/iam-routes.ts`
+- `apps/web/src/app/cprs/admin/audit-viewer/page.tsx`
+
+2. Recorded the completed audit-viewer browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/audit-viewer`.
+3. Confirm the Events tab renders live immutable-audit rows and that selecting `Authentication` then clicking `Refresh` leaves only `auth.login` rows.
+4. Click `Stats` and confirm the page shows truthful tenant counts plus `Global chain integrity: VALID`.
+5. Click `Chain` and confirm the page shows `CHAIN VALID`.
+6. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Canonical API health during the final audit-viewer pass returned `{"ok":true,...,"platformPg":{"ok":true}}`.
+- Direct authenticated API corroboration showed `GET /iam/audit/events?limit=5` returning the same tenant-scoped immutable-audit rows rendered in the browser, including `auth.login` and `audit.view`.
+- Direct authenticated API corroboration showed `GET /iam/audit/events?actionPrefix=auth.&limit=50` returning only the filtered `auth.login` rows, and the browser Events filter interaction matched that route output.
+- Before the fix, `GET /iam/audit/stats` omitted `chainValid`, so the browser Stats tab rendered `BROKEN` while `GET /iam/audit/verify` returned `valid:true` and the Chain tab showed `CHAIN VALID`.
+- After the fix, `GET /iam/audit/stats` returns `chainValid:true` and `chainScope:"global"`, and the browser Stats tab now renders `Global chain integrity: VALID`, matching the live verify route.
+
+## Follow-ups
+1. Keep integrity indicators route-driven; this page should never infer hash-chain status from missing fields again.
+
+## Phase 726 Update - Payer DB Slice
+
+## What changed
+1. Fixed the payer DB admin page so it no longer falsely claims the registry is SQLite-backed.
+- `apps/web/src/app/cprs/admin/payer-db/page.tsx`
+
+2. Recorded the completed payer DB browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `./start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/payer-db`.
+3. Confirm the Payers tab renders live registry rows and that searching `Aetna` reduces the table to `US-AETNA`.
+4. Click `SG-AIA` and confirm the live capabilities panel shows the truthful empty state `No capabilities set`.
+5. Click `Evidence` and confirm the page shows `No evidence snapshots`.
+6. Click `Audit` and confirm the page shows `Total events: 0` and `No audit events`.
+7. Regenerate the runtime audit outputs:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Canonical API health during the payer DB slice returned `{"ok":true,...,"platformPg":{"ok":true}}`.
+- Direct authenticated API corroboration showed `GET /admin/payer-db/payers?limit=5` returning `ok:true`, `total:57`, and live payer rows beginning with `SG-AIA`, `AU-APRA-IMPORTER`, `NZ-ACC`, and `US-AETNA`.
+- The browser Payers tab matched that live registry state and the in-browser search for `Aetna` reduced the list to the same single `US-AETNA` row.
+- Direct authenticated API corroboration showed `GET /admin/payer-db/payers/SG-AIA/capabilities` returning `{"ok":true,"capabilities":[]}`, and the browser matched with a truthful `No capabilities set` state.
+- Direct authenticated API corroboration showed `GET /admin/payer-db/evidence` returning `{"ok":true,"count":0,"snapshots":[]}`, and the browser Evidence tab matched with `No evidence snapshots`.
+- Direct authenticated API corroboration showed `GET /admin/payer-db/audit/stats` returning `{"ok":true,"stats":{"total":0,"byAction":{},"byEntityType":{}}}`, and the browser Audit tab matched with `Total events: 0` and `No audit events`.
+- The only live truth defect in this slice was stale UI copy claiming `Payer Registry (SQLite)`; the page now uses storage-agnostic wording that matches the current platform-backed registry.
+
+## Follow-ups
+1. Keep payer admin surfaces storage-agnostic unless the page is explicitly wired to a runtime-reported backend value.
+
+## Phase 726 Update - Integrations Console Slice
+
+## What changed
+1. Fixed the admin integrations console so tenant-scoped admin requests use the authenticated session tenant instead of the stale hardcoded `default` tenant.
+- `apps/web/src/app/cprs/admin/integrations/page.tsx`
+
+2. Fixed the HL7 message-detail segment table so live VistA segment summaries no longer trigger duplicate React keys.
+- `apps/web/src/app/cprs/admin/integrations/page.tsx`
+
+3. Recorded the completed integrations browser proof in the Phase 726 browser audit and runtime audit override ledger.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Start the canonical API and verify live health:
+	- `.\start-api.ps1`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Authenticate in the browser as `PRO1234 / PRO1234!!` and open `/cprs/admin/integrations`.
+3. Confirm the registry tab is a truthful zero-state for the authenticated tenant rather than a 404/400 error state.
+4. Click `VistA HL7/HLO` and confirm the live telemetry values render, including `20` logical links, `HL7.VEHU.DOMAIN.GOV`, `19` apps, and queue depth `7`.
+5. Click `Message Browser`, click `Search`, then click `View` on IEN `39358` and confirm the detail panel opens with live masked segment summary data.
+6. Regenerate the runtime audit outputs so the integrations surface no longer stays `unreviewed`:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- Canonical API health during the final integrations pass returned `{"ok":true,...,"platformPg":{"ok":true}}`, and `/vista/ping` returned `{"ok":true,"vista":"reachable","port":9431}`.
+- Direct authenticated API corroboration showed the actual tenant-scoped admin registry surfaces were truthfully empty for tenant `77371ffb-9929-4344-9fea-a0a7bbcc645e`: registry count `0`, health summary all zeros, and legacy connectors `[]`.
+- The browser registry tab matched that live tenant-scoped state after the fix instead of showing the previous wrong-tenant `default` failures.
+- Direct authenticated API corroboration showed `GET /vista/interop/summary` returning live interop telemetry with `linkCount: 20`, `domain: HL7.VEHU.DOMAIN.GOV`, `appCount: 19`, queue depth `7`, and `rpcsUsed` of `VE INTEROP HL7 LINKS`, `VE INTEROP HL7 MSGS`, `VE INTEROP HLO STATUS`, and `VE INTEROP QUEUE DEPTH`.
+- The browser `VistA HL7/HLO` tab rendered those same live values, including `20` logical links, `TEST` mode, `19` registered apps, and queue depth `7`.
+- Direct authenticated API corroboration showed `GET /vista/interop/v2/hl7/messages?limit=5` returning live message row `39358` (`outbound`, `done`, link `61`, text IEN `2230625`).
+- The browser `Message Browser` tab rendered that same row, and clicking `View` opened live detail for IEN `39358` with `Total Segments: 2624` and masked segment summary rows.
+- The live detail pass exposed a real UI defect under repeated VistA segment labels; the segment-summary table now uses a composite key so the earlier duplicate-key warnings do not recur during the clean proof path.
+
+## Follow-ups
+1. Keep `/cprs/admin/integrations` bound to the session tenant; future admin-console work should not hardcode `default` for tenant-scoped routes.
+
+## Phase 726 Update - Browser Control Audit
+
+## Phase 726 Update - Legacy Alias Audit
+
+## What changed
+1. Replaced the stale legacy patient-search and chart shells with canonical CPRS redirects.
+- `apps/web/src/app/patient-search/page.tsx`
+- `apps/web/src/app/chart/[dfn]/[tab]/page.tsx`
+
+2. Preserved legacy chart slug compatibility while removing the duplicate chart implementation.
+- `/chart/46/cover-sheet` now normalizes to `/cprs/chart/46/cover`
+- Additional legacy aliases such as `dc-summaries`, `dc-summ`, `ai-assist`, `tele-health`, `med-rec`, `med-reconciliation`, `e-prescribing`, and `eprescribing` now flow through the same canonical redirect path
+
+3. Recorded the alias proof in the Phase 726 browser audit and runtime audit overrides.
+- `artifacts/phase726-p1-browser-control-audit.md`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+
+## Manual test steps
+1. Load the legacy alias entry points in the running web app:
+	- `/patient-search`
+	- `/chart/46/cover`
+	- `/chart/46/cover-sheet`
+2. Confirm the rendered frontend output resolves through the canonical CPRS pages rather than the removed legacy shells.
+3. Regenerate the runtime checklist and truth matrix:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+
+## Verifier output
+- The pre-fix browser pass proved `/patient-search` was stale and divergent from the canonical CPRS patient-selection flow.
+- The patched frontend now emits canonical Next redirects for the alias routes:
+	- `/patient-search` -> `NEXT_REDIRECT;replace;/cprs/patient-search;307;`
+	- `/chart/46/cover` -> `NEXT_REDIRECT;replace;/cprs/chart/46/cover;307;`
+	- `/chart/46/cover-sheet` -> `NEXT_REDIRECT;replace;/cprs/chart/46/cover;307;`
+- File diagnostics on the touched alias route files returned no errors.
+
+## Follow-ups
+1. Keep alias entry points as thin forwarding routes only; any future CPRS patient-search or chart changes should happen exclusively under the canonical `/cprs/*` paths.
+
+## Phase 726 Update - Note Builder And Workspace Slice
+
+## What changed
+1. Repaired the clinician note-builder flow so it works on a clean tenant instead of opening as an empty dead surface.
+- `apps/api/src/templates/types.ts`
+- `apps/api/src/templates/template-engine.ts`
+- `apps/api/src/templates/template-routes.ts`
+- `apps/web/src/app/encounter/note-builder/page.tsx`
+- `apps/api/tests/note-builder-template-fallback.test.ts`
+
+2. Added session-level note-builder template routes with truthful starter-template fallback.
+- `GET /encounter/note-builder/templates`
+- `GET /encounter/note-builder/templates/:id`
+- Built-in specialty-pack starters now appear when a tenant has no published templates.
+
+3. Fixed the browser generation path end to end.
+- Default DFN changed from invalid `3` to valid VEHU `46`
+- Request body aligned on `dfn`
+- Response now includes the nested `note` shape the page renders
+- Client now fetches and sends CSRF explicitly on generate
+- Client now normalizes `field.key` and `field.fieldType` instead of incorrectly reading `field.id` and `field.type`
+
+4. Fixed the VistA workspace terminal WebSocket path end to end.
+- `apps/api/src/routes/ws-terminal.ts`
+- `/ws/terminal` now uses `request.session`, wraps terminal audit writes safely, no longer aborts on the stale post-start audit call, and parses buffered JSON control frames before forwarding shell input.
+
+5. Fixed the handoff create-flow truth gap uncovered during the inpatient browser pass.
+- `apps/web/src/app/cprs/handoff/page.tsx`
+- `Load Ward Patients` now surfaces integration-pending CRHD metadata, the sandbox note, and the live fallback RPC instead of silently implying an empty ward when `/handoff/ward-patients` returns `count: 0` with declared pending targets.
+
+6. Completed live chart-shell browser proof on the canonical VEHU stack.
+- No code change was required for this slice; `/cprs/chart/46/cover` and `/cprs/chart/46/notes` matched the authenticated canonical API responses and are now recorded explicitly in the browser audit artifact.
+
+7. Preserved evidence-backed runtime audit state across regeneration.
+- `scripts/ui-estate/build-runtime-ui-estate.mjs`
+- `data/ui-estate/runtime-ui-audit-overrides.json`
+- `docs/ui-estate/README.md`
+- Regenerated `data/ui-estate/runtime-ui-audit-checklist.json`, `docs/ui-estate/runtime-ui-audit-checklist.md`, `data/ui-estate/runtime-ui-truth-matrix.json`, and `docs/ui-estate/runtime-ui-truth-matrix.md` now retain browser-proven status for completed Phase 726 surfaces instead of resetting them all to `unreviewed`.
+
+## Manual test steps
+1. Start the API in a persistent session and verify health:
+	- `pnpm api:restart:safe`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Verify note-builder routes with a real session and CSRF token:
+	- login as `PRO1234 / PRO1234!!`
+	- `GET /encounter/note-builder/templates`
+	- `GET /encounter/note-builder/templates/:id`
+	- `POST /encounter/note-builder/generate` with `dfn=46`
+3. Open the browser page and prove the repaired UX:
+	- `/encounter/note-builder`
+	- select a starter template
+	- fill required fields
+	- click `Generate Draft Note`
+4. Re-open the workspace shell and retest terminal mode after authentication:
+	- `/cprs/vista-workspace`
+	- switch to a module such as `MailMan`
+	- switch to `Terminal`
+
+## Verifier output
+- `pnpm --dir apps/api exec vitest run tests/note-builder-template-fallback.test.ts` passed with `2/2` tests.
+- File-level diagnostics on the touched note-builder and ws-terminal files returned no errors.
+- Canonical API health after restart returned `{"ok":true,...,"platformPg":{"ok":true}}` and `/vista/ping` returned `{"ok":true,"vista":"reachable","port":9431}`.
+- Direct authenticated API proof after the patch returned `50` starter templates from `GET /encounter/note-builder/templates`, returned full field metadata for `Allergy/Immunology Consult` from `GET /encounter/note-builder/templates/:id`, and returned `ok:true` with generated draft text from `POST /encounter/note-builder/generate` for DFN `46`.
+- Browser proof on `/encounter/note-builder` now renders the starter-template picker, valid default DFN `46`, full form fields, and a generated note containing `Chief Complaint: Audit chief complaint`, `Assessment: Stable chronic issues`, and `Plan: Continue current plan and follow up as needed`.
+- Workspace shell proof on `/cprs/vista-workspace` is now complete on the canonical stack: the page rendered live package inventory and kernel status cards, `XM` terminal mode connected with live SSH output, interactive `pwd` returned `/home/vista`, and no resize JSON leaked into the pane after the buffered control-frame parsing fix.
+- Inpatient browser proof is now explicit on the canonical stack: `/inpatient/census` rendered `29 wards | 182 total patients`, clicking `7A GEN MED` opened a live `38`-patient census table, and `/inpatient/bedboard` rendered the same live ward inventory with a populated `38 occupied` bed grid for `7A GEN MED`.
+- Handoff create-flow proof now matches backend truth on the canonical stack: `/handoff/ward-patients?ward=7A%20GEN%20MED` returns `count: 0` with CRHD pending targets, and the browser now surfaces that integration-pending reason instead of leaving the user at a silent `0 patients loaded` state.
+- Chart-shell browser proof is now explicit on the canonical stack: `/cprs/chart/46/cover` rendered the full patient banner and live cover widgets matching the VEHU routes for problems, allergies, medications, vitals, labs, appointments, and reminders; `/cprs/chart/46/notes` navigated cleanly, rendered live TIU-backed notes, and row click opened note detail for IEN `14385` with full note text.
+- Runtime audit artifacts now preserve evidence-backed review state across rebuilds: `pnpm audit:ui-estate:runtime` regenerated the checklist with `browser-proven: 27`, and `pnpm audit:ui-estate:truth` propagated those statuses into the truth matrix for proven surfaces including chart shell, workspace terminal, note builder, inpatient, handoff, and the audited admin VistA pages.
+
+## Follow-ups
+1. Keep the API in a persistent session during future browser audits; the only misleading workspace-terminal failures in this slice came from browser session loss during API restarts, not from the final terminal path itself.
+
+## What changed
+1. Fixed the live patient-search contract mismatch that blocked browser-level CPRS auditing:
+- `apps/api/src/server/inline-routes.ts`
+- `GET /vista/default-patient-list` now returns both `results` and backward-compatible `patients`, plus `rpcUsed` on success and failure paths.
+
+2. Completed a first live browser control pass for unresolved P1 pages and recorded it in:
+- `artifacts/phase726-p1-browser-control-audit.md`
+
+3. Closed the handoff acceptance control gap uncovered during the browser pass:
+- `apps/api/src/routes/handoff/handoff-store.ts`
+- `apps/api/src/routes/handoff/index.ts`
+- `apps/api/tests/handoff-store.test.ts`
+- Same-user accept is now rejected; distinct-user accept remains live-verified.
+
+4. Closed an eMAR fallback truth defect uncovered during the browser pass:
+- `apps/api/src/routes/emar/index.ts`
+- `apps/api/tests/emar-route-helpers.test.ts`
+- `/emar/administer` now skips the unavailable `ZVENAS MEDLOG` write path when capability discovery marks it missing and only treats TIU fallback creation as success when the returned `noteIen` is numeric.
+
+5. Closed three scheduling truth defects uncovered during the browser pass:
+- `apps/api/src/adapters/scheduling/vista-adapter.ts`
+- `apps/api/src/routes/scheduling/index.ts`
+- `apps/api/tests/scheduling-runtime-helpers.test.ts`
+- SD W/L wait-list and reference-data responses now gate runtime-error payloads before parsing, and `/scheduling/recall` now uses `SD RECALL LIST BY PATIENT` with a truthful empty-state sentinel guard instead of surfacing malformed recall rows.
+
+## Manual test steps
+1. Start the API in a persistent session and verify health:
+	- `pnpm api:restart:safe`
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+2. Confirm the patient-search contract fix is live:
+	- login first, then call `GET /vista/default-patient-list`
+	- verify the payload includes both `results` and `patients`
+3. Open the web app and authenticate with `PRO1234 / PRO1234!!`.
+4. Review the live UI surfaces:
+	- `/cprs/inbox`
+	- `/cprs/messages`
+	- `/cprs/emar?dfn=46`
+	- `/cprs/scheduling`
+	- `/cprs/nursing?dfn=46`
+	- `/cprs/handoff?ward=12`
+	- `/inpatient/census?ward=12`
+	- `/inpatient/bedboard?ward=12`
+	- `/cprs/admin/vista/dashboard`
+
+## Verifier output
+- Browser control audit findings:
+	- `/cprs/inbox` rendered `27` live items and the first `Acknowledge` interaction reduced the visible pending count to `26`
+	- `/cprs/messages` rendered live VistA MailMan baskets and message subjects with no local fallback banner, opened full message detail for VistA IEN `144718`, truthfully guarded package-sender reply with a manual-recipient warning, and successfully sent a browser-composed MailMan message that returned `Message sent to VistA MailMan (144725)`
+	- `/cprs/patient-search` rendered live VEHU-backed search results for `ZZZRETFOURNINETYFOUR`, enabled `Open Chart` only after selecting DFN `46`, and navigated cleanly into `/cprs/chart/46/cover` with the correct patient header context
+	- `/cprs/admin/vista/clinics` rendered live clinic rows from `VE CLIN LIST`, switched cleanly into a populated `Appointment Types` table, and surfaced a React tab-style warning that is now fixed in `apps/web/src/app/cprs/admin/vista/clinics/page.tsx`
+	- `/cprs/admin/vista/users` rendered live user rows from `VE USER LIST`, switched cleanly into populated `Security Keys` and `Menus` tabs, returned live `OR*` menu rows through the browser search form backed by `VE MENU LIST`, and surfaced the same React tab-style warning that is now fixed in `apps/web/src/app/cprs/admin/vista/users/page.tsx`
+	- `/cprs/admin/vista/system` rendered live `VE SYS STATUS` cards, a populated `VE TASKMAN LIST` table, a truthful empty `VE ERROR TRAP` state, and a filterable `VE PARAM LIST` table; the page also used the same tab-style pattern that is now fixed in `apps/web/src/app/cprs/admin/vista/system/page.tsx`
+	- `/cprs/admin/vista/wards` rendered live `VE WARD LIST` rows, opened a live `VE WARD DETAIL` inline panel on row click, switched cleanly into a populated `VE CENSUS` table, exposed a real census occupancy `NaN%` defect for non-numeric bed labels, and that defect plus the same tab-style warning pattern are now fixed in `apps/web/src/app/cprs/admin/vista/wards/page.tsx`
+	- `/cprs/admin/vista/facilities` rendered live `VE INST LIST`, `VE DIV LIST`, `VE SVC LIST`, `VE STOP LIST`, `VE SPEC LIST`, and `VE SITE PARM` data across all six tabs; institutions and stop-code searches both worked in-browser against live filtered rows, and the same tab-style warning pattern is now fixed in `apps/web/src/app/cprs/admin/vista/facilities/page.tsx`
+	- `/cprs/admin/vista/inventory` exposed a real route/UI truth defect on Item Master: the browser mislabeled live `VE INV ITEM LIST` fields as `Category` with a blank `NSN` column; after correcting the item/vender API mappings and the page table, Item Master now renders truthful live `NSN` and `Unit of Issue` values, Vendors shows a truthful empty state with corrected `Phone`/`City` headings, and the same tab-style warning pattern is now fixed in `apps/web/src/app/cprs/admin/vista/inventory/page.tsx`
+	- `/cprs/admin/vista/inventory` is now fully browser-proven on the canonical stack: Item Master and Vendors were already corrected earlier, and the last unresolved Purchase Orders tab now labels the `VE INV PO LIST` payload truthfully as raw File `443` `0`-node fields (`0 Node Name`, `0 Node Piece 2`, `0 Node Piece 3`, `0 Node Piece 4`) instead of pretending opaque values are resolved vendor/date/status data
+	- `/cprs/admin/vista/clinical-setup` is now browser-proven on the canonical stack: Order Sets, TIU Definitions, and Health Summary render live VistA-backed data as-is, while Consult Services and TIU Templates exposed real truth-label defects where internal pointers/codes were presented as friendly fields; those tabs now label the raw values honestly as `Group IEN`, `Owner IEN`, and `Status Code`, and the same tab-style warning pattern is fixed in `apps/web/src/app/cprs/admin/vista/clinical-setup/page.tsx`
+	- `/cprs/admin/vista/lab` is now browser-proven on the canonical stack: Tests, Collection Samples, and Urgency render live VistA-backed data, the leaked `1^OK` detail sentinel from `VE LAB TEST DETAIL` is now filtered out at the route layer, raw type and tube pointers are now labeled honestly as `Type Code` and `Tube IEN`, the fake urgency `Code` column is removed, and the same tab-style warning pattern is fixed in `apps/web/src/app/cprs/admin/vista/lab/page.tsx`
+	- `/cprs/admin/vista/pharmacy` is now browser-proven on the canonical stack: Drug Formulary, Routes, and Schedules render live VistA-backed data, the leaked `1^OK` detail sentinel from `VE DRUG DETAIL` is now filtered out at the route layer, raw drug-class values are labeled as `VA Class Code`, route rows are labeled as `Code` plus `Description`, schedule timing strings are labeled as `Admin Times`, and the same tab-style warning pattern is fixed in `apps/web/src/app/cprs/admin/vista/pharmacy/page.tsx`
+	- `/cprs/admin/vista/radiology` is now browser-proven on the canonical stack: Procedures, Imaging Locations, and Division Params render live VistA-backed data, the leaked `1^OK` detail sentinel from `VE RAD PROC DETAIL` is now filtered out at the route layer, raw procedure type values are labeled as `Type Code`, mixed File 79.1/File 44 source markers are labeled as `Entry Type`, raw File 79 pieces are labeled as `file0Piece2` and `file0Piece3` instead of implied friendly params, and the same tab-style warning pattern is fixed in `apps/web/src/app/cprs/admin/vista/radiology/page.tsx`
+	- `/cprs/admin/vista/quality` is now browser-proven on the canonical stack: Clinical Reminders and QA Site Parameters render live VistA-backed data, the leaked `1^OK` detail sentinel from `VE REMINDER DETAIL` is now filtered out at the route layer, QA site params are labeled truthfully as `facilityCode`, `file0Piece2`, and `file0Piece3` instead of implied friendly meanings, and the same tab-style warning pattern is fixed in `apps/web/src/app/cprs/admin/vista/quality/page.tsx`
+	- `/cprs/admin/vista/workforce` is now browser-proven on the canonical stack: Providers and Person Classes render live VistA-backed data, the leaked `1^OK` detail sentinel from `VE PROV DETAIL` is now filtered out at the route layer, provider-list person-class pointers are labeled honestly as `Person Class IEN` instead of `Taxonomy`, and the same tab-style warning pattern is fixed in `apps/web/src/app/cprs/admin/vista/workforce/page.tsx`
+	- `/cprs/admin/vista/provisioning` is now browser-proven on the canonical stack: the five-step tenant wizard is backed by live `/admin/provisioning/*` catalog routes, the browser country dropdown now reflects the full seven-country backend contract instead of a stale five-country subset, and an end-to-end create flow produced persisted tenant `a5797319-b3be-455f-b4f4-609b4cab7d5d` for `Phase 726 Audit Hospital`
+	- `/cprs/admin/vista/billing` is now browser-proven on the canonical stack: IB Site Parameters, Insurance Companies, and Claims Summary render live VistA-backed data, the leaked `1^OK` status sentinel is now filtered out of `VE IB SITE`, `VE INS DETAIL`, and `VE CLAIM COUNT`, insurance-company list headers now match the actual live payload (`Reimburse Flag`, `City`), and raw billing keys are labeled honestly as `siteIen`, `rateTypeCode`, `billingClockDays`, `REIMBURSE_FLAG`, and `totalClaims`
+	- `/cprs/emar?dfn=46` rendered a truthful mixed posture: live fallback-derived medication schedule for order `8207`, live allergy warnings grounded in `ORQQAL LIST` plus `PSB ALLERGY`, a working TIU-note fallback administration control, and a live barcode verification flow for barcode `8207`
+	- Browser audit exposed a route-level defect in `/emar/administer`: the success payload could carry missing-RPC text as `noteIen`; patched source now gates `ZVENAS MEDLOG` via capability discovery and requires a numeric TIU note IEN before returning success
+	- Fresh live verification on a patched API instance at port `3102` confirmed the corrected contract: `/emar/administer` returned `ok:true`, `noteIen:"14385"`, `rpcUsed:["TIU CREATE RECORD","TIU SET DOCUMENT TEXT"]`, and `_note` explaining that the BCMA medication-log RPC is unavailable in the sandbox lane
+	- `/cprs/scheduling` originally exposed a real wait-list control defect on the canonical browser/API stack: raw M error text was rendered as clinic data, `/scheduling/reference-data` could surface runtime-error payloads as values, and `/scheduling/recall?dfn=46` still used `SD RECALL LIST`
+	- Fresh live verification on a patched API instance at port `3106` confirmed the repaired scheduling contract: `/scheduling/waitlist` now returns only the local request row with `pending:true`, `/scheduling/reference-data` returns empty arrays with truthful runtime-error notes, and `/scheduling/recall?dfn=46` now uses `SD RECALL LIST BY PATIENT` and returns a truthful empty state for File `403.5`
+	- After restarting the canonical API on `3001`, the browser and live routes now agree: `/cprs/scheduling` shows a truthful empty clinic schedule, a live local request queue entry, a wait list without raw M error leakage, and a recall tab that truthfully reports sandbox File `403.5` as unpopulated
+	- `/cprs/nursing?dfn=46` rendered live TIU-backed notes, live vitals flowsheets via `ORQQVI VITALS`, and live nursing tasks via `ZVENAS LIST`
+	- `/cprs/handoff?ward=12` rendered truthful local-store posture with explicit CRHD migration grounding and truthful empty states across active, accept, and archive tabs; direct route checks matched the browser with `0` ward patients from `ORQPT WARD PATIENTS` and `0` local-store reports
+	- `/cprs/handoff?ward=6` completed live populated-ward proof in two parts: browser verification loaded `5` VistA-backed patients and created/submitted/archived a real report, then a fresh patched API instance on port `3101` proved the acceptance control fix by returning `409` with `Cannot accept -- incoming staff must differ from report creator` for self-accept and allowing the same submitted report to be accepted by VEHU user `TDNURSE,ONE`
+	- `/inpatient/census?ward=12` rendered `29 wards | 182 total patients`
+	- `/inpatient/bedboard?ward=12` rendered live ward occupancy buttons matching census-backed counts
+	- `/cprs/admin/vista/dashboard` rendered live administrative metrics across all 12 domains
+	- Direct authenticated API repro for `/vista/mailman/send` now returns `{"ok":true,"vistaRef":"144724","source":"vista"}` with the same clinician payload shape that had been failing before the fix
+	- Targeted regression tests `pnpm --dir apps/api exec vitest run tests/scheduling-runtime-helpers.test.ts tests/scheduling-sd.test.ts` passed with `20/20` tests, covering the new scheduling runtime guards plus the existing scheduling integration surface
+	- Targeted regression tests `pnpm vitest run tests/emar-route-helpers.test.ts tests/handoff-store.test.ts` passed with `4/4` tests, covering eMAR note-IEN parsing plus handoff self-accept rejection and distinct-user acceptance
+
+## Follow-ups
+1. Keep API startup in a persistent session during browser audits so intermittent `System Unreachable` states do not contaminate control-level evidence.
+2. Future handoff work should preserve the new creator/acceptor separation invariant; current live proof now covers both the `409` self-accept rejection and successful second-user acceptance on VEHU.
+3. Future eMAR work should preserve the current truthful fallback split: live read surfaces and barcode verification may degrade heuristically, but `/emar/administer` must never report success unless it has a numeric TIU note IEN or a real BCMA log entry.
+4. Future scheduling work should preserve the new runtime-error gating: SD W/L responses must never be parsed into visible rows when they carry M/YottaDB error payloads, and recall must stay patient-scoped with a truthful empty sentinel.
+5. MailMan routine deployment from Windows should normalize line endings and strip the UTF-8 BOM before or during container copy; VEHU rejected the raw CRLF+BOM file until it was cleaned in-container.
+
+## Phase 726 Update - Full Truth And UX Audit Baseline
+
+## What changed
+1. Added the canonical Phase 726 prompt set for the full truth and UX audit:
+- `prompts/726-PHASE-726-FULL-TRUTH-UX-AUDIT/726-01-IMPLEMENT.md`
+- `prompts/726-PHASE-726-FULL-TRUTH-UX-AUDIT/726-99-VERIFY.md`
+
+2. Added runtime audit infrastructure for the current UI estate:
+- `scripts/ui-estate/build-runtime-ui-estate.mjs`
+- `scripts/ui-estate/build-runtime-ui-truth-matrix.mjs`
+- `scripts/ui-estate/verify-runtime-ui-live-baseline.mjs`
+
+3. Generated the current audit boundary and evidence-seeded posture:
+- `data/ui-estate/runtime-ui-estate.json`
+- `docs/ui-estate/runtime-ui-estate.md`
+- `data/ui-estate/runtime-ui-audit-checklist.json`
+- `docs/ui-estate/runtime-ui-audit-checklist.md`
+- `data/ui-estate/runtime-ui-truth-matrix.json`
+- `docs/ui-estate/runtime-ui-truth-matrix.md`
+
+4. Fixed one live route-contract gap found by the new verifier:
+- Updated `apps/api/src/server/inline-routes.ts` so `GET /vista/default-patient-list` now returns `rpcUsed: "ORQPT DEFAULT PATIENT LIST"` on both success and failure paths.
+
+5. Added a repeatable live VEHU evidence run for the core P1 read surfaces:
+- artifact outputs:
+  - `artifacts/phase726-p1-live-baseline.json`
+  - `artifacts/phase726-p1-live-baseline.md`
+6. Added a repeatable live VEHU follow-up evidence run for unresolved P1 surfaces:
+- `scripts/ui-estate/verify-runtime-ui-live-p1-followup.mjs`
+- artifact outputs:
+	- `artifacts/phase726-p1-followup-baseline.json`
+	- `artifacts/phase726-p1-followup-baseline.md`
+
+## Manual test steps
+1. Verify Docker baseline:
+	- `docker ps --format "table {{.Names}}\t{{.Status}}" | Select-String "vehu|ve-platform-db"`
+2. Start or restart the API safely:
+	- `pnpm api:restart:safe`
+3. Regenerate the audit boundary:
+	- `pnpm audit:ui-estate:runtime`
+	- `pnpm audit:ui-estate:truth`
+4. Generate live P1 evidence:
+	- `pnpm audit:ui-estate:live-p1`
+5. Generate unresolved-P1 follow-up evidence:
+	- `pnpm audit:ui-estate:live-p1-followup`
+
+## Verifier output
+- Runtime truth matrix summary:
+	- total surfaces: `131`
+	- P1: `29`
+	- P2: `33`
+	- P3: `69`
+	- required-with-strong-signals: `13`
+	- required-needs-live-verification: `13`
+	- required-unmapped: `3`
+- Live P1 baseline summary:
+	- total checks: `11`
+	- passing checks: `11`
+	- failing checks: `0`
+	- login user: `PROGRAMMER,ONE`
+- Live unresolved-P1 follow-up summary:
+	- total checks: `16`
+	- passing checks: `16`
+	- failing checks: `0`
+	- skipped checks: `0`
+	- ward candidate: `12`
+- Live VEHU-backed proof captured in the artifact bundle:
+	- `/health` returned `ok: true`
+	- `/vista/ping` returned `{"ok":true,"vista":"reachable","port":9431}`
+	- `/vista/default-patient-list` returned `38` patients with `rpcUsed: ORQPT DEFAULT PATIENT LIST`
+	- `/vista/allergies?dfn=46` returned `4` results via `ORQQAL LIST`
+	- `/vista/problems?dfn=46` returned `6` results via `ORQQPL PROBLEM LIST`
+	- `/vista/vitals?dfn=46` returned `5` results via `ORQQVI VITALS`
+	- `/vista/medications?dfn=46` returned `1` synthesized active medication with fallback grounded in live CPRS order reads
+	- `/vista/notes?dfn=46` returned `39` notes via `TIU DOCUMENTS BY CONTEXT`
+	- `/vista/labs?dfn=46` returned `0` structured rows but a truthful `ORWLRR INTERIM` note explaining free-text lab output
+	- `/vista/cprs/appointments?dfn=46` returned `0` appointments via `ORWPT APPTLST`
+	- `/vista/cprs/reminders?dfn=46` returned `15` reminders via `ORQQPX REMINDERS LIST`
+	- `/vista/inbox` returned `27` items with truthful integration-pending feature status metadata
+	- `/vista/mailman/folders` returned `12` folders from live VistA
+	- `/vista/mailman/inbox?limit=5` returned `5` live VistA messages
+	- `/vista/nursing/notes?dfn=46` returned `39` live TIU-backed items via `TIU DOCUMENTS BY CONTEXT`
+	- `/vista/nursing/tasks?dfn=46` returned `1` live task via `ZVENAS LIST`
+	- `/vista/nursing/io?dfn=46` returned live VistA-backed I&O via `ZVENAS IOLIST`
+	- `/admin/vista/dashboard/operational`, `/admin/vista/users?count=5`, `/admin/vista/clinics?count=5`, and `/admin/vista/system/status` all returned live VistA-backed data
+	- `/vista/inpatient/ward-census?ward=12` and `/vista/inpatient/bedboard?ward=12` returned truthful empty states with live VistA ward RPC evidence
+	- `/handoff/ward-patients?ward=12` returned truthful integration-pending state with declared pending targets
+	- `/handoff/reports?ward=12` returned truthful local-store state with storage note and migration path
+
+## Follow-ups
+1. Use the Phase 726 checklist and truth matrix to start page-by-page/manual review of the `29` P1 surfaces.
+2. Prioritize the `13` required-needs-live-verification surfaces and the `3` required-unmapped surfaces for the next slice.
+3. Extend live evidence from route-level proof into control-level proof for inbox, messaging, nursing, handoff, and inpatient flows.
+4. Use the new follow-up verifier as the route-level baseline for those unresolved P1 surfaces before doing browser-level/manual control audits.
+
 ## Phase 725 Update - Dead Click Tripwire Hardening
 
 - Fixed the root source-scan entrypoint by adding `pnpm qa:tripwire:source`, which uses the app-local `tsx` binary without changing the working directory. The previous delegated form executed from `apps/api` and produced a false green by scanning `0` files.

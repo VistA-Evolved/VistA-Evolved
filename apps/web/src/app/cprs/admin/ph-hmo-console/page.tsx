@@ -166,12 +166,14 @@ function RegistryTab() {
   const [hmos, setHmos] = useState<PhHmo[]>([]);
   const [stats, setStats] = useState<HmoStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [selected, setSelected] = useState<PhHmo | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
+    setError('');
     try {
       const params = new URLSearchParams();
       if (search) params.set('search', search);
@@ -185,13 +187,17 @@ function RegistryTab() {
       if (listRes.ok) {
         const data = await listRes.json();
         setHmos(data.hmos || []);
+      } else {
+        setError(await getResponseError(listRes, 'Unable to load HMO registry.'));
       }
       if (statsRes.ok) {
         const data = await statsRes.json();
         setStats(data.stats || null);
+      } else if (!listRes.ok) {
+        setError(await getResponseError(statsRes, 'Unable to load HMO registry stats.'));
       }
-    } catch {
-      /* network error */
+    } catch (error) {
+      setError(getThrownErrorMessage(error, 'Unable to load HMO registry.'));
     }
     setLoading(false);
   }, [search, statusFilter]);
@@ -204,6 +210,10 @@ function RegistryTab() {
     return (
       <div style={{ textAlign: 'center', color: '#9ca3af', padding: 40 }}>Loading registry...</div>
     );
+
+  if (error) {
+    return <div style={{ textAlign: 'center', color: '#9ca3af', padding: 40 }}>{error}</div>;
+  }
 
   return (
     <div>
@@ -461,6 +471,7 @@ function HmoDetailPanel({ hmo, onClose }: { hmo: PhHmo; onClose: () => void }) {
 function CapabilitiesTab() {
   const [hmos, setHmos] = useState<PhHmo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -469,9 +480,11 @@ function CapabilitiesTab() {
         if (res.ok) {
           const data = await res.json();
           setHmos(data.hmos || []);
+        } else {
+          setError(await getResponseError(res, 'Unable to load HMO capability matrix.'));
         }
-      } catch {
-        /* ignore */
+      } catch (error) {
+        setError(getThrownErrorMessage(error, 'Unable to load HMO capability matrix.'));
       }
       setLoading(false);
     })();
@@ -483,6 +496,10 @@ function CapabilitiesTab() {
         Loading capabilities...
       </div>
     );
+
+  if (error) {
+    return <div style={{ textAlign: 'center', color: '#9ca3af', padding: 40 }}>{error}</div>;
+  }
 
   const capKeys: (keyof HmoCapabilities)[] = [
     'loa',
@@ -579,6 +596,7 @@ function CapabilitiesTab() {
 function PacketsTab() {
   const [hmos, setHmos] = useState<PhHmo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [selectedPayerId, setSelectedPayerId] = useState('');
   const [packet, setPacket] = useState<LoaPacket | ClaimPacket | null>(null);
   const [packetType, setPacketType] = useState<'loa' | 'claim'>('loa');
@@ -590,9 +608,11 @@ function PacketsTab() {
         if (res.ok) {
           const data = await res.json();
           setHmos(data.hmos || []);
+        } else {
+          setError(await getResponseError(res, 'Unable to load HMO packet options.'));
         }
-      } catch {
-        /* ignore */
+      } catch (error) {
+        setError(getThrownErrorMessage(error, 'Unable to load HMO packet options.'));
       }
       setLoading(false);
     })();
@@ -600,6 +620,7 @@ function PacketsTab() {
 
   const generatePacket = useCallback(async () => {
     if (!selectedPayerId) return;
+    setError('');
     try {
       const endpoint =
         packetType === 'loa'
@@ -609,14 +630,22 @@ function PacketsTab() {
       if (res.ok) {
         const data = await res.json();
         setPacket(data.packet || null);
+      } else {
+        setPacket(null);
+        setError(await getResponseError(res, 'Unable to generate packet.'));
       }
-    } catch {
-      /* ignore */
+    } catch (error) {
+      setPacket(null);
+      setError(getThrownErrorMessage(error, 'Unable to generate packet.'));
     }
   }, [selectedPayerId, packetType]);
 
   if (loading)
     return <div style={{ textAlign: 'center', color: '#9ca3af', padding: 40 }}>Loading...</div>;
+
+  if (error && hmos.length === 0) {
+    return <div style={{ textAlign: 'center', color: '#9ca3af', padding: 40 }}>{error}</div>;
+  }
 
   return (
     <div>
@@ -624,6 +653,8 @@ function PacketsTab() {
         Generate LOA request or claim submission packets for any HMO. Packets include required
         fields, portal links (if available), and step-by-step instructions.
       </p>
+
+        {error && <div style={{ color: '#9ca3af', marginBottom: 12, fontSize: 13 }}>{error}</div>}
 
       <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
         <select
@@ -750,6 +781,7 @@ function PacketsTab() {
 function ValidationTab() {
   const [validation, setValidation] = useState<ValidationResult | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -758,9 +790,11 @@ function ValidationTab() {
         if (res.ok) {
           const data = await res.json();
           setValidation(data.validation || null);
+        } else {
+          setError(await getResponseError(res, 'Unable to load validation data.'));
         }
-      } catch {
-        /* ignore */
+      } catch (error) {
+        setError(getThrownErrorMessage(error, 'Unable to load validation data.'));
       }
       setLoading(false);
     })();
@@ -768,6 +802,8 @@ function ValidationTab() {
 
   if (loading)
     return <div style={{ textAlign: 'center', color: '#9ca3af', padding: 40 }}>Validating...</div>;
+  if (error)
+    return <div style={{ textAlign: 'center', color: '#9ca3af', padding: 40 }}>{error}</div>;
   if (!validation)
     return (
       <div style={{ textAlign: 'center', color: '#9ca3af', padding: 40 }}>
@@ -855,6 +891,21 @@ function Badge({ text, color }: { text: string; color: string }) {
       {text}
     </span>
   );
+}
+
+async function getResponseError(res: Response, fallback: string): Promise<string> {
+  try {
+    const data = await res.json();
+    if (typeof data?.error === 'string' && data.error) return data.error;
+    if (typeof data?.message === 'string' && data.message) return data.message;
+  } catch {
+    // Ignore parse failures and use the fallback below.
+  }
+  return fallback;
+}
+
+function getThrownErrorMessage(error: unknown, fallback: string): string {
+  return error instanceof Error && error.message ? error.message : fallback;
 }
 
 function StatCard({

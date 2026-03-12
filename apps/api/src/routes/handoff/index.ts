@@ -447,6 +447,14 @@ export default async function handoffRoutes(server: FastifyInstance) {
       const { id } = request.params as { id: string };
 
       const actor = actorFromSession(session);
+      const current = getHandoffReport(id);
+      if (current?.status === 'submitted' && current.createdBy.duz === actor.duz) {
+        return reply.code(409).send({
+          ok: false,
+          error: 'Cannot accept -- incoming staff must differ from report creator',
+        });
+      }
+
       const accepted = acceptHandoffReport(id, { duz: actor.duz, name: actor.name });
       if (!accepted) {
         return reply

@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { usePatient } from '@/stores/patient-context';
 import { useDataCache, type DraftOrder } from '@/stores/data-cache';
+import { useSession } from '@/stores/session-context';
 import CPRSMenuBar from '@/components/cprs/CPRSMenuBar';
 import styles from '@/components/cprs/cprs.module.css';
 
@@ -117,12 +118,20 @@ const ORDER_SET_TEMPLATES: OrderTemplate[] = [
 export default function OrderSetsPage() {
   const router = useRouter();
   const { dfn } = usePatient();
+  const { ready, authenticated } = useSession();
   const { addDraftOrder, getDomain } = useDataCache();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [addedIds, setAddedIds] = useState<Set<string>>(new Set());
 
-  const patientDfn = dfn || '1';
-  const orders = getDomain(patientDfn, 'orders');
+  useEffect(() => {
+    if (ready && !authenticated) {
+      router.replace('/cprs/login?redirect=%2Fcprs%2Forder-sets');
+    }
+  }, [authenticated, ready, router]);
+
+  const hasPatient = Boolean(dfn);
+  const patientDfn = dfn || '';
+  const orders = hasPatient ? getDomain(patientDfn, 'orders') : [];
 
   const categories = ['all', ...new Set(ORDER_SET_TEMPLATES.map((t) => t.category))];
 
@@ -132,6 +141,7 @@ export default function OrderSetsPage() {
       : ORDER_SET_TEMPLATES.filter((t) => t.category === selectedCategory);
 
   function handleAddOrder(template: OrderTemplate) {
+    if (!hasPatient) return;
     const order: DraftOrder = {
       id: `order-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
       type: template.type,
@@ -147,9 +157,20 @@ export default function OrderSetsPage() {
   const draftCount = orders.filter((o) => o.status === 'draft').length;
   const unsignedCount = orders.filter((o) => o.status === 'unsigned').length;
 
+  if (!ready || !authenticated) {
+    return (
+      <div
+        className={styles.shell}
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}
+      >
+        <p style={{ color: 'var(--cprs-text-muted)' }}>Checking session...</p>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.shell}>
-      <CPRSMenuBar dfn={patientDfn} />
+      <CPRSMenuBar dfn={patientDfn || undefined} />
 
       <div style={{ padding: 16 }}>
         <div
@@ -163,7 +184,9 @@ export default function OrderSetsPage() {
           <div>
             <h1 style={{ fontSize: 18, margin: 0 }}>Order Sets / Quick Orders</h1>
             <p style={{ fontSize: 12, color: 'var(--cprs-text-muted)', margin: '4px 0 0' }}>
-              Patient DFN: {patientDfn} &bull; {draftCount} draft, {unsignedCount} unsigned
+              {hasPatient
+                ? `Patient DFN: ${patientDfn} • ${draftCount} draft, ${unsignedCount} unsigned`
+                : 'Select a patient to stage local quick-order drafts.'}
             </p>
           </div>
           <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
@@ -181,12 +204,39 @@ export default function OrderSetsPage() {
             </select>
             <button
               className={`${styles.btn} ${styles.btnPrimary}`}
+              disabled={!hasPatient}
               onClick={() => router.push(`/cprs/chart/${patientDfn}/orders`)}
             >
               View Orders Tab
             </button>
           </div>
         </div>
+
+        {!hasPatient && (
+          <div
+            style={{
+              marginBottom: 16,
+              padding: 12,
+              border: '1px solid #c6b36a',
+              borderRadius: 6,
+              background: '#fff8df',
+              color: '#6b5600',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: 12,
+              flexWrap: 'wrap',
+            }}
+          >
+            <div>
+              <strong>Patient required.</strong> This page stages quick-order templates into the local CPRS web draft cache.
+              Select a patient before adding drafts or opening the Orders tab.
+            </div>
+            <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={() => router.push('/cprs/patient-search')}>
+              Select Patient
+            </button>
+          </div>
+        )}
 
         <div
           style={{
@@ -230,9 +280,9 @@ export default function OrderSetsPage() {
                   className={`${styles.btn} ${addedIds.has(tpl.id) ? '' : styles.btnPrimary}`}
                   style={{ fontSize: 10, padding: '2px 8px', whiteSpace: 'nowrap' }}
                   onClick={() => handleAddOrder(tpl)}
-                  disabled={addedIds.has(tpl.id)}
+                  disabled={!hasPatient || addedIds.has(tpl.id)}
                 >
-                  {addedIds.has(tpl.id) ? 'Added' : 'Add to Orders'}
+                  {!hasPatient ? 'Select Patient' : addedIds.has(tpl.id) ? 'Added' : 'Add to Orders'}
                 </button>
               </div>
               <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', margin: 0 }}>
@@ -252,9 +302,9 @@ export default function OrderSetsPage() {
             color: 'var(--cprs-text-muted)',
           }}
         >
-          <strong>Order Workflow:</strong> Draft {'->'} Unsigned {'->'} Signed {'->'} Released. Orders added here
-          start as <em>Draft</em>. Navigate to the Orders tab to sign and release. Contract: ORWDX
-          SAVE, ORWDXA DC.
+          <strong>Order Workflow:</strong> Draft {'->'} Unsigned {'->'} Signed {'->'} Released. This page uses
+          local quick-order templates to stage <em>Draft</em> entries in the CPRS web cache. Navigate to the Orders tab
+          to continue the live signing and release workflow for the selected patient.
         </div>
       </div>
     </div>

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "WorldVistA upstream source config. Used by fetch-worldvista-sources.ps1 and pin-worldvista-sources.ps1.",
+  "vehuEnabled": true,
+  "allowUpdates": true,
+  "sources": [
+    {
+      "name": "VistA-M",
+      "purpose": "Canonical M source baseline (OSEHRA VistA M components)",
+      "url": "https://github.com/WorldVistA/VistA-M.git",
+      "localPath": "vendor/upstream/VistA-M",
+      "branch": "master",
+      "hardReset": false
+    },
+    {
+      "name": "VistA",
+      "purpose": "Canonical broader source/patch/tooling baseline (OSEHRA VistA)",
+      "url": "https://github.com/WorldVistA/VistA.git",
+      "localPath": "vendor/upstream/VistA",
+      "branch": "master",
+      "hardReset": false
+    },
+    {
+      "name": "VistA-VEHU-M",
+      "purpose": "Optional: VEHU (CPRS Demo) test database / seeded demo dataset",
+      "url": "https://github.com/WorldVistA/VistA-VEHU-M.git",
+      "localPath": "vendor/upstream/VistA-VEHU-M",
+      "branch": "master",
+      "hardReset": false,
+      "optional": true
+    }
+  ]
+}

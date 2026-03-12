@@ -17,6 +17,7 @@ import type {
   TemplateSection,
   TemplateStatus,
 } from './types.js';
+import { getAllSpecialtyPacks } from './specialty-packs.js';
 
 // --- In-Memory Store (pg_backed via repo injection) ----------------
 
@@ -42,8 +43,113 @@ export interface TemplateDbRepo {
 
 let dbRepo: TemplateDbRepo | null = null;
 
+export interface NoteBuilderTemplateOption {
+  id: string;
+  name: string;
+  specialty: string;
+  setting: ClinicalTemplate['setting'];
+  source: 'tenant-published' | 'builtin-pack';
+}
+
+interface ResolvedNoteTemplate extends ClinicalTemplate {
+  source: 'tenant-published' | 'builtin-pack';
+}
+
 export function setTemplateDbRepo(repo: TemplateDbRepo): void {
   dbRepo = repo;
+}
+
+function slugifyTemplateName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function buildBuiltinTemplateId(specialty: string, name: string): string {
+  return `builtin:${specialty}:${slugifyTemplateName(name)}`;
+}
+
+function buildBuiltinTemplateCatalog(): NoteBuilderTemplateOption[] {
+  return getAllSpecialtyPacks()
+    .flatMap((pack) =>
+      pack.templates.map((template) => ({
+        id: buildBuiltinTemplateId(pack.specialty, template.name),
+        name: template.name,
+        specialty: template.specialty,
+        setting: template.setting,
+        source: 'builtin-pack' as const,
+      }))
+    )
+    .sort((left, right) => left.name.localeCompare(right.name));
+}
+
+function buildBuiltinTemplateMap(): Map<string, ResolvedNoteTemplate> {
+  const defaultTimestamp = new Date(0).toISOString();
+  const builtinTemplates = new Map<string, ResolvedNoteTemplate>();
+  for (const pack of getAllSpecialtyPacks()) {
+    for (const template of pack.templates) {
+      const id = buildBuiltinTemplateId(pack.specialty, template.name);
+      builtinTemplates.set(id, {
+        ...template,
+        id,
+        tenantId: 'builtin-pack',
+        createdAt: defaultTimestamp,
+        updatedAt: defaultTimestamp,
+        source: 'builtin-pack',
+      });
+    }
+  }
+  return builtinTemplates;
+}
+
+async function hydrateTemplatesFromDb(tenantId: string): Promise<void> {
+  if (!dbRepo) return;
+  const templates = await dbRepo.listTemplates(tenantId);
+  for (const template of templates) {
+    templateStore.set(template.id, template);
+  }
+}
+
+async function resolveNoteTemplate(
+  tenantId: string | undefined,
+  templateId: string
+): Promise<ResolvedNoteTemplate | null> {
+  if (tenantId) {
+    const tenantTemplate = await getTemplate(tenantId, templateId);
+    if (tenantTemplate) {
+      return { ...tenantTemplate, source: 'tenant-published' };
+    }
+  }
+
+  const builtinTemplates = buildBuiltinTemplateMap();
+  return builtinTemplates.get(templateId) || null;
+}
+
+export async function listNoteBuilderTemplates(
+  tenantId: string | undefined
+): Promise<NoteBuilderTemplateOption[]> {
+  if (tenantId) {
+    const publishedTemplates = await listTemplates(tenantId, { status: 'published' });
+    if (publishedTemplates.length > 0) {
+      return publishedTemplates.map((template) => ({
+        id: template.id,
+        name: template.name,
+        specialty: template.specialty,
+        setting: template.setting,
+        source: 'tenant-published',
+      }));
+    }
+  }
+
+  return buildBuiltinTemplateCatalog();
+}
+
+export async function getNoteBuilderTemplate(
+  tenantId: string | undefined,
+  templateId: string
+): Promise<ResolvedNoteTemplate | null> {
+  return resolveNoteTemplate(tenantId, templateId);
 }
 
 // --- Template CRUD -------------------------------------------------
@@ -190,6 +296,7 @@ export async function listTemplates(
   tenantId: string,
   filters?: { specialty?: string; setting?: string; status?: TemplateStatus; search?: string }
 ): Promise<ClinicalTemplate[]> {
+  await hydrateTemplatesFromDb(tenantId);
   let results = Array.from(templateStore.values()).filter((t) => t.tenantId === tenantId);
 
   if (filters?.specialty) {
@@ -290,7 +397,7 @@ export async function deleteQuickText(tenantId: string, id: string): Promise<boo
 // --- Note Builder (core rendering) --------------------------------
 
 export async function generateDraftNote(input: NoteBuilderInput): Promise<NoteBuilderOutput> {
-  const template = templateStore.get(input.templateId);
+  const template = await resolveNoteTemplate(input.tenantId, input.templateId);
   if (!template) {
     return {
       draftText: '',
@@ -321,6 +428,9 @@ export async function generateDraftNote(input: NoteBuilderInput): Promise<NoteBu
     mode: 'local_draft',
     templateId: template.id,
     templateVersion: template.version,
+    templateName: template.name,
+    specialty: template.specialty,
+    templateSource: template.source,
     sectionsRendered,
     migrationTarget: 'TIU CREATE RECORD + TIU SET DOCUMENT TEXT',
   };

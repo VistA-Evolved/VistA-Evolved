@@ -4,6 +4,11 @@ import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 import { requireSession, requireRole } from '../../auth/auth-routes.js';
 
+function normalizeCode(value?: string) {
+  const trimmed = String(value || '').trim();
+  return trimmed || '';
+}
+
 export default async function vistaClinicalSetupRoutes(server: FastifyInstance) {
   server.get('/admin/vista/clinical-setup/order-sets', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -37,7 +42,12 @@ export default async function vistaClinicalSetupRoutes(server: FastifyInstance) 
       }
       const data = filtered.map((line: string) => {
         const parts = line.split('^');
-        return { ien: parts[0], name: parts[1], groupName: parts[2], status: parts[3] || '' };
+        return {
+          ien: parts[0],
+          name: parts[1],
+          groupIen: normalizeCode(parts[2]),
+          statusCode: normalizeCode(parts[3]),
+        };
       });
       return { ok: true, source: 'vista', rpcUsed: 'VE CONSULT SERVICES', count: data.length, data };
     } catch (err: any) {
@@ -79,7 +89,12 @@ export default async function vistaClinicalSetupRoutes(server: FastifyInstance) 
       }
       const data = filtered.map((line: string) => {
         const parts = line.split('^');
-        return { ien: parts[0], name: parts[1], owner: parts[2], status: parts[3] || '' };
+        return {
+          ien: parts[0],
+          name: parts[1],
+          ownerIen: normalizeCode(parts[2]),
+          statusCode: normalizeCode(parts[3]),
+        };
       });
       return { ok: true, source: 'vista', rpcUsed: 'VE TIU TEMPLATES', count: data.length, data };
     } catch (err: any) {

@@ -1,0 +1,50 @@
+{
+  "gate": "docs-policy",
+  "timestamp": "2026-03-12T06:23:03.891Z",
+  "checks": [
+    {
+      "name": "no-root-reports",
+      "status": "pass"
+    },
+    {
+      "name": "no-docs-reports",
+      "status": "pass"
+    },
+    {
+      "name": "no-docs-verify",
+      "status": "pass"
+    },
+    {
+      "name": "no-verify-in-docs",
+      "status": "pass"
+    },
+    {
+      "name": "policy-exists",
+      "status": "fail"
+    },
+    {
+      "name": "index-exists",
+      "status": "fail"
+    }
+  ],
+  "violations": [
+    {
+      "rule": "policy-exists",
+      "path": "docs\\POLICY.md",
+      "severity": "error",
+      "message": "Required file 'docs\\POLICY.md' not found."
+    },
+    {
+      "rule": "index-exists",
+      "path": "docs\\INDEX.md",
+      "severity": "error",
+      "message": "Required file 'docs\\INDEX.md' not found."
+    }
+  ],
+  "summary": {
+    "passCount": 4,
+    "failCount": 2,
+    "errorCount": 2,
+    "warnCount": 0
+  }
+}

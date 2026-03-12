@@ -10,11 +10,9 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { API_BASE } from '@/lib/api-config';
 
 export default function LoginPage() {
-  const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -41,7 +39,28 @@ export default function LoginPage() {
         return;
       }
 
-      router.push('/dashboard');
+      const iamRes = await fetch(`${API_BASE}/portal/iam/login`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (!iamRes.ok) {
+        const body = await iamRes.json().catch(() => ({ error: 'IAM login failed' }));
+        try {
+          await fetch(`${API_BASE}/portal/auth/logout`, {
+            method: 'POST',
+            credentials: 'include',
+          });
+        } catch {
+          /* best-effort rollback */
+        }
+        setError(body.error || 'Login failed');
+        return;
+      }
+
+      window.location.assign('/dashboard');
     } catch {
       setError('Unable to connect to server');
     } finally {

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { API_BASE as API } from '@/lib/api-config';
-import { csrfHeaders } from '@/lib/csrf';
+import { csrfHeaders, getCsrfToken } from '@/lib/csrf';
 
 /**
  * Phase 158: Encounter Note Builder Page
@@ -15,6 +15,7 @@ interface TemplateOption {
   name: string;
   specialty: string;
   setting: string;
+  source?: string;
 }
 
 interface TemplateDetail {
@@ -32,12 +33,14 @@ interface SectionDef {
 }
 
 interface FieldDef {
-  id: string;
+  key: string;
   label: string;
-  type: string;
+  fieldType: string;
   options?: string[];
   defaultValue?: string;
-  required?: boolean;
+  validation?: {
+    required?: boolean;
+  };
 }
 
 interface NoteOutput {
@@ -51,7 +54,25 @@ interface NoteOutput {
       templateName: string;
       specialty: string;
       generatedAt: string;
+          source?: string;
     };
+  };
+}
+
+function normalizeTemplateDetail(template: any): TemplateDetail {
+  return {
+    ...template,
+    sections: (template.sections || []).map((section: any) => ({
+      ...section,
+      fields: (section.fields || []).map((field: any) => ({
+        key: field.key || field.id,
+        label: field.label,
+        fieldType: field.fieldType || field.type || 'text',
+        options: field.options,
+        defaultValue: field.defaultValue,
+        validation: field.validation,
+      })),
+    })),
   };
 }
 
@@ -71,11 +92,11 @@ export default function NoteBuilderPage() {
   const [fieldValues, setFieldValues] = useState<Record<string, string>>({});
   const [generatedNote, setGeneratedNote] = useState<NoteOutput | null>(null);
   const [generating, setGenerating] = useState(false);
-  const [patientDfn, setPatientDfn] = useState('3');
+  const [patientDfn, setPatientDfn] = useState('46');
 
   // Load published templates
   const loadTemplates = useCallback(async () => {
-    const data = await apiFetch('/admin/templates?status=published');
+    const data = await apiFetch('/encounter/note-builder/templates');
     if (data.ok) {
       setTemplates(
         (data.templates || []).map((t: any) => ({
@@ -83,6 +104,7 @@ export default function NoteBuilderPage() {
           name: t.name,
           specialty: t.specialty,
           setting: t.setting,
+          source: t.source,
         }))
       );
     }
@@ -101,14 +123,15 @@ export default function NoteBuilderPage() {
       return;
     }
     (async () => {
-      const data = await apiFetch(`/admin/templates/${selectedId}`);
+      const data = await apiFetch(`/encounter/note-builder/templates/${selectedId}`);
       if (data.ok && data.template) {
-        setTemplate(data.template);
+        const normalizedTemplate = normalizeTemplateDetail(data.template);
+        setTemplate(normalizedTemplate);
         // Initialize field values with defaults
         const defaults: Record<string, string> = {};
-        for (const sec of data.template.sections || []) {
+        for (const sec of normalizedTemplate.sections || []) {
           for (const f of sec.fields || []) {
-            defaults[f.id] = f.defaultValue || '';
+            defaults[f.key] = f.defaultValue || '';
           }
         }
         setFieldValues(defaults);
@@ -124,11 +147,13 @@ export default function NoteBuilderPage() {
   const handleGenerate = async () => {
     if (!template) return;
     setGenerating(true);
+    const csrfToken = await getCsrfToken();
     const data: NoteOutput = await apiFetch('/encounter/note-builder/generate', {
       method: 'POST',
+      headers: csrfToken ? { 'x-csrf-token': csrfToken } : undefined,
       body: JSON.stringify({
         templateId: template.id,
-        patientDfn,
+        dfn: patientDfn,
         fieldValues,
       }),
     });
@@ -154,6 +179,21 @@ export default function NoteBuilderPage() {
         </span>
       </p>
 
+      {templates.length === 0 && (
+        <div
+          style={{
+            marginBottom: 16,
+            padding: 12,
+            borderRadius: 8,
+            background: '#fff7ed',
+            color: '#9a3412',
+            border: '1px solid #fdba74',
+          }}
+        >
+          No tenant-published templates are available yet, and no built-in starter templates could be loaded.
+        </div>
+      )}
+
       {/* Template Selector */}
       <div style={{ marginBottom: 16, display: 'flex', gap: 12, alignItems: 'center' }}>
         <label style={{ fontWeight: 600 }}>Template:</label>
@@ -165,7 +205,7 @@ export default function NoteBuilderPage() {
           <option value="">-- Select a template --</option>
           {templates.map((t) => (
             <option key={t.id} value={t.id}>
-              {t.name} ({t.specialty}, {t.setting})
+              {t.name} ({t.specialty}, {t.setting}){t.source === 'builtin-pack' ? ' [starter]' : ''}
             </option>
           ))}
         </select>
@@ -196,24 +236,24 @@ export default function NoteBuilderPage() {
               </h3>
               {sec.fields.map((field) => (
                 <div
-                  key={field.id}
+                  key={field.key}
                   style={{ marginBottom: 8, display: 'flex', alignItems: 'flex-start', gap: 8 }}
                 >
                   <label style={{ width: 180, fontSize: 13, paddingTop: 6 }}>
                     {field.label}
-                    {field.required && <span style={{ color: 'red' }}>*</span>}
+                    {field.validation?.required && <span style={{ color: 'red' }}>*</span>}
                   </label>
-                  {field.type === 'text' || field.type === 'smart-field' ? (
+                  {field.fieldType === 'text' || field.fieldType === 'smart-field' ? (
                     <input
-                      value={fieldValues[field.id] || ''}
-                      onChange={(e) => handleFieldChange(field.id, e.target.value)}
+                      value={fieldValues[field.key] || ''}
+                      onChange={(e) => handleFieldChange(field.key, e.target.value)}
                       placeholder={field.label}
                       style={{ flex: 1, padding: 6, border: '1px solid #ccc', borderRadius: 4 }}
                     />
-                  ) : field.type === 'multi-select' && field.options ? (
+                  ) : field.fieldType === 'multi-select' && field.options ? (
                     <select
-                      value={fieldValues[field.id] || ''}
-                      onChange={(e) => handleFieldChange(field.id, e.target.value)}
+                      value={fieldValues[field.key] || ''}
+                      onChange={(e) => handleFieldChange(field.key, e.target.value)}
                       style={{ flex: 1, padding: 6, border: '1px solid #ccc', borderRadius: 4 }}
                     >
                       <option value="">-- select --</option>
@@ -223,16 +263,16 @@ export default function NoteBuilderPage() {
                         </option>
                       ))}
                     </select>
-                  ) : field.type === 'checkbox' ? (
+                  ) : field.fieldType === 'checkbox' ? (
                     <input
                       type="checkbox"
-                      checked={fieldValues[field.id] === 'true'}
-                      onChange={(e) => handleFieldChange(field.id, String(e.target.checked))}
+                      checked={fieldValues[field.key] === 'true'}
+                      onChange={(e) => handleFieldChange(field.key, String(e.target.checked))}
                     />
                   ) : (
                     <textarea
-                      value={fieldValues[field.id] || ''}
-                      onChange={(e) => handleFieldChange(field.id, e.target.value)}
+                      value={fieldValues[field.key] || ''}
+                      onChange={(e) => handleFieldChange(field.key, e.target.value)}
                       rows={3}
                       style={{ flex: 1, padding: 6, border: '1px solid #ccc', borderRadius: 4 }}
                     />
@@ -277,6 +317,11 @@ export default function NoteBuilderPage() {
                 {generatedNote.note.metadata.specialty} | Generated:{' '}
                 {generatedNote.note.metadata.generatedAt}
               </div>
+              {generatedNote.note.metadata.source && (
+                <div style={{ marginBottom: 8, fontSize: 12, color: '#666' }}>
+                  Template Source: {generatedNote.note.metadata.source}
+                </div>
+              )}
               <div
                 style={{
                   marginBottom: 8,

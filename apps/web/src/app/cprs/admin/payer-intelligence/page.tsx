@@ -271,7 +271,12 @@ export default function PayerIntelligencePage() {
         </div>
       )}
 
-      {!loading && section === 'kpi' && (
+      {!loading && error && section === 'kpi' && (
+        <div style={{ padding: 24, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>
+          Unable to load payer intelligence.
+        </div>
+      )}
+      {!loading && !error && section === 'kpi' && (
         <KpiSection
           payers={sortedPayers()}
           sortField={sortField}
@@ -281,7 +286,12 @@ export default function PayerIntelligencePage() {
           formatPercent={formatPercent}
         />
       )}
-      {!loading && section === 'aging' && (
+      {!loading && error && section === 'aging' && (
+        <div style={{ padding: 24, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>
+          Unable to load aging data.
+        </div>
+      )}
+      {!loading && !error && section === 'aging' && (
         <AgingSection
           report={agingReport}
           formatCurrency={formatCurrency}

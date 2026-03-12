@@ -25,7 +25,11 @@ async function apiFetch(path: string, opts?: RequestInit) {
     ...opts,
     headers: { ...csrfHeaders(), ...(opts?.headers || {}) },
   });
-  return res.json();
+  const payload = await res.json().catch(() => null);
+  if (!res.ok || !payload?.ok) {
+    throw new Error(payload?.error || (res.status === 401 ? 'Authentication required' : `HTTP ${res.status}`));
+  }
+  return payload;
 }
 
 async function apiPost(path: string, body?: unknown) {
@@ -39,11 +43,18 @@ async function apiPost(path: string, body?: unknown) {
 export default function MigrationPage() {
   const [tab, setTab] = useState<Tab>('import');
   const [health, setHealth] = useState<any>(null);
+  const [healthError, setHealthError] = useState('');
 
   useEffect(() => {
     apiFetch('/migration/health')
-      .then(setHealth)
-      .catch(() => {});
+      .then((result) => {
+        setHealth(result);
+        setHealthError('');
+      })
+      .catch((err) => {
+        setHealth(null);
+        setHealthError(err instanceof Error ? err.message : String(err));
+      });
   }, []);
 
   const tabs: { id: Tab; label: string }[] = [
@@ -69,6 +80,9 @@ export default function MigrationPage() {
           <span style={{ fontSize: 11, color: health.ok ? '#198754' : '#dc3545', fontWeight: 600 }}>
             {health.ok ? 'ONLINE' : 'OFFLINE'}
           </span>
+        )}
+        {!health && healthError && (
+          <span style={{ fontSize: 11, color: '#dc3545', fontWeight: 600 }}>{healthError}</span>
         )}
         <span style={{ marginLeft: 'auto', fontSize: 11, color: '#6c757d' }}>
           Phase 50 -- Migration Toolkit
@@ -123,14 +137,21 @@ function ImportTab() {
   const [actionLoading, setActionLoading] = useState('');
   const [selectedJob, setSelectedJob] = useState<any>(null);
   const [error, setError] = useState('');
+  const [loadError, setLoadError] = useState('');
 
   const refresh = useCallback(() => {
-    apiFetch('/migration/jobs?direction=import').then((r) => {
-      if (r.ok) setJobs(r.jobs);
-    });
-    apiFetch('/migration/templates').then((r) => {
-      if (r.ok) setTemplates(r.templates);
-    });
+    setLoadError('');
+    Promise.all([apiFetch('/migration/jobs?direction=import'), apiFetch('/migration/templates')])
+      .then(([jobsResult, templatesResult]) => {
+        setJobs(jobsResult.jobs);
+        setTemplates(templatesResult.templates);
+      })
+      .catch((err) => {
+        setJobs([]);
+        setTemplates([]);
+        setSelectedJob(null);
+        setLoadError(err instanceof Error ? err.message : String(err));
+      });
   }, []);
 
   useEffect(() => {
@@ -173,11 +194,9 @@ function ImportTab() {
         refresh();
         setFileContent('');
         setFile(null);
-      } else {
-        setError(res.error || 'Failed to create job');
       }
-    } catch {
-      setError('Network error');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
     }
     setCreating(false);
   };
@@ -187,16 +206,19 @@ function ImportTab() {
     setError('');
     try {
       const res = await apiPost(`/migration/jobs/${jobId}/${action}`);
-      if (!res.ok) setError(res.error || `${action} failed`);
       // Refresh job detail
       const detail = await apiFetch(`/migration/jobs/${jobId}`);
-      if (detail.ok) setSelectedJob(detail.job);
+      setSelectedJob(detail.job);
       refresh();
-    } catch {
-      setError('Network error');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
     }
     setActionLoading('');
   };
+
+  if (loadError) {
+    return <div style={{ color: '#dc3545', fontSize: 13 }}>Unable to load migration import data. {loadError}</div>;
+  }
 
   return (
     <div>
@@ -478,11 +500,16 @@ function ExportTab() {
   const [creating, setCreating] = useState(false);
   const [actionLoading, setActionLoading] = useState('');
   const [error, setError] = useState('');
+  const [loadError, setLoadError] = useState('');
 
   const refresh = useCallback(() => {
-    apiFetch('/migration/jobs?direction=export').then((r) => {
-      if (r.ok) setJobs(r.jobs);
-    });
+    setLoadError('');
+    apiFetch('/migration/jobs?direction=export')
+      .then((r) => setJobs(r.jobs))
+      .catch((err) => {
+        setJobs([]);
+        setLoadError(err instanceof Error ? err.message : String(err));
+      });
   }, []);
 
   useEffect(() => {
@@ -493,11 +520,10 @@ function ExportTab() {
     setCreating(true);
     setError('');
     try {
-      const res = await apiPost('/migration/jobs/export', { bundleType });
-      if (res.ok) refresh();
-      else setError(res.error || 'Failed');
-    } catch {
-      setError('Network error');
+      await apiPost('/migration/jobs/export', { bundleType });
+      refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
     }
     setCreating(false);
   };
@@ -515,7 +541,7 @@ function ExportTab() {
         includeNotes: true,
         includeVitals: true,
       });
-      if (res.ok && res.result?.data) {
+      if (res.result?.data) {
         // Download the export
         const decoded = atob(res.result.data);
         const blob = new Blob([decoded], { type: 'application/json' });
@@ -525,15 +551,17 @@ function ExportTab() {
         a.download = res.result.fileName || 'export.json';
         a.click();
         URL.revokeObjectURL(url);
-      } else {
-        setError(res.error || 'Export failed');
       }
       refresh();
-    } catch {
-      setError('Network error');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
     }
     setActionLoading('');
   };
+
+  if (loadError) {
+    return <div style={{ color: '#dc3545', fontSize: 13 }}>Unable to load migration export jobs. {loadError}</div>;
+  }
 
   return (
     <div>
@@ -652,12 +680,24 @@ function ExportTab() {
 function TemplatesTab() {
   const [templates, setTemplates] = useState<any[]>([]);
   const [selected, setSelected] = useState<any>(null);
+  const [loadError, setLoadError] = useState('');
 
   useEffect(() => {
-    apiFetch('/migration/templates').then((r) => {
-      if (r.ok) setTemplates(r.templates);
-    });
+    apiFetch('/migration/templates')
+      .then((r) => {
+        setTemplates(r.templates);
+        setLoadError('');
+      })
+      .catch((err) => {
+        setTemplates([]);
+        setSelected(null);
+        setLoadError(err instanceof Error ? err.message : String(err));
+      });
   }, []);
+
+  if (loadError) {
+    return <div style={{ color: '#dc3545', fontSize: 13 }}>Unable to load migration templates. {loadError}</div>;
+  }
 
   return (
     <div>
@@ -741,12 +781,23 @@ function TemplatesTab() {
 
 function StatusTab() {
   const [stats, setStats] = useState<any>(null);
+  const [loadError, setLoadError] = useState('');
 
   useEffect(() => {
     apiFetch('/migration/stats')
-      .then(setStats)
-      .catch(() => {});
+      .then((result) => {
+        setStats(result);
+        setLoadError('');
+      })
+      .catch((err) => {
+        setStats(null);
+        setLoadError(err instanceof Error ? err.message : String(err));
+      });
   }, []);
+
+  if (loadError) {
+    return <div style={{ color: '#dc3545', fontSize: 13 }}>Unable to load migration status. {loadError}</div>;
+  }
 
   if (!stats) return <div style={{ fontSize: 13, color: '#6c757d' }}>Loading...</div>;
 

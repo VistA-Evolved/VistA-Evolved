@@ -48,10 +48,16 @@ export function PortalNav() {
 
   async function handleLogout() {
     try {
-      await fetch(`${API_BASE}/portal/auth/logout`, {
-        method: 'POST',
-        credentials: 'include',
-      });
+      await Promise.allSettled([
+        fetch(`${API_BASE}/portal/auth/logout`, {
+          method: 'POST',
+          credentials: 'include',
+        }),
+        fetch(`${API_BASE}/portal/iam/logout`, {
+          method: 'POST',
+          credentials: 'include',
+        }),
+      ]);
     } catch {
       /* best-effort */
     }

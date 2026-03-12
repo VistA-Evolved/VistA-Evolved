@@ -1,11 +1,11 @@
 'use client';
 
 /**
- * Payer Registry (SQLite) -- Admin UI
+ * Payer Registry -- Admin UI
  *
  * Phase 95B: Platform Persistence Unification
  *
- * Admin surface for the SQLite-backed payer registry.
+ * Admin surface for the payer registry.
  * Tabs: Payers | Capabilities | Evidence | Audit
  */
 
@@ -249,9 +249,9 @@ export default function PayerDbPage() {
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <div style={headerStyle}>
-        <h2 style={{ margin: 0, fontSize: 16 }}>Payer Registry (SQLite)</h2>
+        <h2 style={{ margin: 0, fontSize: 16 }}>Payer Registry</h2>
         <p style={{ margin: '4px 0 0', fontSize: 11, color: '#6b7280' }}>
-          Phase 95B -- Platform Persistence. {total} payers in database.
+          Phase 95B -- Platform Persistence. {total} payers in registry.
         </p>
       </div>
 

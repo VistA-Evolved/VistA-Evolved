@@ -5,13 +5,13 @@
  *   GET  /emar/schedule?dfn=N        -- Active medication schedule from ORWPS ACTIVE
  *   GET  /emar/allergies?dfn=N       -- Allergy warnings via ORQQAL LIST + PSB ALLERGY
  *   GET  /emar/history?dfn=N         -- Administration history via ZVENAS MEDLIST (File #53.79)
- *   POST /emar/administer            -- Record administration via ZVENAS MEDLOG (File #53.79)
+ *   POST /emar/administer            -- Record administration via ZVENAS MEDLOG when available, else TIU fallback note
  *   GET  /emar/duplicate-check?dfn=N -- Heuristic duplicate therapy detection
  *   POST /emar/barcode-scan          -- BCMA barcode scan via PSB VALIDATE ORDER + ZVENAS BCSCAN
  *
- * ALL endpoints call real VistA RPCs. ZVENAS MEDLOG writes to ^PSB(53.79)
- * for BCMA medication administration recording. ZVENAS MEDLIST reads from
- * ^PSB(53.79) for administration history. TIU notes provide documentation backup.
+ * Read endpoints call real VistA RPCs. Administration prefers ZVENAS MEDLOG
+ * for BCMA medication-log writes when provisioned, then falls back to TIU note
+ * documentation in sandbox lanes where BCMA write RPCs are unavailable.
  *
  * Auth: session-based (emar/* added to AUTH_RULES catch-all via /emar/ prefix).
  */
@@ -23,6 +23,7 @@ import type { RpcParam } from '../../vista/rpcBrokerClient.js';
 import { log } from '../../lib/logger.js';
 import { safeErr } from '../../lib/safe-error.js';
 import { immutableAudit } from '../../lib/immutable-audit.js';
+import { isRpcAvailable } from '../../vista/rpcCapabilities.js';
 // tier0Gate removed -- all eMAR routes now call VistA RPCs directly
 
 /* ------------------------------------------------------------------ */
@@ -67,6 +68,18 @@ function tiuReadbackContainsExpectedText(lines: string[], noteText: unknown): bo
   if (expected.length === 0) return false;
   const haystack = lines.map((line) => line.trim()).filter(Boolean);
   return expected.every((line) => haystack.includes(line));
+}
+
+export function extractNumericRpcIen(lines: string[] | undefined): string | null {
+  const firstLine = String((lines || [])[0] || '').trim();
+  if (!/^\d+(\^|$)/.test(firstLine)) return null;
+  const ien = firstLine.split('^')[0]?.trim() || '';
+  return /^\d+$/.test(ien) ? ien : null;
+}
+
+export function isMissingRpcResponse(lines: string[] | undefined): boolean {
+  const firstLine = String((lines || [])[0] || '').trim();
+  return /remote procedure .*doesn't exist on the server/i.test(firstLine);
 }
 
 /* ------------------------------------------------------------------ */
@@ -876,27 +889,41 @@ export default async function emarRoutes(server: FastifyInstance) {
 
     const rpcUsed: string[] = [];
     let medLogResult: any = null;
+    let noteIen = '';
+    const medLogAvailable = isRpcAvailable('ZVENAS MEDLOG');
 
     // Step 1: Record in BCMA Med Log via ZVENAS MEDLOG (writes to ^PSB(53.79))
-    try {
-      const medLogLines = await safeCallRpc('ZVENAS MEDLOG', [
-        dfn, orderIEN, action, dose, route, site,
-      ]);
-      rpcUsed.push('ZVENAS MEDLOG');
-      const status = (medLogLines || [])[0] || '';
-      if (status.startsWith('1^OK')) {
-        medLogResult = {};
-        for (const line of medLogLines.slice(1)) {
-          const [key, ...valParts] = line.split('^');
-          if (key) medLogResult[key] = valParts.join('^');
+    if (medLogAvailable) {
+      try {
+        const medLogLines = await safeCallRpc('ZVENAS MEDLOG', [
+          dfn, orderIEN, action, dose, route, site,
+        ]);
+        rpcUsed.push('ZVENAS MEDLOG');
+        const status = String((medLogLines || [])[0] || '').trim();
+        if (status.startsWith('1^OK')) {
+          medLogResult = {};
+          for (const line of medLogLines.slice(1)) {
+            const [key, ...valParts] = line.split('^');
+            if (key) medLogResult[key] = valParts.join('^');
+          }
+        } else if (isMissingRpcResponse(medLogLines)) {
+          log.warn('ZVENAS MEDLOG reported unavailable at runtime, using TIU fallback only', {
+            dfn,
+            orderIEN,
+            status,
+          });
         }
+      } catch (medLogErr: any) {
+        log.warn('ZVENAS MEDLOG failed, will record via TIU', { error: safeErr(medLogErr) });
       }
-    } catch (medLogErr: any) {
-      log.warn('ZVENAS MEDLOG failed, will record via TIU', { error: safeErr(medLogErr) });
+    } else {
+      log.info('ZVENAS MEDLOG not available in capability cache, using TIU fallback only', {
+        dfn,
+        orderIEN,
+      });
     }
 
     // Step 2: Also create TIU documentation note (clinical documentation trail)
-    let noteIen = '';
     try {
       const adminNote = `eMAR Administration: ${action} - Order ${orderIEN}${dose ? ' - Dose: ' + dose : ''}${route ? ' - Route: ' + route : ''}${site ? ' - Site: ' + site : ''}${reason ? '\nReason: ' + reason : ''}`;
       const titleIen = '10';
@@ -912,10 +939,9 @@ export default async function emarRoutes(server: FastifyInstance) {
         dfn, titleIen, visitDate, '', '', '', '',
       ]);
       rpcUsed.push('TIU CREATE RECORD');
-      const noteResult = (noteLines || [])[0]?.trim() || '';
-      noteIen = noteResult.split('^')[0]?.trim() || '';
+      noteIen = extractNumericRpcIen(noteLines) || '';
 
-      if (noteIen && noteIen !== '0' && !noteIen.startsWith('-') && /^\d+$/.test(noteIen)) {
+      if (noteIen) {
         const textParams: RpcParam[] = [
           { type: 'literal', value: noteIen },
           { type: 'list', value: buildTiuTextBuffer(adminNote) },
@@ -923,6 +949,12 @@ export default async function emarRoutes(server: FastifyInstance) {
         ];
         await safeCallRpcWithList('TIU SET DOCUMENT TEXT', textParams, { idempotent: false });
         rpcUsed.push('TIU SET DOCUMENT TEXT');
+      } else {
+        log.warn('TIU CREATE RECORD returned non-numeric note IEN', {
+          dfn,
+          orderIEN,
+          preview: String((noteLines || [])[0] || '').slice(0, 200),
+        });
       }
     } catch (tiuErr: any) {
       log.warn('TIU documentation note failed (non-fatal)', { error: safeErr(tiuErr) });
@@ -945,6 +977,9 @@ export default async function emarRoutes(server: FastifyInstance) {
         } : null,
         noteIen: noteIen || null,
         rpcUsed,
+        _note: medLogResult
+          ? 'BCMA medication log write succeeded.'
+          : 'BCMA medication log RPC is unavailable in this sandbox lane; administration was captured as a TIU nursing-note fallback.',
       };
     }
 

@@ -70,7 +70,8 @@ export async function moduleGuardHook(request: FastifyRequest, reply: FastifyRep
 
   // Prefer the request-scoped tenant resolved by tenant middleware.
   const session = (request as any).session;
-  const portalSession = path.startsWith('/portal/') ? getPortalSession(request) : null;
+  const portalSession =
+    path.startsWith('/portal/') || path.startsWith('/ai/portal/') ? getPortalSession(request) : null;
   const iamSession = path.startsWith('/portal/iam/') ? getIamSession(request) : null;
   const tenantId =
     (request as any).tenantId ||

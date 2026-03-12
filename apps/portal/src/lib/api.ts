@@ -235,9 +235,9 @@ export async function requestAppointmentReschedule(id: string, preference: strin
   });
 }
 
-/** Phase 147: Scheduling mode probe (uses admin API, not portal prefix) */
+/** Phase 147: Scheduling mode probe surfaced through the portal appointments contract. */
 export async function fetchSchedulingMode() {
-  return portalFetch('/scheduling/mode');
+  return portalFetch('/portal/appointments/mode');
 }
 
 // --- Record Sharing (Phase 27) ---
@@ -406,7 +406,7 @@ export async function fetchLabEducation(labName: string, labValue?: string) {
 export async function askPortalSearch(query: string) {
   return portalFetch('/ai/portal/search', {
     method: 'POST',
-    body: JSON.stringify({ query }),
+    body: JSON.stringify({ question: query }),
   });
 }
 

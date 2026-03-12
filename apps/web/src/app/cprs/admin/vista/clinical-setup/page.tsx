@@ -44,9 +44,9 @@ export default function ClinicalSetupPage() {
 
   const columns: Record<Tab, { key: string; label: string }[]> = {
     'order-sets': [{ key: 'ien', label: 'IEN' }, { key: 'name', label: 'Name' }, { key: 'type', label: 'Type' }, { key: 'status', label: 'Status' }],
-    'consults': [{ key: 'ien', label: 'IEN' }, { key: 'name', label: 'Service Name' }, { key: 'groupName', label: 'Group' }, { key: 'status', label: 'Status' }],
+    'consults': [{ key: 'ien', label: 'IEN' }, { key: 'name', label: 'Service Name' }, { key: 'groupIen', label: 'Group IEN' }, { key: 'statusCode', label: 'Status Code' }],
     'tiu-defs': [{ key: 'ien', label: 'IEN' }, { key: 'name', label: 'Definition' }, { key: 'type', label: 'Type' }, { key: 'status', label: 'Status' }],
-    'tiu-templates': [{ key: 'ien', label: 'IEN' }, { key: 'name', label: 'Template Name' }, { key: 'owner', label: 'Owner' }, { key: 'status', label: 'Status' }],
+    'tiu-templates': [{ key: 'ien', label: 'IEN' }, { key: 'name', label: 'Template Name' }, { key: 'ownerIen', label: 'Owner IEN' }, { key: 'statusCode', label: 'Status Code' }],
     'health-summary': [{ key: 'ien', label: 'IEN' }, { key: 'name', label: 'Summary Type' }, { key: 'owner', label: 'Owner' }],
   };
 
@@ -66,7 +66,7 @@ export default function ClinicalSetupPage() {
       <div style={{ display: 'flex', gap: 0, borderBottom: '2px solid #e2e8f0', background: '#fff', padding: '0 32px', overflowX: 'auto' }}>
         {tabs.map(t => (
           <button key={t.id} onClick={() => { setTab(t.id); setSearch(''); }} style={{
-            padding: '12px 20px', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 600,
+            padding: '12px 20px', borderTop: 'none', borderLeft: 'none', borderRight: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 600,
             background: 'transparent', color: tab === t.id ? '#2563eb' : '#64748b', whiteSpace: 'nowrap',
             borderBottom: tab === t.id ? '2px solid #2563eb' : '2px solid transparent', marginBottom: -2,
           }}>{t.label}</button>

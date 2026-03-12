@@ -39,6 +39,24 @@ const SSH_PASS = process.env.VISTA_SSH_PASSWORD || 'vista';
 const RECORD_SESSIONS = process.env.VISTA_TERMINAL_RECORD === 'true';
 const MAX_CONCURRENT = parseInt(process.env.VISTA_TERMINAL_MAX_SESSIONS || '50', 10);
 
+function safeTerminalAudit(
+  action: 'rpc.console-connect' | 'rpc.console-disconnect',
+  session: SessionData | null,
+  detail: Record<string, unknown>
+) {
+  try {
+    centralAudit(action, 'success', {
+      duz: session?.duz,
+      name: session?.userName,
+      role: session?.role,
+    }, {
+      detail,
+    });
+  } catch (err) {
+    log.error({ action, error: err instanceof Error ? err.message : String(err), detail }, 'Terminal audit failed');
+  }
+}
+
 export async function wsTerminalRoutes(server: FastifyInstance) {
   server.get('/ws/terminal', { websocket: true }, async (socket, request) => {
     const sessionId = `term-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
@@ -46,7 +64,14 @@ export async function wsTerminalRoutes(server: FastifyInstance) {
     // Authenticate
     let session: SessionData | null = null;
     try {
-      session = await getSession(request);
+      session = request.session ?? null;
+      if (!session) {
+        const url = new URL(request.url, `http://${request.headers.host}`);
+        const qToken = url.searchParams.get('token') || '';
+        if (qToken) {
+          session = await getSession(qToken);
+        }
+      }
     } catch {
       socket.send(JSON.stringify({ type: 'error', message: 'Authentication required' }));
       socket.close(4001, 'Unauthorized');
@@ -67,12 +92,6 @@ export async function wsTerminalRoutes(server: FastifyInstance) {
 
     log.info({ sessionId, duz: session.duz }, 'Terminal session started');
 
-    centralAudit({
-      action: 'terminal.connect',
-      userId: session.duz,
-      detail: { sessionId, sshHost: SSH_HOST, sshPort: SSH_PORT },
-    });
-
     const info: TerminalSessionInfo = {
       sessionId,
       duz: session.duz,
@@ -83,9 +102,14 @@ export async function wsTerminalRoutes(server: FastifyInstance) {
     };
     activeSessions.set(sessionId, info);
 
+    safeTerminalAudit('rpc.console-connect', session, { sessionId, sshHost: SSH_HOST, sshPort: SSH_PORT });
+
     // Create SSH connection
     const ssh = new SSHClient();
     let sshConnected = false;
+    let cleanedUp = false;
+
+    log.info({ sessionId, sshHost: SSH_HOST, sshPort: SSH_PORT, sshUser: SSH_USER }, 'Initiating terminal SSH connection');
 
     ssh.on('ready', () => {
       sshConnected = true;
@@ -97,7 +121,7 @@ export async function wsTerminalRoutes(server: FastifyInstance) {
           if (err) {
             socket.send(JSON.stringify({ type: 'error', message: 'Failed to open shell' }));
             socket.close(4002, 'Shell failed');
-            cleanup();
+            cleanup('shell-error');
             return;
           }
 
@@ -120,10 +144,16 @@ export async function wsTerminalRoutes(server: FastifyInstance) {
           socket.on('message', (msg: Buffer | string) => {
             if (!sshConnected) return;
 
+            const text = typeof msg === 'string'
+              ? msg
+              : Buffer.isBuffer(msg)
+                ? msg.toString('utf8')
+                : null;
+
             // Handle control messages (JSON)
-            if (typeof msg === 'string') {
+            if (text) {
               try {
-                const parsed = JSON.parse(msg);
+                const parsed = JSON.parse(text);
                 if (parsed.type === 'resize' && parsed.cols && parsed.rows) {
                   stream.setWindow(parsed.rows, parsed.cols, 0, 0);
                   return;
@@ -147,7 +177,7 @@ export async function wsTerminalRoutes(server: FastifyInstance) {
               socket.send(JSON.stringify({ type: 'disconnected', reason: 'SSH stream closed' }));
               socket.close(1000, 'SSH closed');
             }
-            cleanup();
+            cleanup('ssh-stream-close');
           });
         }
       );
@@ -159,48 +189,56 @@ export async function wsTerminalRoutes(server: FastifyInstance) {
         socket.send(JSON.stringify({ type: 'error', message: `SSH error: ${err.message}` }));
         socket.close(4002, 'SSH error');
       }
-      cleanup();
+      cleanup('ssh-error');
     });
 
-    ssh.on('close', () => {
+    ssh.on('close', (hadError) => {
+      log.info({ sessionId, hadError }, 'SSH connection closed');
       if (socket.readyState === 1) {
         socket.send(JSON.stringify({ type: 'disconnected', reason: 'SSH connection closed' }));
         socket.close(1000, 'SSH disconnected');
       }
-      cleanup();
+      cleanup('ssh-close');
     });
 
-    socket.on('close', () => {
-      log.info({ sessionId }, 'WebSocket closed');
-      cleanup();
+    socket.on('close', (code, reason) => {
+      log.info({ sessionId, code, reason: reason?.toString() || '' }, 'WebSocket closed');
+      cleanup('websocket-close');
     });
 
     socket.on('error', (err) => {
       log.error({ sessionId, error: (err as Error).message }, 'WebSocket error');
-      cleanup();
+      cleanup('websocket-error');
     });
 
-    function cleanup() {
+    function cleanup(reason: string) {
+      if (cleanedUp) return;
+      cleanedUp = true;
       sshConnected = false;
       activeSessions.delete(sessionId);
       try { ssh.end(); } catch { /* ignore */ }
 
-      centralAudit({
-        action: 'terminal.disconnect',
-        userId: session?.duz || 'unknown',
-        detail: { sessionId },
-      });
+      safeTerminalAudit('rpc.console-disconnect', session, { sessionId, reason });
     }
 
     // Initiate SSH connection
-    ssh.connect({
-      host: SSH_HOST,
-      port: SSH_PORT,
-      username: SSH_USER,
-      password: SSH_PASS,
-      keepaliveInterval: 30000,
-      readyTimeout: 10000,
-    });
+    try {
+      ssh.connect({
+        host: SSH_HOST,
+        port: SSH_PORT,
+        username: SSH_USER,
+        password: SSH_PASS,
+        keepaliveInterval: 30000,
+        readyTimeout: 10000,
+      });
+    } catch (err) {
+      log.error({ sessionId, error: err instanceof Error ? err.message : String(err) }, 'SSH connect threw synchronously');
+      if (socket.readyState === 1) {
+        socket.send(JSON.stringify({ type: 'error', message: 'SSH connect failed before handshake' }));
+        socket.close(4002, 'SSH connect failed');
+      }
+      cleanup('ssh-connect-throw');
+    }
   });
 
   // Admin endpoint: list active terminal sessions

@@ -14,7 +14,9 @@ import {
   publishTemplate,
   archiveTemplate,
   getTemplate,
+  getNoteBuilderTemplate,
   listTemplates,
+  listNoteBuilderTemplates,
   getVersionHistory,
   createQuickText,
   listQuickTexts,
@@ -281,6 +283,36 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
     };
   });
 
+  server.get('/encounter/note-builder/templates', async (request) => {
+    const tenantId =
+      typeof (request as any)?.session?.tenantId === 'string' &&
+      (request as any).session.tenantId.trim().length > 0
+        ? (request as any).session.tenantId.trim()
+        : undefined;
+    const templates = await listNoteBuilderTemplates(tenantId);
+    return {
+      ok: true,
+      templates,
+      count: templates.length,
+      fallbackUsed: !templates.some((template) => template.source === 'tenant-published'),
+    };
+  });
+
+  server.get('/encounter/note-builder/templates/:id', async (request, reply) => {
+    const { id } = request.params as any;
+    const tenantId =
+      typeof (request as any)?.session?.tenantId === 'string' &&
+      (request as any).session.tenantId.trim().length > 0
+        ? (request as any).session.tenantId.trim()
+        : undefined;
+    const template = await getNoteBuilderTemplate(tenantId, id);
+    if (!template) {
+      reply.code(404);
+      return { ok: false, error: 'Template not found' };
+    }
+    return { ok: true, template };
+  });
+
   // --- Note Builder ---------------------------------------------
 
   server.post('/encounter/note-builder/generate', async (request, reply) => {
@@ -291,10 +323,16 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
       return { ok: false, error: 'templateId is required' };
     }
 
+    const tenantId =
+      typeof (request as any)?.session?.tenantId === 'string' &&
+      (request as any).session.tenantId.trim().length > 0
+        ? (request as any).session.tenantId.trim()
+        : undefined;
     const result = await generateDraftNote({
       templateId: body.templateId,
       fieldValues: body.fieldValues || {},
-      dfn: body.dfn,
+      dfn: body.dfn || body.patientDfn,
+      tenantId,
       duz: (request as any).session?.duz,
       tiuTitleIen: body.tiuTitleIen,
     });
@@ -304,7 +342,22 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
       return { ok: false, error: 'Template not found' };
     }
 
-    return { ok: true, ...result };
+    return {
+      ok: true,
+      ...result,
+      note: {
+        text: result.draftText,
+        mode: result.mode,
+        migrationTarget: result.migrationTarget,
+        metadata: {
+          templateId: result.templateId,
+          templateName: result.templateName || result.templateId,
+          specialty: result.specialty || '',
+          generatedAt: new Date().toISOString(),
+          source: result.templateSource || 'tenant-published',
+        },
+      },
+    };
   });
 
   // --- Phase 167: Pack Validation -------------------------------

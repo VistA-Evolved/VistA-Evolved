@@ -40,6 +40,7 @@ export default function VistaAdminHubPage() {
   const [stats, setStats] = useState<QuickStats>({});
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [cols, setCols] = useState(3);
+  const [statsError, setStatsError] = useState<string | null>(null);
 
   useEffect(() => {
     const mq1 = window.matchMedia('(max-width: 640px)');
@@ -55,15 +56,23 @@ export default function VistaAdminHubPage() {
     (async () => {
       try {
         const res = await fetch(`${API_BASE}/admin/vista/dashboard/operational`, { credentials: 'include' });
-        if (!res.ok) return;
-        const json = await res.json();
+        const json = await res.json().catch(() => null);
+        if (!res.ok || !json?.ok) {
+          setStats({});
+          setStatsError(json?.error || 'Unable to load VistA dashboard stats');
+          return;
+        }
         setStats({
           users: json.data?.users?.total ?? json.users?.total,
           clinics: json.data?.clinics?.total ?? json.clinics?.total,
           wards: json.data?.wards?.total ?? json.wards?.total,
           drugs: json.data?.pharmacy?.drugs ?? json.pharmacy?.drugs,
         });
-      } catch { /* stats are optional */ }
+        setStatsError(null);
+      } catch {
+        setStats({});
+        setStatsError('Unable to load VistA dashboard stats');
+      }
     })();
   }, []);
 
@@ -106,12 +115,27 @@ export default function VistaAdminHubPage() {
             fontWeight: 600,
           }}>
             <span style={{ color, fontSize: 18, fontWeight: 800 }}>
-              {stats[key] != null ? stats[key]!.toLocaleString() : '--'}
+              {statsError ? '!' : stats[key] != null ? stats[key]!.toLocaleString() : '--'}
             </span>
             <span style={{ color: '#475569' }}>{label}</span>
           </div>
         ))}
       </div>
+
+      {statsError && (
+        <div style={{
+          margin: '16px 32px 0',
+          padding: '12px 14px',
+          borderRadius: 8,
+          background: '#fee2e2',
+          border: '1px solid #ef4444',
+          color: '#991b1b',
+          fontSize: 14,
+          fontWeight: 600,
+        }}>
+          Unable to load VistA admin hub. {statsError}
+        </div>
+      )}
 
       {/* Navigation Grid */}
       <div style={{

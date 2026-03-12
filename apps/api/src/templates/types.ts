@@ -123,6 +123,8 @@ export interface NoteBuilderInput {
   fieldValues: Record<string, string | string[] | boolean>;
   /** Patient DFN (for VistA data pull where available) */
   dfn?: string;
+  /** Tenant context for template lookup */
+  tenantId?: string;
   /** Provider DUZ */
   duz?: string;
   /** VistA TIU title IEN (if known) */
@@ -134,6 +136,9 @@ export interface NoteBuilderOutput {
   mode: 'tiu_draft' | 'local_draft';
   templateId: string;
   templateVersion: number;
+  templateName?: string;
+  specialty?: string;
+  templateSource?: 'tenant-published' | 'builtin-pack';
   draftId?: string;
   tiuIen?: string;
   migrationTarget?: string;

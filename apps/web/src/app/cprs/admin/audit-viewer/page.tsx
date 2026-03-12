@@ -27,6 +27,7 @@ interface AuditStats {
   byAction: Record<string, number>;
   byOutcome: Record<string, number>;
   chainValid: boolean;
+  chainScope?: 'global' | 'tenant-scoped';
   oldestTimestamp: string | null;
   newestTimestamp: string | null;
 }
@@ -329,7 +330,7 @@ export default function AuditViewerPage() {
                     Total entries: <strong>{stats.totalEntries}</strong>
                   </p>
                   <p style={{ fontSize: 12 }}>
-                    Chain integrity:{' '}
+                    {stats.chainScope === 'global' ? 'Global chain integrity' : 'Chain integrity'}:{' '}
                     <strong style={{ color: stats.chainValid ? '#2e7d32' : '#c00' }}>
                       {stats.chainValid ? 'VALID' : 'BROKEN'}
                     </strong>

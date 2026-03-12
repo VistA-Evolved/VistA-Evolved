@@ -54,7 +54,7 @@ export default function QualityAdminPage() {
       <div style={{ display: 'flex', gap: 0, borderBottom: '2px solid #e2e8f0', background: '#fff', padding: '0 32px' }}>
         {tabs.map(t => (
           <button key={t.id} onClick={() => { setTab(t.id); setSearch(''); }} style={{
-            padding: '12px 20px', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 600,
+            padding: '12px 20px', borderTop: 'none', borderRight: 'none', borderLeft: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 600,
             background: 'transparent', color: tab === t.id ? '#2563eb' : '#64748b',
             borderBottom: tab === t.id ? '2px solid #2563eb' : '2px solid transparent', marginBottom: -2,
           }}>{t.label}</button>

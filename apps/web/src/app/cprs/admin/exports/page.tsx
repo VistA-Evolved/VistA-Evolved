@@ -42,7 +42,11 @@ interface ExportStats {
 
 async function apiFetch(path: string) {
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include' });
-  return res.json();
+  const data = await res.json().catch(() => null);
+  if (!res.ok || !data?.ok) {
+    throw new Error(data?.error || (res.status === 401 ? 'Authentication required' : `Request failed (${res.status})`));
+  }
+  return data;
 }
 
 async function apiPost(path: string, body: unknown) {
@@ -55,7 +59,11 @@ async function apiPost(path: string, body: unknown) {
     headers,
     body: JSON.stringify(body),
   });
-  return res.json();
+  const data = await res.json().catch(() => null);
+  if (!res.ok || !data?.ok) {
+    throw new Error(data?.error || (res.status === 401 ? 'Authentication required' : `Request failed (${res.status})`));
+  }
+  return data;
 }
 
 /* ------------------------------------------------------------------ */
@@ -69,42 +77,49 @@ export default function ExportsPage() {
   const [jobs, setJobs] = useState<ExportJobMeta[]>([]);
   const [stats, setStats] = useState<ExportStats | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [loadError, setLoadError] = useState('');
+  const [actionError, setActionError] = useState('');
   const [selectedSource, setSelectedSource] = useState('');
   const [selectedFormat, setSelectedFormat] = useState('csv');
 
   const loadSources = useCallback(async () => {
     setLoading(true);
+    setLoadError('');
     try {
       const data = await apiFetch('/admin/exports/sources');
-      if (data.ok) {
-        setSources(data.sources || []);
-        setFormats(data.supportedFormats || []);
-      }
-    } catch {
-      /* ignore */
+      setSources(data.sources || []);
+      setFormats(data.supportedFormats || []);
+    } catch (err: any) {
+      setSources([]);
+      setFormats([]);
+      setSelectedSource('');
+      setLoadError(`Unable to load export sources. ${err?.message || 'Request failed'}`);
     }
     setLoading(false);
   }, []);
 
   const loadJobs = useCallback(async () => {
     setLoading(true);
+    setLoadError('');
     try {
       const data = await apiFetch('/admin/exports/jobs?limit=50');
-      if (data.ok) setJobs(data.jobs || []);
-    } catch {
-      /* ignore */
+      setJobs(data.jobs || []);
+    } catch (err: any) {
+      setJobs([]);
+      setLoadError(`Unable to load export jobs. ${err?.message || 'Request failed'}`);
     }
     setLoading(false);
   }, []);
 
   const loadStats = useCallback(async () => {
     setLoading(true);
+    setLoadError('');
     try {
       const data = await apiFetch('/admin/exports/stats');
-      if (data.ok) setStats(data.stats);
-    } catch {
-      /* ignore */
+      setStats(data.stats);
+    } catch (err: any) {
+      setStats(null);
+      setLoadError(`Unable to load export stats. ${err?.message || 'Request failed'}`);
     }
     setLoading(false);
   }, []);
@@ -116,22 +131,18 @@ export default function ExportsPage() {
   }, [tab, loadSources, loadJobs, loadStats]);
 
   const handleCreateExport = async () => {
-    if (!selectedSource) return setError('Select a source');
-    setError('');
+    if (!selectedSource) return setActionError('Select a source');
+    setActionError('');
     setLoading(true);
     try {
-      const data = await apiPost('/admin/exports/jobs', {
+      await apiPost('/admin/exports/jobs', {
         sourceId: selectedSource,
         format: selectedFormat,
       });
-      if (data.ok) {
-        setTab('jobs');
-        loadJobs();
-      } else {
-        setError(data.error || 'Export failed');
-      }
-    } catch {
-      setError('Request failed');
+      setTab('jobs');
+      loadJobs();
+    } catch (err: any) {
+      setActionError(err?.message || 'Export failed');
     }
     setLoading(false);
   };
@@ -142,7 +153,7 @@ export default function ExportsPage() {
         credentials: 'include',
       });
       if (!res.ok) {
-        setError('Download failed');
+        setActionError(res.status === 401 ? 'Authentication required' : 'Download failed');
         return;
       }
       const blob = await res.blob();
@@ -158,7 +169,7 @@ export default function ExportsPage() {
       a.click();
       URL.revokeObjectURL(url);
     } catch {
-      setError('Download failed');
+      setActionError('Download failed');
     }
   };
 
@@ -193,7 +204,7 @@ export default function ExportsPage() {
         ))}
       </div>
 
-      {error && (
+      {loadError && (
         <div
           style={{
             background: '#fef2f2',
@@ -204,14 +215,29 @@ export default function ExportsPage() {
             color: '#991b1b',
           }}
         >
-          {error}
+          {loadError}
+        </div>
+      )}
+
+      {actionError && (
+        <div
+          style={{
+            background: '#fef2f2',
+            border: '1px solid #fca5a5',
+            padding: 12,
+            borderRadius: 6,
+            marginBottom: 16,
+            color: '#991b1b',
+          }}
+        >
+          {actionError}
         </div>
       )}
 
       {loading && <p style={{ color: '#6b7280' }}>Loading...</p>}
 
       {/* -- Sources tab ------------------------------------------ */}
-      {tab === 'sources' && !loading && (
+      {tab === 'sources' && !loading && !loadError && (
         <div>
           <div
             style={{ marginBottom: 20, padding: 16, border: '1px solid #e5e7eb', borderRadius: 8 }}
@@ -318,7 +344,7 @@ export default function ExportsPage() {
       )}
 
       {/* -- Jobs tab --------------------------------------------- */}
-      {tab === 'jobs' && !loading && (
+      {tab === 'jobs' && !loading && !loadError && (
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
             <h3 style={{ fontWeight: 600 }}>Export Jobs</h3>
@@ -416,7 +442,7 @@ export default function ExportsPage() {
       )}
 
       {/* -- Stats tab -------------------------------------------- */}
-      {tab === 'stats' && !loading && stats && (
+      {tab === 'stats' && !loading && !loadError && stats && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
           {[
             { label: 'Total Jobs', val: stats.totalJobs },

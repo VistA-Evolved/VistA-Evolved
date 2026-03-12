@@ -22,14 +22,46 @@ function MetricCard({ label, value }: { label: string; value: string | number })
   );
 }
 
+async function fetchMetricsStrict<T>(path: string, metricKey: string): Promise<T> {
+  const response = await fetch(`${API}${path}`, { credentials: 'include' });
+  const text = await response.text();
+
+  let data: any = null;
+  try {
+    data = text ? JSON.parse(text) : null;
+  } catch {
+    throw new Error(`Unexpected response from ${path}`);
+  }
+
+  if (!response.ok || !data?.ok) {
+    throw new Error(data?.error || `Request failed for ${path}`);
+  }
+
+  return data[metricKey] as T;
+}
+
 function EdDashboard() {
   const [metrics, setMetrics] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
   useEffect(() => {
-    fetch(`${API}/ed/board`, { credentials: 'include' })
-      .then((r) => r.json())
-      .then((d) => d.ok && setMetrics(d.metrics))
-      .catch(() => {});
+    let cancelled = false;
+    fetchMetricsStrict<any>('/ed/board', 'metrics')
+      .then((nextMetrics) => {
+        if (cancelled) return;
+        setMetrics(nextMetrics);
+        setError(null);
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        setMetrics(null);
+        setError(err instanceof Error ? err.message : 'Failed to load ED board');
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
+  if (error) return <div>Unable to load ED board. {error}</div>;
   if (!metrics) return <div>Loading ED board...</div>;
   return (
     <div>
@@ -58,12 +90,26 @@ function EdDashboard() {
 
 function OrDashboard() {
   const [metrics, setMetrics] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
   useEffect(() => {
-    fetch(`${API}/or/board`, { credentials: 'include' })
-      .then((r) => r.json())
-      .then((d) => d.ok && setMetrics(d.metrics))
-      .catch(() => {});
+    let cancelled = false;
+    fetchMetricsStrict<any>('/or/board', 'metrics')
+      .then((nextMetrics) => {
+        if (cancelled) return;
+        setMetrics(nextMetrics);
+        setError(null);
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        setMetrics(null);
+        setError(err instanceof Error ? err.message : 'Failed to load OR board');
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
+  if (error) return <div>Unable to load OR board. {error}</div>;
   if (!metrics) return <div>Loading OR board...</div>;
   return (
     <div>
@@ -107,12 +153,26 @@ function OrDashboard() {
 
 function IcuDashboard() {
   const [metrics, setMetrics] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
   useEffect(() => {
-    fetch(`${API}/icu/metrics`, { credentials: 'include' })
-      .then((r) => r.json())
-      .then((d) => d.ok && setMetrics(d.metrics))
-      .catch(() => {});
+    let cancelled = false;
+    fetchMetricsStrict<any>('/icu/metrics', 'metrics')
+      .then((nextMetrics) => {
+        if (cancelled) return;
+        setMetrics(nextMetrics);
+        setError(null);
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        setMetrics(null);
+        setError(err instanceof Error ? err.message : 'Failed to load ICU metrics');
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
+  if (error) return <div>Unable to load ICU metrics. {error}</div>;
   if (!metrics) return <div>Loading ICU metrics...</div>;
   return (
     <div>

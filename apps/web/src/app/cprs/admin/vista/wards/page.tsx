@@ -14,8 +14,30 @@ const S = {
   page: { padding: 24, fontFamily: 'system-ui, -apple-system, sans-serif', color: '#1a1a1a' } as React.CSSProperties,
   h1: { fontSize: 22, fontWeight: 700, marginBottom: 16 } as React.CSSProperties,
   tabBar: { display: 'flex', gap: 0, borderBottom: '2px solid #e0e0e0', marginBottom: 20 } as React.CSSProperties,
-  tab: { padding: '10px 20px', cursor: 'pointer', fontSize: 14, border: 'none', background: 'none', color: '#555' } as React.CSSProperties,
-  tabActive: { padding: '10px 20px', cursor: 'pointer', fontSize: 14, border: 'none', background: 'none', color: '#1a56db', fontWeight: 700, borderBottom: '3px solid #1a56db', marginBottom: -2 } as React.CSSProperties,
+  tab: {
+    padding: '10px 20px',
+    cursor: 'pointer',
+    fontSize: 14,
+    borderTop: 'none',
+    borderRight: 'none',
+    borderBottom: 'none',
+    borderLeft: 'none',
+    background: 'none',
+    color: '#555',
+  } as React.CSSProperties,
+  tabActive: {
+    padding: '10px 20px',
+    cursor: 'pointer',
+    fontSize: 14,
+    borderTop: 'none',
+    borderRight: 'none',
+    borderBottom: '3px solid #1a56db',
+    borderLeft: 'none',
+    background: 'none',
+    color: '#1a56db',
+    fontWeight: 700,
+    marginBottom: -2,
+  } as React.CSSProperties,
   table: { width: '100%', borderCollapse: 'collapse' as const, fontSize: 13 },
   th: { textAlign: 'left' as const, padding: '10px 12px', background: '#f8fafc', borderBottom: '2px solid #e0e0e0', fontWeight: 600, color: '#374151' },
   td: { padding: '9px 12px', borderBottom: '1px solid #f0f0f0' },
@@ -31,6 +53,15 @@ const S = {
 };
 
 function rowBg(i: number, h: boolean) { return h ? '#e8f0fe' : i % 2 === 0 ? '#fff' : '#f9fafb'; }
+
+function formatOccupancy(count: unknown, beds: unknown) {
+  const patientCount = Number.parseInt(String(count ?? ''), 10);
+  const bedCount = Number.parseInt(String(beds ?? ''), 10);
+  if (!Number.isFinite(patientCount) || !Number.isFinite(bedCount) || bedCount <= 0) {
+    return '-';
+  }
+  return `${Math.round((patientCount / bedCount) * 100)}%`;
+}
 
 async function apiFetch(path: string) {
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include' });
@@ -108,7 +139,7 @@ export default function VistaWardsPage() {
                 <td style={S.td}>{c.wardName ?? c.wardIen ?? '-'}</td>
                 <td style={S.td}>{c.count ?? '-'}</td>
                 <td style={S.td}>{c.beds ?? '-'}</td>
-                <td style={S.td}>{c.beds && c.count ? `${Math.round((parseInt(c.count, 10) / parseInt(c.beds, 10)) * 100)}%` : '-'}</td>
+                <td style={S.td}>{formatOccupancy(c.count, c.beds)}</td>
               </tr>
             ))}
           </tbody>

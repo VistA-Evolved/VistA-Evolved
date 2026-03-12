@@ -355,7 +355,7 @@ export default function ClaimsQueuePage() {
             <div style={{ padding: 24, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>
               Loading...
             </div>
-          ) : claims.length === 0 ? (
+          ) : error ? null : claims.length === 0 ? (
             <div style={{ padding: 24, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>
               No claims found. Create one to get started.
             </div>

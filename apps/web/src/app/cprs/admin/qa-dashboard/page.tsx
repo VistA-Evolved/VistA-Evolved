@@ -78,13 +78,22 @@ interface DeadClick {
 
 /* -- Helpers -------------------------------------------------- */
 
-async function api(path: string, opts?: RequestInit) {
+async function api(path: string, tenantId?: string, opts?: RequestInit) {
   const res = await fetch(`${API}${path}`, {
     credentials: 'include',
     ...opts,
-    headers: { 'Content-Type': 'application/json', ...csrfHeaders(), ...(opts?.headers || {}) },
+    headers: {
+      'Content-Type': 'application/json',
+      ...(tenantId ? { 'X-Tenant-Id': tenantId } : {}),
+      ...csrfHeaders(),
+      ...(opts?.headers || {}),
+    },
   });
-  return res.json();
+  const data = await res.json();
+  if (!res.ok || data?.ok === false) {
+    throw new Error(data?.error || `Request failed: ${res.status}`);
+  }
+  return data;
 }
 
 type Tab = 'traces' | 'flows' | 'results' | 'deadclicks';
@@ -93,6 +102,7 @@ type Tab = 'traces' | 'flows' | 'results' | 'deadclicks';
 
 export default function QaDashboardPage() {
   const [tab, setTab] = useState<Tab>('traces');
+  const [tenantId, setTenantId] = useState<string | null>(null);
   const [traces, setTraces] = useState<TraceEntry[]>([]);
   const [stats, setStats] = useState<TraceStats | null>(null);
   const [flows, setFlows] = useState<QaFlow[]>([]);
@@ -100,107 +110,155 @@ export default function QaDashboardPage() {
   const [deadClicks, setDeadClicks] = useState<DeadClick[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [statusError, setStatusError] = useState('');
+  const [statusLoading, setStatusLoading] = useState(true);
   const [qaEnabled, setQaEnabled] = useState<boolean | null>(null);
 
   /* -- Check QA status -------------------------------------- */
 
   useEffect(() => {
-    api('/qa/status')
-      .then((data) => {
-        setQaEnabled(data.ok && data.qaEnabled);
-      })
-      .catch(() => setQaEnabled(false));
+    let cancelled = false;
+
+    async function loadQaStatus() {
+      setStatusLoading(true);
+      setStatusError('');
+      try {
+        const tenantData = await api('/admin/my-tenant');
+        const resolvedTenantId = tenantData?.tenant?.tenantId;
+        if (!resolvedTenantId) {
+          throw new Error('Tenant context unavailable');
+        }
+
+        const statusData = await api('/qa/status', resolvedTenantId);
+        if (cancelled) return;
+
+        setTenantId(resolvedTenantId);
+        setQaEnabled(statusData.qaEnabled === true);
+      } catch (err) {
+        if (cancelled) return;
+        setTenantId(null);
+        setQaEnabled(null);
+        setStatusError(
+          err instanceof Error ? err.message : 'Unable to load QA dashboard status.'
+        );
+      } finally {
+        if (!cancelled) {
+          setStatusLoading(false);
+        }
+      }
+    }
+
+    loadQaStatus();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   /* -- Load traces ------------------------------------------ */
 
   const loadTraces = useCallback(async () => {
+    if (!tenantId) return;
     setLoading(true);
     setError('');
     try {
       const [tracesData, statsData] = await Promise.all([
-        api('/qa/traces?limit=200'),
-        api('/qa/traces/stats'),
+        api('/qa/traces?limit=200', tenantId),
+        api('/qa/traces/stats', tenantId),
       ]);
-      if (tracesData.ok) setTraces(tracesData.traces);
-      if (statsData.ok) setStats(statsData.stats);
+      setTraces(tracesData.traces || []);
+      setStats(statsData.stats || null);
     } catch (e) {
-      setError(String(e));
+      setTraces([]);
+      setStats(null);
+      setError(e instanceof Error ? e.message : 'Unable to load QA traces.');
     }
     setLoading(false);
-  }, []);
+  }, [tenantId]);
 
   /* -- Load flows ------------------------------------------- */
 
   const loadFlows = useCallback(async () => {
+    if (!tenantId) return;
     setLoading(true);
+    setError('');
     try {
-      const data = await api('/qa/flows');
-      if (data.ok) setFlows(data.flows);
+      const data = await api('/qa/flows', tenantId);
+      setFlows(data.flows || []);
     } catch (e) {
-      setError(String(e));
+      setFlows([]);
+      setError(e instanceof Error ? e.message : 'Unable to load QA flows.');
     }
     setLoading(false);
-  }, []);
+  }, [tenantId]);
 
   /* -- Load results ----------------------------------------- */
 
   const loadResults = useCallback(async () => {
+    if (!tenantId) return;
     setLoading(true);
+    setError('');
     try {
-      const data = await api('/qa/results');
-      if (data.ok) setResults(data.results);
+      const data = await api('/qa/results', tenantId);
+      setResults(data.results || []);
     } catch (e) {
-      setError(String(e));
+      setResults([]);
+      setError(e instanceof Error ? e.message : 'Unable to load QA results.');
     }
     setLoading(false);
-  }, []);
+  }, [tenantId]);
 
   /* -- Load dead clicks ------------------------------------ */
 
   const loadDeadClicks = useCallback(async () => {
+    if (!tenantId) return;
+    setError('');
     try {
-      const data = await api('/qa/dead-clicks');
-      if (data.ok) setDeadClicks(data.entries);
+      const data = await api('/qa/dead-clicks', tenantId);
+      setDeadClicks(data.entries || []);
     } catch (e) {
-      setError(String(e));
+      setDeadClicks([]);
+      setError(e instanceof Error ? e.message : 'Unable to load dead-click reports.');
     }
-  }, []);
+  }, [tenantId]);
 
   /* -- Tab switch ------------------------------------------- */
 
   useEffect(() => {
+    if (!tenantId || qaEnabled !== true) return;
     if (tab === 'traces') loadTraces();
     if (tab === 'flows') loadFlows();
     if (tab === 'results') loadResults();
     if (tab === 'deadclicks') loadDeadClicks();
-  }, [tab, loadTraces, loadFlows, loadResults, loadDeadClicks]);
+  }, [tab, tenantId, qaEnabled, loadTraces, loadFlows, loadResults, loadDeadClicks]);
 
   /* -- Run flow --------------------------------------------- */
 
   async function runFlow(flowId: string) {
-    const data = await api(`/qa/flows/${flowId}/run`, {
+    if (!tenantId) {
+      alert('Unable to load QA dashboard status.');
+      return;
+    }
+
+    const data = await api(`/qa/flows/${flowId}/run`, tenantId, {
       method: 'POST',
       body: JSON.stringify({ baseUrl: API }),
     });
-    if (data.ok) {
-      alert(
-        `Flow ${data.result.status}: ${data.result.passedSteps}/${data.result.totalSteps} steps passed (${data.result.durationMs}ms)`
-      );
-      loadResults();
-    } else {
-      alert(data.error ?? 'Flow execution failed');
-    }
+    alert(
+      `Flow ${data.result.status}: ${data.result.passedSteps}/${data.result.totalSteps} steps passed (${data.result.durationMs}ms)`
+    );
+    loadResults();
   }
 
   async function reloadCatalog() {
-    const data = await api('/qa/flows/reload', { method: 'POST' });
-    if (data.ok) {
-      alert(
-        `Loaded ${data.loaded} flows${data.errors?.length ? `, ${data.errors.length} errors` : ''}`
-      );
-      loadFlows();
+    if (!tenantId) {
+      alert('Unable to load QA dashboard status.');
+      return;
     }
+
+    const data = await api('/qa/flows/reload', tenantId, { method: 'POST' });
+    alert(`Loaded ${data.loaded} flows${data.errors?.length ? `, ${data.errors.length} errors` : ''}`);
+    loadFlows();
   }
 
   /* -- Styles ----------------------------------------------- */
@@ -258,13 +316,32 @@ export default function QaDashboardPage() {
           : '#92400e',
   });
 
-  if (qaEnabled === false) {
+  if (statusLoading) {
+    return (
+      <div style={{ padding: 32, textAlign: 'center', fontSize: 12, color: '#6b7280' }}>
+        Loading QA dashboard...
+      </div>
+    );
+  }
+
+  if (qaEnabled === false && !statusError) {
     return (
       <div style={{ padding: 32, textAlign: 'center' }}>
         <h2 style={{ fontSize: 16, marginBottom: 8 }}>QA Routes Disabled</h2>
         <p style={{ fontSize: 12, color: '#6b7280' }}>
           Set <code>QA_ROUTES_ENABLED=true</code> or <code>NODE_ENV=test</code> to enable QA
           dashboard.
+        </p>
+      </div>
+    );
+  }
+
+  if (statusError) {
+    return (
+      <div style={{ padding: 32 }}>
+        <h2 style={{ margin: 0, fontSize: 16 }}>QA Dashboard</h2>
+        <p style={{ margin: '8px 0 0', fontSize: 12, color: '#dc2626' }}>
+          Unable to load QA dashboard status. {statusError}
         </p>
       </div>
     );
@@ -293,7 +370,7 @@ export default function QaDashboardPage() {
         {/* === TRACES TAB === */}
         {tab === 'traces' && (
           <>
-            {stats && (
+            {!error && stats && (
               <div
                 style={{
                   marginBottom: 12,
@@ -323,7 +400,7 @@ export default function QaDashboardPage() {
                 </div>
               </div>
             )}
-            {stats?.topRpcs && stats.topRpcs.length > 0 && (
+            {!error && stats?.topRpcs && stats.topRpcs.length > 0 && (
               <div style={{ marginBottom: 12, fontSize: 11 }}>
                 <strong>Top RPCs:</strong>{' '}
                 {stats.topRpcs
@@ -332,7 +409,9 @@ export default function QaDashboardPage() {
                   .join(' | ')}
               </div>
             )}
-            {loading ? (
+            {error ? (
+              <p style={{ fontSize: 12, color: '#dc2626' }}>Unable to load QA traces. {error}</p>
+            ) : loading ? (
               <p style={{ fontSize: 12 }}>Loading...</p>
             ) : (
               <table style={tableStyle}>
@@ -383,138 +462,160 @@ export default function QaDashboardPage() {
         {/* === FLOWS TAB === */}
         {tab === 'flows' && (
           <>
-            <div style={{ marginBottom: 12 }}>
-              <button style={btnStyle} onClick={reloadCatalog}>
-                Reload Catalog
-              </button>
-            </div>
-            <table style={tableStyle}>
-              <thead>
-                <tr style={{ background: '#f9fafb' }}>
-                  <th style={cellStyle}>ID</th>
-                  <th style={cellStyle}>Name</th>
-                  <th style={cellStyle}>Domain</th>
-                  <th style={cellStyle}>Priority</th>
-                  <th style={cellStyle}>Steps</th>
-                  <th style={cellStyle}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {flows.length === 0 && (
-                  <tr>
-                    <td colSpan={6} style={{ ...cellStyle, color: '#9ca3af' }}>
-                      No flows loaded. Click Reload Catalog.
-                    </td>
-                  </tr>
-                )}
-                {flows.map((f) => (
-                  <tr key={f.id}>
-                    <td style={{ ...cellStyle, fontFamily: 'monospace', fontSize: 11 }}>{f.id}</td>
-                    <td style={cellStyle}>{f.name}</td>
-                    <td style={cellStyle}>{f.domain}</td>
-                    <td style={cellStyle}>
-                      <span
-                        style={badgeStyle(
-                          f.priority === 'smoke'
-                            ? 'passed'
-                            : f.priority === 'deep'
-                              ? 'failed'
-                              : 'partial'
-                        )}
-                      >
-                        {f.priority}
-                      </span>
-                    </td>
-                    <td style={cellStyle}>{f.steps.length}</td>
-                    <td style={cellStyle}>
-                      <button
-                        style={{ ...btnStyle, padding: '3px 8px' }}
-                        onClick={() => runFlow(f.id)}
-                      >
-                        Run
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            {error ? (
+              <p style={{ fontSize: 12, color: '#dc2626' }}>Unable to load QA flows. {error}</p>
+            ) : (
+              <>
+                <div style={{ marginBottom: 12 }}>
+                  <button style={btnStyle} onClick={reloadCatalog}>
+                    Reload Catalog
+                  </button>
+                </div>
+                <table style={tableStyle}>
+                  <thead>
+                    <tr style={{ background: '#f9fafb' }}>
+                      <th style={cellStyle}>ID</th>
+                      <th style={cellStyle}>Name</th>
+                      <th style={cellStyle}>Domain</th>
+                      <th style={cellStyle}>Priority</th>
+                      <th style={cellStyle}>Steps</th>
+                      <th style={cellStyle}>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {flows.length === 0 && (
+                      <tr>
+                        <td colSpan={6} style={{ ...cellStyle, color: '#9ca3af' }}>
+                          No flows loaded. Click Reload Catalog.
+                        </td>
+                      </tr>
+                    )}
+                    {flows.map((f) => (
+                      <tr key={f.id}>
+                        <td style={{ ...cellStyle, fontFamily: 'monospace', fontSize: 11 }}>
+                          {f.id}
+                        </td>
+                        <td style={cellStyle}>{f.name}</td>
+                        <td style={cellStyle}>{f.domain}</td>
+                        <td style={cellStyle}>
+                          <span
+                            style={badgeStyle(
+                              f.priority === 'smoke'
+                                ? 'passed'
+                                : f.priority === 'deep'
+                                  ? 'failed'
+                                  : 'partial'
+                            )}
+                          >
+                            {f.priority}
+                          </span>
+                        </td>
+                        <td style={cellStyle}>{f.steps.length}</td>
+                        <td style={cellStyle}>
+                          <button
+                            style={{ ...btnStyle, padding: '3px 8px' }}
+                            onClick={() => runFlow(f.id)}
+                          >
+                            Run
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </>
+            )}
           </>
         )}
 
         {/* === RESULTS TAB === */}
         {tab === 'results' && (
-          <table style={tableStyle}>
-            <thead>
-              <tr style={{ background: '#f9fafb' }}>
-                <th style={cellStyle}>Time</th>
-                <th style={cellStyle}>Flow</th>
-                <th style={cellStyle}>Status</th>
-                <th style={cellStyle}>Steps</th>
-                <th style={cellStyle}>Duration</th>
-              </tr>
-            </thead>
-            <tbody>
-              {results.length === 0 && (
-                <tr>
-                  <td colSpan={5} style={{ ...cellStyle, color: '#9ca3af' }}>
-                    No flow results yet. Run a flow first.
-                  </td>
+          error ? (
+            <p style={{ fontSize: 12, color: '#dc2626' }}>Unable to load QA results. {error}</p>
+          ) : (
+            <table style={tableStyle}>
+              <thead>
+                <tr style={{ background: '#f9fafb' }}>
+                  <th style={cellStyle}>Time</th>
+                  <th style={cellStyle}>Flow</th>
+                  <th style={cellStyle}>Status</th>
+                  <th style={cellStyle}>Steps</th>
+                  <th style={cellStyle}>Duration</th>
                 </tr>
-              )}
-              {results.map((r, i) => (
-                <tr key={i}>
-                  <td style={{ ...cellStyle, fontSize: 10 }}>{r.startedAt?.slice(0, 19)}</td>
-                  <td style={cellStyle}>{r.flowName}</td>
-                  <td style={cellStyle}>
-                    <span style={badgeStyle(r.status)}>{r.status}</span>
-                  </td>
-                  <td style={cellStyle}>
-                    {r.passedSteps}/{r.totalSteps} ({r.failedSteps} failed)
-                  </td>
-                  <td style={cellStyle}>{r.durationMs}ms</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {results.length === 0 && (
+                  <tr>
+                    <td colSpan={5} style={{ ...cellStyle, color: '#9ca3af' }}>
+                      No flow results yet. Run a flow first.
+                    </td>
+                  </tr>
+                )}
+                {results.map((r, i) => (
+                  <tr key={i}>
+                    <td style={{ ...cellStyle, fontSize: 10 }}>{r.startedAt?.slice(0, 19)}</td>
+                    <td style={cellStyle}>{r.flowName}</td>
+                    <td style={cellStyle}>
+                      <span style={badgeStyle(r.status)}>{r.status}</span>
+                    </td>
+                    <td style={cellStyle}>
+                      {r.passedSteps}/{r.totalSteps} ({r.failedSteps} failed)
+                    </td>
+                    <td style={cellStyle}>{r.durationMs}ms</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )
         )}
 
         {/* === DEAD CLICKS TAB === */}
         {tab === 'deadclicks' && (
           <>
-            <div style={{ marginBottom: 8, fontSize: 11, color: '#6b7280' }}>
-              Dead clicks are reported by the Playwright dead-click crawler spec.
-            </div>
-            <table style={tableStyle}>
-              <thead>
-                <tr style={{ background: '#f9fafb' }}>
-                  <th style={cellStyle}>Page</th>
-                  <th style={cellStyle}>Element</th>
-                  <th style={cellStyle}>Text</th>
-                  <th style={cellStyle}>Type</th>
-                  <th style={cellStyle}>Detected</th>
-                </tr>
-              </thead>
-              <tbody>
-                {deadClicks.length === 0 && (
-                  <tr>
-                    <td colSpan={5} style={{ ...cellStyle, color: '#16a34a' }}>
-                      No dead clicks detected
-                    </td>
-                  </tr>
-                )}
-                {deadClicks.map((dc, i) => (
-                  <tr key={i}>
-                    <td style={{ ...cellStyle, fontSize: 10 }}>{dc.page}</td>
-                    <td style={{ ...cellStyle, fontFamily: 'monospace', fontSize: 10 }}>
-                      {dc.selector}
-                    </td>
-                    <td style={cellStyle}>{dc.text}</td>
-                    <td style={cellStyle}>{dc.elementType}</td>
-                    <td style={{ ...cellStyle, fontSize: 10 }}>{dc.detectedAt?.slice(0, 19)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            {error ? (
+              <p style={{ fontSize: 12, color: '#dc2626' }}>
+                Unable to load dead-click reports. {error}
+              </p>
+            ) : (
+              <>
+                <div style={{ marginBottom: 8, fontSize: 11, color: '#6b7280' }}>
+                  Dead clicks are reported by the Playwright dead-click crawler spec.
+                </div>
+                <table style={tableStyle}>
+                  <thead>
+                    <tr style={{ background: '#f9fafb' }}>
+                      <th style={cellStyle}>Page</th>
+                      <th style={cellStyle}>Element</th>
+                      <th style={cellStyle}>Text</th>
+                      <th style={cellStyle}>Type</th>
+                      <th style={cellStyle}>Detected</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {deadClicks.length === 0 && (
+                      <tr>
+                        <td colSpan={5} style={{ ...cellStyle, color: '#16a34a' }}>
+                          No dead clicks detected
+                        </td>
+                      </tr>
+                    )}
+                    {deadClicks.map((dc, i) => (
+                      <tr key={i}>
+                        <td style={{ ...cellStyle, fontSize: 10 }}>{dc.page}</td>
+                        <td style={{ ...cellStyle, fontFamily: 'monospace', fontSize: 10 }}>
+                          {dc.selector}
+                        </td>
+                        <td style={cellStyle}>{dc.text}</td>
+                        <td style={cellStyle}>{dc.elementType}</td>
+                        <td style={{ ...cellStyle, fontSize: 10 }}>
+                          {dc.detectedAt?.slice(0, 19)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </>
+            )}
           </>
         )}
       </div>

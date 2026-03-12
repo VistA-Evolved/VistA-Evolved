@@ -19,8 +19,24 @@ async function apiFetch(path: string, opts?: RequestInit) {
     ...opts,
     headers: { ...csrfHeaders(), ...(opts?.headers || {}) },
   });
-  if (!res.ok) throw new Error(`API ${res.status}`);
-  return res.json();
+  const contentType = res.headers.get('content-type') || '';
+  const payload = contentType.includes('application/json') ? await res.json() : null;
+  if (!res.ok) {
+    const err = new Error(payload?.error || payload?.message || `API ${res.status}`) as Error & {
+      status?: number;
+      payload?: unknown;
+    };
+    err.status = res.status;
+    err.payload = payload;
+    throw err;
+  }
+  return payload;
+}
+
+function getApiErrorStatus(err: unknown): number | undefined {
+  return typeof err === 'object' && err !== null && 'status' in err && typeof (err as any).status === 'number'
+    ? (err as any).status
+    : undefined;
 }
 
 /* ------------------------------------------------------------------ */
@@ -1068,6 +1084,17 @@ function ADTWorkflowTab() {
   const [dischargePlanOptions, setDischargePlanOptions] = useState<DischargePlanListItem[]>([]);
   const [decisionSelections, setDecisionSelections] = useState<Record<string, ReconciliationDecision>>({});
   const [decisionRationales, setDecisionRationales] = useState<Record<string, string>>({});
+  const [medRecRouteMissing, setMedRecRouteMissing] = useState(false);
+
+  const markMedRecRouteMissing = useCallback((err: any) => {
+    if (getApiErrorStatus(err) !== 404) return false;
+    setMedRecRouteMissing(true);
+    setMedRecSession(null);
+    setMedRecSessionOptions([]);
+    setDecisionSelections({});
+    setDecisionRationales({});
+    return true;
+  }, []);
 
   const handleAction = async (action: 'admit' | 'transfer' | 'discharge') => {
     setShowModal(action);
@@ -1115,28 +1142,37 @@ function ADTWorkflowTab() {
       }
 
       setRecoveryLoading(true);
+      setWorkflowError('');
       try {
-        const [medRecData, dischargeData] = await Promise.all([
-          apiFetch('/vista/med-rec/sessions'),
-          apiFetch(`/vista/discharge/plans?dfn=${encodeURIComponent(trimmedDfn)}`),
-        ]);
+        try {
+          const medRecData = await apiFetch('/vista/med-rec/sessions');
+          const nextMedRecSessions = ((medRecData.sessions || []) as MedRecSessionListItem[])
+            .filter((session) => session.patientDfn === trimmedDfn)
+            .sort((left, right) => right.createdAt.localeCompare(left.createdAt));
+          setMedRecSessionOptions(nextMedRecSessions);
+          setMedRecRouteMissing(false);
+        } catch (err: any) {
+          if (!markMedRecRouteMissing(err)) {
+            setWorkflowError(err?.message || 'Failed to load medication reconciliation sessions');
+          }
+        }
 
-        const nextMedRecSessions = ((medRecData.sessions || []) as MedRecSessionListItem[])
-          .filter((session) => session.patientDfn === trimmedDfn)
-          .sort((left, right) => right.createdAt.localeCompare(left.createdAt));
-        const nextDischargePlans = ((dischargeData.plans || []) as DischargePlanListItem[]).sort(
-          (left, right) => right.createdAt.localeCompare(left.createdAt)
-        );
-
-        setMedRecSessionOptions(nextMedRecSessions);
-        setDischargePlanOptions(nextDischargePlans);
+        try {
+          const dischargeData = await apiFetch(`/vista/discharge/plans?dfn=${encodeURIComponent(trimmedDfn)}`);
+          const nextDischargePlans = ((dischargeData.plans || []) as DischargePlanListItem[]).sort(
+            (left, right) => right.createdAt.localeCompare(left.createdAt)
+          );
+          setDischargePlanOptions(nextDischargePlans);
+        } catch (err: any) {
+          setWorkflowError((current) => current || err?.message || 'Failed to load discharge plans');
+        }
       } catch (err: any) {
         setWorkflowError(err?.message || 'Failed to load existing inpatient workflow state');
       } finally {
         setRecoveryLoading(false);
       }
     },
-    [setWorkflowError]
+    [markMedRecRouteMissing, setWorkflowError]
   );
 
   useEffect(() => {
@@ -1180,14 +1216,23 @@ function ADTWorkflowTab() {
 
   const startMedRec = async () => {
     await withWorkflowAction('start-medrec', async () => {
-      const data = await apiFetch('/vista/med-rec/start', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          dfn,
-          outpatientMeds: parseOutpatientMedicationText(outpatientText),
-        }),
-      });
+      let data: any;
+      try {
+        data = await apiFetch('/vista/med-rec/start', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            dfn,
+            outpatientMeds: parseOutpatientMedicationText(outpatientText),
+          }),
+        });
+      } catch (err: any) {
+        if (markMedRecRouteMissing(err)) {
+          setWorkflowError('Medication reconciliation workflow endpoints are not registered on this API stack yet.');
+          return;
+        }
+        throw err;
+      }
       await loadMedRecSession(data.session.id);
       await refreshWorkspaceLists(dfn);
       setWorkflowMessage(`Medication reconciliation session ${data.session.id} started.`);
@@ -1196,7 +1241,16 @@ function ADTWorkflowTab() {
 
   const loadExistingMedRec = async (sessionId: string) => {
     await withWorkflowAction(`load-medrec-${sessionId}`, async () => {
-      const nextSession = await loadMedRecSession(sessionId);
+      let nextSession: MedRecSession;
+      try {
+        nextSession = await loadMedRecSession(sessionId);
+      } catch (err: any) {
+        if (markMedRecRouteMissing(err)) {
+          setWorkflowError('Medication reconciliation workflow endpoints are not registered on this API stack yet.');
+          return;
+        }
+        throw err;
+      }
       if (dischargePlan?.medRecSessionId === nextSession.id && dischargePlan.id) {
         await loadDischargePlan(dischargePlan.id);
       }
@@ -1207,15 +1261,23 @@ function ADTWorkflowTab() {
   const recordDecision = async (discrepancyId: string) => {
     await withWorkflowAction(`decide-${discrepancyId}`, async () => {
       if (!medRecSession) throw new Error('Start or load a medication reconciliation session first');
-      await apiFetch(`/vista/med-rec/session/${medRecSession.id}/decide`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          discrepancyId,
-          decision: decisionSelections[discrepancyId] || 'continue',
-          rationale: decisionRationales[discrepancyId] || '',
-        }),
-      });
+      try {
+        await apiFetch(`/vista/med-rec/session/${medRecSession.id}/decide`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            discrepancyId,
+            decision: decisionSelections[discrepancyId] || 'continue',
+            rationale: decisionRationales[discrepancyId] || '',
+          }),
+        });
+      } catch (err: any) {
+        if (markMedRecRouteMissing(err)) {
+          setWorkflowError('Medication reconciliation workflow endpoints are not registered on this API stack yet.');
+          return;
+        }
+        throw err;
+      }
       await loadMedRecSession(medRecSession.id);
       setWorkflowMessage('Medication reconciliation decision recorded.');
     });
@@ -1224,16 +1286,24 @@ function ADTWorkflowTab() {
   const completeMedRec = async () => {
     await withWorkflowAction('complete-medrec', async () => {
       if (!medRecSession) throw new Error('Start or load a medication reconciliation session first');
-      await apiFetch(`/vista/med-rec/session/${medRecSession.id}/complete`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          documentation: {
-            createNote: true,
-            additionalNote: medRecNote,
-          },
-        }),
-      });
+      try {
+        await apiFetch(`/vista/med-rec/session/${medRecSession.id}/complete`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            documentation: {
+              createNote: true,
+              additionalNote: medRecNote,
+            },
+          }),
+        });
+      } catch (err: any) {
+        if (markMedRecRouteMissing(err)) {
+          setWorkflowError('Medication reconciliation workflow endpoints are not registered on this API stack yet.');
+          return;
+        }
+        throw err;
+      }
       const nextSession = await loadMedRecSession(medRecSession.id);
       if (dischargePlan) {
         await loadDischargePlan(dischargePlan.id);
@@ -1398,16 +1468,27 @@ function ADTWorkflowTab() {
           <div>
             <h3 style={S.sectionTitle}>Discharge Preparation Workspace</h3>
             <div style={S.helperText}>
-              This workflow is live for medication reconciliation reads and TIU draft creation. DG ADT discharge movement and PSO/PSJ med-rec writeback require additional VistA package configuration in VEHU.
+              {medRecRouteMissing
+                ? 'Discharge planning is live, but the /vista/med-rec workflow routes are not registered on this API stack yet. Medication reconciliation controls are disabled until that contract is available.'
+                : 'This workflow is live for medication reconciliation reads and TIU draft creation. DG ADT discharge movement and PSO/PSJ med-rec writeback require additional VistA package configuration in VEHU.'}
             </div>
           </div>
-          <span style={S.sourceTag}>Live: ORWPS ACTIVE + TIU CREATE RECORD</span>
+          <span style={S.sourceTag}>{medRecRouteMissing ? 'Mixed: discharge live, med-rec pending' : 'Live: ORWPS ACTIVE + TIU CREATE RECORD'}</span>
         </div>
+
+        {medRecRouteMissing && (
+          <div style={{ ...S.pendingBanner, marginTop: '12px' }}>
+            <div style={S.pendingTitle}>Medication Reconciliation Integration Pending</div>
+            <div style={S.pendingText}>
+              The medication reconciliation workflow endpoints under /vista/med-rec/* are missing from the current API stack, so session recovery and write actions are disabled on this screen. Discharge plan creation and checklist tracking remain live.
+            </div>
+          </div>
+        )}
 
         <div style={{ ...S.summaryGrid, marginTop: '12px' }}>
           <div style={S.summaryCard}>
             <div style={S.kpiLabel}>Medication Reconciliation</div>
-            <div style={S.kpiValue}>{medRecSession ? medRecSession.status : 'Not started'}</div>
+            <div style={S.kpiValue}>{medRecRouteMissing ? 'Pending' : medRecSession ? medRecSession.status : 'Not started'}</div>
           </div>
           <div style={S.summaryCard}>
             <div style={S.kpiLabel}>Discrepancies Decided</div>
@@ -1424,7 +1505,12 @@ function ADTWorkflowTab() {
         </div>
 
         {workflowError && <div style={S.error}>{workflowError}</div>}
-        {workflowMessage && <div style={{ ...S.pendingBanner, background: '#f0fff4', borderColor: '#9ae6b4' }}><div style={{ ...S.pendingTitle, color: '#276749' }}>Workflow Update</div><div style={{ ...S.pendingText, color: '#276749' }}>{workflowMessage}</div></div>}
+        {workflowMessage && (
+          <div style={{ ...S.pendingBanner, background: '#f0fff4', borderColor: '#9ae6b4' }}>
+            <div style={{ ...S.pendingTitle, color: '#276749' }}>Workflow Update</div>
+            <div style={{ ...S.pendingText, color: '#276749' }}>{workflowMessage}</div>
+          </div>
+        )}
 
         <div style={{ ...S.card, background: '#f8fafc', marginTop: '12px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -1457,7 +1543,7 @@ function ADTWorkflowTab() {
           <div style={{ ...S.summaryGrid, marginTop: '12px' }}>
             <div style={S.summaryCard}>
               <div style={S.kpiLabel}>Recent Med Rec Sessions</div>
-              <div style={S.kpiValue}>{medRecSessionOptions.length}</div>
+              <div style={S.kpiValue}>{medRecRouteMissing ? 'Pending' : medRecSessionOptions.length}</div>
             </div>
             <div style={S.summaryCard}>
               <div style={S.kpiLabel}>Recent Discharge Plans</div>
@@ -1468,7 +1554,9 @@ function ADTWorkflowTab() {
           <div style={S.fieldGrid}>
             <div style={S.fieldBlock}>
               <label style={S.label}>Medication Reconciliation Sessions</label>
-              {medRecSessionOptions.length === 0 ? (
+              {medRecRouteMissing ? (
+                <div style={S.helperText}>Medication reconciliation recovery is unavailable until the /vista/med-rec/* route family is registered on the API.</div>
+              ) : medRecSessionOptions.length === 0 ? (
                 <div style={S.helperText}>No medication reconciliation sessions found for this DFN.</div>
               ) : (
                 <div style={{ display: 'grid', gap: '8px' }}>
@@ -1594,12 +1682,16 @@ function ADTWorkflowTab() {
         </div>
 
         <div style={S.actionRow}>
-          <button style={S.actionBtn(busyAction !== '')} disabled={busyAction !== ''} onClick={startMedRec}>
+          <button
+            style={S.actionBtn(busyAction !== '' || recoveryLoading || medRecRouteMissing)}
+            disabled={busyAction !== '' || recoveryLoading || medRecRouteMissing}
+            onClick={startMedRec}
+          >
             Start Med Rec
           </button>
           <button
-            style={S.secondaryBtn(busyAction !== '' || !medRecSession || medRecSession.status !== 'in-progress')}
-            disabled={busyAction !== '' || !medRecSession || medRecSession.status !== 'in-progress'}
+            style={S.secondaryBtn(busyAction !== '' || medRecRouteMissing || !medRecSession || medRecSession.status !== 'in-progress')}
+            disabled={busyAction !== '' || medRecRouteMissing || !medRecSession || medRecSession.status !== 'in-progress'}
             onClick={completeMedRec}
           >
             Complete Med Rec + TIU
@@ -2006,6 +2098,53 @@ function MovementTimelineTab() {
 
 export default function InpatientPage() {
   const [tab, setTab] = useState<Tab>('census');
+  const [bootstrapLoading, setBootstrapLoading] = useState(true);
+  const [bootstrapError, setBootstrapError] = useState('');
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const bootstrap = async () => {
+      setBootstrapLoading(true);
+      try {
+        await apiFetch('/vista/inpatient/wards');
+        if (!cancelled) setBootstrapError('');
+      } catch (err: any) {
+        if (!cancelled) setBootstrapError(err?.message || 'Unable to load inpatient operations.');
+      } finally {
+        if (!cancelled) setBootstrapLoading(false);
+      }
+    };
+
+    void bootstrap();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  if (bootstrapLoading) {
+    return (
+      <div style={S.page}>
+        <div style={S.header}>
+          <h2 style={S.title}>Inpatient Operations</h2>
+          <span style={S.sourceTag}>VistA-sourced</span>
+        </div>
+        <div style={S.loading}>Loading inpatient operations...</div>
+      </div>
+    );
+  }
+
+  if (bootstrapError) {
+    return (
+      <div style={S.page}>
+        <div style={S.header}>
+          <h2 style={S.title}>Inpatient Operations</h2>
+          <span style={S.sourceTag}>VistA-sourced</span>
+        </div>
+        <div style={S.error}>Unable to load inpatient operations. {bootstrapError}</div>
+      </div>
+    );
+  }
 
   return (
     <div style={S.page}>

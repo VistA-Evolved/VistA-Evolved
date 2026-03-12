@@ -4,6 +4,10 @@ import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 import { requireSession, requireRole } from '../../auth/auth-routes.js';
 
+function normalizeField(value?: string) {
+  return (value ?? '').trim();
+}
+
 export default async function vistaWorkforceRoutes(server: FastifyInstance) {
   server.get('/admin/vista/workforce/providers', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -17,7 +21,13 @@ export default async function vistaWorkforceRoutes(server: FastifyInstance) {
       }
       const data = filtered.map((line: string) => {
         const parts = line.split('^');
-        return { ien: parts[0], name: parts[1], npi: parts[2], dea: parts[3], taxonomy: parts[4] };
+        return {
+          ien: normalizeField(parts[0]),
+          name: normalizeField(parts[1]),
+          npi: normalizeField(parts[2]),
+          dea: normalizeField(parts[3]),
+          personClassIen: normalizeField(parts[4]),
+        };
       });
       return { ok: true, source: 'vista', rpcUsed: 'VE PROV LIST', count: data.length, data };
     } catch (err: any) {
@@ -37,9 +47,9 @@ export default async function vistaWorkforceRoutes(server: FastifyInstance) {
         return reply.code(400).send({ ok: false, error: filtered[0].split('^').slice(1).join('^') });
       }
       const detail: Record<string, string> = {};
-      filtered.forEach((line: string) => {
+      filtered.slice(1).forEach((line: string) => {
         const [key, ...rest] = line.split('^');
-        if (key) detail[key] = rest.join('^');
+        if (key) detail[normalizeField(key)] = normalizeField(rest.join('^'));
       });
       return { ok: true, source: 'vista', rpcUsed: 'VE PROV DETAIL', data: detail };
     } catch (err: any) {
@@ -59,7 +69,12 @@ export default async function vistaWorkforceRoutes(server: FastifyInstance) {
       }
       const data = filtered.map((line: string) => {
         const parts = line.split('^');
-        return { ien: parts[0], name: parts[1], classification: parts[2], area: parts[3] };
+        return {
+          ien: normalizeField(parts[0]),
+          name: normalizeField(parts[1]),
+          classification: normalizeField(parts[2]),
+          area: normalizeField(parts[3]),
+        };
       });
       return { ok: true, source: 'vista', rpcUsed: 'VE PERSON CLASS LIST', count: data.length, data };
     } catch (err: any) {

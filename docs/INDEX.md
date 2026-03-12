@@ -16,6 +16,9 @@
 ### Policy & Governance
 
 - [docs/POLICY.md](POLICY.md) -- Documentation policy (allowed/forbidden roots)
+- [docs/governance/PROOF-AND-GOVERNANCE.md](governance/PROOF-AND-GOVERNANCE.md) -- Proof-driven build system: non-negotiable rules, 9-stage build order, required task format
+- [docs/canonical/source-of-truth-index.md](canonical/source-of-truth-index.md) -- Which doc governs repo rules, runtime truth, upstream sources, prompts, verification
+- [GOVERNANCE.md](../GOVERNANCE.md) -- Root summary: repo as salvage + governed platform; future work follows protocol
 - [prompts/00-ORDERING-RULES.md](../prompts/00-ORDERING-RULES.md) -- Prompt naming conventions
 
 ### Architecture

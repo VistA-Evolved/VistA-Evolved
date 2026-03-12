@@ -16,6 +16,21 @@ import { useEffect, useState, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE as API } from '@/lib/api-config';
 
+async function apiFetch(path: string, opts?: RequestInit) {
+  const res = await fetch(`${API}${path}`, {
+    credentials: 'include',
+    ...opts,
+    headers: {
+      ...(opts?.headers || {}),
+    },
+  });
+  const data = await res.json();
+  if (!res.ok || data?.ok === false) {
+    throw new Error(data?.error || data?.message || 'Request failed');
+  }
+  return data;
+}
+
 interface ReadinessItem {
   id: string;
   label: string;
@@ -52,6 +67,7 @@ interface FacilitySetup {
 export default function PhilHealthSetupPage() {
   const [setup, setSetup] = useState<FacilitySetup | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -70,19 +86,16 @@ export default function PhilHealthSetupPage() {
   const fetchSetup = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${API}/rcm/philhealth/setup`, { credentials: 'include' });
-      const data = await res.json();
-      if (data.ok) {
-        setSetup(data.setup);
-        setFacilityCode(data.setup.facilityCode || '');
-        setFacilityName(data.setup.facilityName || '');
-        setAccreditationNumber(data.setup.accreditationNumber || '');
-        setAccreditationExpiry(data.setup.accreditationExpiry || '');
-      } else {
-        setError(data.error || 'Failed to load setup');
-      }
-    } catch {
-      setError('Failed to connect to API');
+      setLoadError(null);
+      const data = await apiFetch('/rcm/philhealth/setup');
+      setSetup(data.setup);
+      setFacilityCode(data.setup.facilityCode || '');
+      setFacilityName(data.setup.facilityName || '');
+      setAccreditationNumber(data.setup.accreditationNumber || '');
+      setAccreditationExpiry(data.setup.accreditationExpiry || '');
+    } catch (err) {
+      setSetup(null);
+      setLoadError(err instanceof Error ? err.message : 'Failed to load setup');
     } finally {
       setLoading(false);
     }
@@ -182,6 +195,40 @@ export default function PhilHealthSetupPage() {
   const readinessTotal = setup?.readinessChecklist.length ?? 0;
 
   if (loading) return <div style={{ padding: 24 }}>Loading PhilHealth setup...</div>;
+
+  if (loadError) {
+    return (
+      <div style={{ padding: 24, maxWidth: 900 }}>
+        <div
+          style={{
+            background: '#fef3c7',
+            border: '1px solid #f59e0b',
+            borderRadius: 6,
+            padding: '12px 16px',
+            marginBottom: 16,
+            fontSize: 13,
+          }}
+        >
+          <strong>NOT CERTIFIED</strong> -- This module generates eClaims 3.0-structured export
+          packages for review and facility readiness assessment. It does NOT submit claims to
+          PhilHealth. Facility certification with PhilHealth is required before real submission.
+        </div>
+        <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16 }}>PhilHealth Facility Setup</h2>
+        <div
+          style={{
+            background: '#fee2e2',
+            border: '1px solid #ef4444',
+            borderRadius: 4,
+            padding: '8px 12px',
+            marginBottom: 12,
+            fontSize: 13,
+          }}
+        >
+          Unable to load PhilHealth setup. {loadError}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ padding: 24, maxWidth: 900 }}>

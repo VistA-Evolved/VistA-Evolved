@@ -5,6 +5,31 @@ import { API_BASE } from '@/lib/api-config';
 
 type Tab = 'items' | 'vendors' | 'purchase-orders';
 
+const tabStyle = {
+  padding: '12px 20px',
+  cursor: 'pointer',
+  fontSize: 14,
+  fontWeight: 600,
+  borderTop: 'none',
+  borderRight: 'none',
+  borderBottom: '2px solid transparent',
+  borderLeft: 'none',
+  background: 'transparent',
+} as const;
+
+const activeTabStyle = {
+  ...tabStyle,
+  color: '#2563eb',
+  borderBottom: '2px solid #2563eb',
+  marginBottom: -2,
+} as const;
+
+const inactiveTabStyle = {
+  ...tabStyle,
+  color: '#64748b',
+  marginBottom: -2,
+} as const;
+
 export default function InventoryAdminPage() {
   const [tab, setTab] = useState<Tab>('items');
   const [items, setItems] = useState<any[]>([]);
@@ -45,7 +70,11 @@ export default function InventoryAdminPage() {
     { id: 'purchase-orders', label: 'Purchase Orders' },
   ];
 
-  const filteredItems = items.filter((i: any) => !search || (i.name || '').toLowerCase().includes(search.toLowerCase()));
+  const filteredItems = items.filter((i: any) => {
+    if (!search) return true;
+    const query = search.toLowerCase();
+    return [i.name, i.nsn, i.unitOfIssue].some((value: any) => String(value || '').toLowerCase().includes(query));
+  });
   const filteredVendors = vendors.filter((v: any) => !search || (v.name || '').toLowerCase().includes(search.toLowerCase()));
 
   return (
@@ -57,11 +86,7 @@ export default function InventoryAdminPage() {
 
       <div style={{ display: 'flex', gap: 0, borderBottom: '2px solid #e2e8f0', background: '#fff', padding: '0 32px' }}>
         {tabs.map(t => (
-          <button key={t.id} onClick={() => { setTab(t.id); setSearch(''); }} style={{
-            padding: '12px 20px', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 600,
-            background: 'transparent', color: tab === t.id ? '#2563eb' : '#64748b',
-            borderBottom: tab === t.id ? '2px solid #2563eb' : '2px solid transparent', marginBottom: -2,
-          }}>{t.label}</button>
+          <button key={t.id} onClick={() => { setTab(t.id); setSearch(''); }} style={tab === t.id ? activeTabStyle : inactiveTabStyle}>{t.label}</button>
         ))}
       </div>
 
@@ -78,9 +103,9 @@ export default function InventoryAdminPage() {
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
                 <thead><tr style={{ background: '#f8fafc' }}>
                   <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>IEN</th>
-                  <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>Item Name</th>
+                  <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>Name</th>
                   <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>NSN</th>
-                  <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>Category</th>
+                  <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>Unit of Issue</th>
                 </tr></thead>
                 <tbody>
                   {filteredItems.length === 0 && <tr><td colSpan={4} style={{ padding: 20, textAlign: 'center', color: '#94a3b8' }}>No items found</td></tr>}
@@ -88,8 +113,8 @@ export default function InventoryAdminPage() {
                     <tr key={item.ien} onClick={() => fetchDetail(item.ien)} style={{ cursor: 'pointer', borderBottom: '1px solid #f1f5f9' }}>
                       <td style={{ padding: '8px 14px', color: '#64748b' }}>{item.ien}</td>
                       <td style={{ padding: '8px 14px', fontWeight: 600 }}>{item.name}</td>
-                      <td style={{ padding: '8px 14px', fontFamily: 'monospace' }}>{item.nsn}</td>
-                      <td style={{ padding: '8px 14px' }}>{item.category}</td>
+                      <td style={{ padding: '8px 14px', fontFamily: 'monospace' }}>{item.nsn || '-'}</td>
+                      <td style={{ padding: '8px 14px' }}>{item.unitOfIssue || '-'}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -115,8 +140,8 @@ export default function InventoryAdminPage() {
               <thead><tr style={{ background: '#f8fafc' }}>
                 <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>IEN</th>
                 <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>Vendor Name</th>
-                <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>Contact</th>
                 <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>Phone</th>
+                <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>City</th>
               </tr></thead>
               <tbody>
                 {filteredVendors.length === 0 && <tr><td colSpan={4} style={{ padding: 20, textAlign: 'center', color: '#94a3b8' }}>No vendors found</td></tr>}
@@ -124,8 +149,8 @@ export default function InventoryAdminPage() {
                   <tr key={v.ien} style={{ borderBottom: '1px solid #f1f5f9' }}>
                     <td style={{ padding: '8px 14px', color: '#64748b' }}>{v.ien}</td>
                     <td style={{ padding: '8px 14px', fontWeight: 600 }}>{v.name}</td>
-                    <td style={{ padding: '8px 14px' }}>{v.contact}</td>
-                    <td style={{ padding: '8px 14px' }}>{v.phone}</td>
+                    <td style={{ padding: '8px 14px' }}>{v.phone || '-'}</td>
+                    <td style={{ padding: '8px 14px' }}>{v.city || '-'}</td>
                   </tr>
                 ))}
               </tbody>
@@ -138,20 +163,20 @@ export default function InventoryAdminPage() {
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
               <thead><tr style={{ background: '#f8fafc' }}>
                 <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>IEN</th>
-                <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>PO Number</th>
-                <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>Status</th>
-                <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>Date</th>
-                <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>Vendor</th>
+                <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>0 Node Name</th>
+                <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>0 Node Piece 2</th>
+                <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>0 Node Piece 3</th>
+                <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>0 Node Piece 4</th>
               </tr></thead>
               <tbody>
                 {purchaseOrders.length === 0 && <tr><td colSpan={5} style={{ padding: 20, textAlign: 'center', color: '#94a3b8' }}>No purchase orders found</td></tr>}
                 {purchaseOrders.map((po: any) => (
                   <tr key={po.ien} style={{ borderBottom: '1px solid #f1f5f9' }}>
                     <td style={{ padding: '8px 14px', color: '#64748b' }}>{po.ien}</td>
-                    <td style={{ padding: '8px 14px', fontWeight: 600 }}>{po.poNumber}</td>
-                    <td style={{ padding: '8px 14px' }}>{po.status}</td>
-                    <td style={{ padding: '8px 14px' }}>{po.date}</td>
-                    <td style={{ padding: '8px 14px' }}>{po.vendor}</td>
+                    <td style={{ padding: '8px 14px', fontWeight: 600 }}>{po.file0Name}</td>
+                    <td style={{ padding: '8px 14px' }}>{po.file0Piece2}</td>
+                    <td style={{ padding: '8px 14px' }}>{po.file0Piece3}</td>
+                    <td style={{ padding: '8px 14px' }}>{po.file0Piece4}</td>
                   </tr>
                 ))}
               </tbody>

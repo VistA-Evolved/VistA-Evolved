@@ -105,6 +105,18 @@ interface WardPatient {
   allergyCount: number;
 }
 
+interface HandoffPendingTarget {
+  rpc?: string;
+  package?: string;
+  reason?: string;
+}
+
+interface PatientLoadStatus {
+  tone: 'loaded' | 'empty' | 'pending';
+  message: string;
+  details: string[];
+}
+
 /* ------------------------------------------------------------------ */
 /* Styles                                                               */
 /* ------------------------------------------------------------------ */
@@ -412,6 +424,7 @@ function CreateTab({ ward }: { ward: string }) {
   const [wardPatients, setWardPatients] = useState<WardPatient[]>([]);
   const [loadingPatients, setLoadingPatients] = useState(false);
   const [patientError, setPatientError] = useState('');
+  const [patientLoadStatus, setPatientLoadStatus] = useState<PatientLoadStatus | null>(null);
 
   // Shift info
   const [shiftLabel, setShiftLabel] = useState('Day 0700-1900');
@@ -444,10 +457,28 @@ function CreateTab({ ward }: { ward: string }) {
     if (!ward) return;
     setLoadingPatients(true);
     setPatientError('');
+    setPatientLoadStatus(null);
     try {
       const data = await apiFetch(`/handoff/ward-patients?ward=${encodeURIComponent(ward)}`);
       if (data.ok) {
         const pts = data.patients || [];
+        const pendingTargets = Array.isArray(data.pendingTargets)
+          ? (data.pendingTargets as HandoffPendingTarget[])
+          : [];
+        const rpcUsed = Array.isArray(data.rpcUsed)
+          ? data.rpcUsed.filter(Boolean)
+          : typeof data.rpcUsed === 'string' && data.rpcUsed
+            ? [data.rpcUsed]
+            : [];
+        const details = [
+          data.vistaGrounding?.sandboxNote,
+          ...pendingTargets.map((target) => {
+            const parts = [target.rpc, target.package].filter(Boolean);
+            if (target.reason) parts.push(target.reason);
+            return parts.join(' -- ');
+          }),
+          ...(rpcUsed.length ? [`RPC: ${rpcUsed.join(', ')}`] : []),
+        ].filter((value): value is string => Boolean(value));
         setWardPatients(pts);
         setPatientEntries(
           pts.map((p: WardPatient) => ({
@@ -460,6 +491,27 @@ function CreateTab({ ward }: { ward: string }) {
             nursingNotes: '',
           }))
         );
+        setSelectedPatientIdx(pts.length > 0 ? 0 : null);
+        if (pts.length === 0 && pendingTargets.length > 0) {
+          setPatientLoadStatus({
+            tone: 'pending',
+            message:
+              'Ward patient assembly is integration-pending in this sandbox lane. No CRHD-backed handoff patient list is available for this ward yet.',
+            details,
+          });
+        } else if (pts.length === 0) {
+          setPatientLoadStatus({
+            tone: 'empty',
+            message: `No handoff patients were returned for ${ward}.`,
+            details,
+          });
+        } else {
+          setPatientLoadStatus({
+            tone: 'loaded',
+            message: `Loaded ${pts.length} ward patients from the current handoff source.`,
+            details,
+          });
+        }
       } else {
         setPatientError(data.error || 'Failed to load patients');
       }
@@ -639,6 +691,46 @@ function CreateTab({ ward }: { ward: string }) {
           Ward: {ward} | {wardPatients.length} patients loaded
         </span>
       </div>
+
+      {patientLoadStatus && (
+        <div
+          style={{
+            marginBottom: 16,
+            padding: '10px 12px',
+            borderRadius: 6,
+            fontSize: 13,
+            background:
+              patientLoadStatus.tone === 'pending'
+                ? colors.pendingBg
+                : patientLoadStatus.tone === 'loaded'
+                  ? colors.acceptedBg
+                  : '#f7fafc',
+            border:
+              patientLoadStatus.tone === 'pending'
+                ? `1px solid ${colors.pendingBorder}`
+                : patientLoadStatus.tone === 'loaded'
+                  ? `1px solid ${colors.acceptedBorder}`
+                  : `1px solid ${colors.border}`,
+            color:
+              patientLoadStatus.tone === 'pending'
+                ? '#744210'
+                : patientLoadStatus.tone === 'loaded'
+                  ? '#22543d'
+                  : colors.text,
+          }}
+        >
+          <div style={{ fontWeight: 600, marginBottom: patientLoadStatus.details.length ? 6 : 0 }}>
+            {patientLoadStatus.message}
+          </div>
+          {patientLoadStatus.details.length > 0 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              {patientLoadStatus.details.map((detail) => (
+                <div key={detail}>{detail}</div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {patientEntries.length > 0 && (
         <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: 16 }}>

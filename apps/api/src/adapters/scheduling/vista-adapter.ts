@@ -241,7 +241,19 @@ function normalizeSdesDateInput(value: string): string {
   return parsed.toISOString().slice(0, 10);
 }
 
-function hasVistaRuntimeError(rawLines: string[]): boolean {
+function isVistaRuntimeErrorLine(rawLine: string): boolean {
+  const line = rawLine.trim();
+  if (!line) return false;
+  return (
+    /^-1\^/i.test(line) ||
+    /M\s+ERROR/i.test(line) ||
+    /%YDB-E-/i.test(line) ||
+    /ACTLSTTOOLONG/i.test(line) ||
+    /^.?Remote Procedure .+ doesn(?:'|\\u0027)?t exist/i.test(line)
+  );
+}
+
+export function hasVistaRuntimeError(rawLines: string[]): boolean {
   const raw = rawLines.join('\n');
   return (
     /(?:^|\n)-1\^/i.test(raw) ||
@@ -438,17 +450,18 @@ function parseEncounterDiagnoses(raw: string, encounterIen: string): EncounterDi
 }
 
 /** Parse SD W/L RETRIVE FULL DATA response */
-function parseWaitListEntries(raw: string): WaitListEntry[] {
+export function parseWaitListEntries(raw: string): WaitListEntry[] {
   const lines = raw.split('\n').filter((l) => l.trim() && !l.startsWith('-1'));
   const entries: WaitListEntry[] = [];
 
   for (const line of lines) {
+    if (isVistaRuntimeErrorLine(line)) continue;
     const pieces = line.split('^');
     if (pieces.length < 3) continue;
     const ien = pieces[0]?.trim();
     const patDfn = pieces[1]?.trim();
     const clinicName = pieces[2]?.trim();
-    if (!ien) continue;
+    if (!ien || !/^\d+$/.test(ien)) continue;
 
     entries.push({
       id: `wl-${ien}`,
@@ -463,6 +476,25 @@ function parseWaitListEntries(raw: string): WaitListEntry[] {
     });
   }
 
+  return entries;
+}
+
+export function parseReferenceLookupLines(rawLines: string[]): Array<{ ien: string; name: string }> {
+  if (hasVistaRuntimeError(rawLines)) {
+    return [];
+  }
+
+  const entries: Array<{ ien: string; name: string }> = [];
+  for (const line of rawLines) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('-1') || isVistaRuntimeErrorLine(trimmed)) continue;
+    const pieces = trimmed.split('^');
+    if (pieces.length < 2) continue;
+    const ien = pieces[0]?.trim() || '';
+    const name = pieces[1]?.trim() || '';
+    if (!ien || !/^\d+$/.test(ien) || !name) continue;
+    entries.push({ ien, name });
+  }
   return entries;
 }
 
@@ -1099,8 +1131,14 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
 
     try {
       const rawLines = await safeCallRpc('SD W/L RETRIVE FULL DATA', [clinicIen || '']);
-      vistaEntries = parseWaitListEntries(rawLines.join('\n'));
-      rpcOk = true;
+      if (hasVistaRuntimeError(rawLines)) {
+        log.warn('SD W/L RETRIVE FULL DATA returned runtime error payload', {
+          error: rawLines.join('\n').trim().split('\n')[0],
+        });
+      } else {
+        vistaEntries = parseWaitListEntries(rawLines.join('\n'));
+        rpcOk = true;
+      }
     } catch (err: any) {
       log.warn('SD W/L RETRIVE FULL DATA failed', { error: safeErr(err) });
     }
@@ -1201,15 +1239,15 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
     // SD W/L PRIORITY (File 409.32, field .09)
     try {
       const rawLines = await safeCallRpc('SD W/L PRIORITY', ['']);
-      for (const line of rawLines) {
-        const trimmed = line.trim();
-        if (!trimmed || trimmed.startsWith('-1')) continue;
-        const pieces = trimmed.split('^');
-        if (pieces.length >= 2) {
-          result.priorities.push({ ien: pieces[0]?.trim() || '', name: pieces[1]?.trim() || '' });
-        }
+      if (hasVistaRuntimeError(rawLines)) {
+        rpcResults.push('PRIORITY:runtime_error');
+        log.warn('SD W/L PRIORITY returned runtime error payload', {
+          error: rawLines.join('\n').trim().split('\n')[0],
+        });
+      } else {
+        result.priorities.push(...parseReferenceLookupLines(rawLines));
+        rpcResults.push(`PRIORITY:${result.priorities.length}`);
       }
-      rpcResults.push(`PRIORITY:${result.priorities.length}`);
     } catch (err: any) {
       rpcResults.push('PRIORITY:error');
       log.warn('SD W/L PRIORITY failed', { error: safeErr(err) });
@@ -1218,15 +1256,15 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
     // SD W/L TYPE
     try {
       const rawLines = await safeCallRpc('SD W/L TYPE', ['']);
-      for (const line of rawLines) {
-        const trimmed = line.trim();
-        if (!trimmed || trimmed.startsWith('-1')) continue;
-        const pieces = trimmed.split('^');
-        if (pieces.length >= 2) {
-          result.types.push({ ien: pieces[0]?.trim() || '', name: pieces[1]?.trim() || '' });
-        }
+      if (hasVistaRuntimeError(rawLines)) {
+        rpcResults.push('TYPE:runtime_error');
+        log.warn('SD W/L TYPE returned runtime error payload', {
+          error: rawLines.join('\n').trim().split('\n')[0],
+        });
+      } else {
+        result.types.push(...parseReferenceLookupLines(rawLines));
+        rpcResults.push(`TYPE:${result.types.length}`);
       }
-      rpcResults.push(`TYPE:${result.types.length}`);
     } catch (err: any) {
       rpcResults.push('TYPE:error');
       log.warn('SD W/L TYPE failed', { error: safeErr(err) });
@@ -1235,15 +1273,15 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
     // SD W/L CURRENT STATUS
     try {
       const rawLines = await safeCallRpc('SD W/L CURRENT STATUS', ['']);
-      for (const line of rawLines) {
-        const trimmed = line.trim();
-        if (!trimmed || trimmed.startsWith('-1')) continue;
-        const pieces = trimmed.split('^');
-        if (pieces.length >= 2) {
-          result.statuses.push({ ien: pieces[0]?.trim() || '', name: pieces[1]?.trim() || '' });
-        }
+      if (hasVistaRuntimeError(rawLines)) {
+        rpcResults.push('STATUS:runtime_error');
+        log.warn('SD W/L CURRENT STATUS returned runtime error payload', {
+          error: rawLines.join('\n').trim().split('\n')[0],
+        });
+      } else {
+        result.statuses.push(...parseReferenceLookupLines(rawLines));
+        rpcResults.push(`STATUS:${result.statuses.length}`);
       }
-      rpcResults.push(`STATUS:${result.statuses.length}`);
     } catch (err: any) {
       rpcResults.push('STATUS:error');
       log.warn('SD W/L CURRENT STATUS failed', { error: safeErr(err) });

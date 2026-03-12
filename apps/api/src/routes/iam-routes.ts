@@ -77,6 +77,7 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
     requireRole(session, ['admin', 'support'], reply);
 
     const scopedEvents = queryImmutableAudit({ tenantId: session.tenantId, limit: 50_000 });
+    const verification = verifyAuditChain();
     const byAction: Record<string, number> = {};
     const byOutcome: Record<string, number> = {};
     for (const event of scopedEvents) {
@@ -87,6 +88,8 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
       totalEntries: scopedEvents.length,
       byAction,
       byOutcome,
+      chainValid: verification.valid,
+      chainScope: 'global',
       oldestTimestamp: scopedEvents[0]?.timestamp ?? null,
       newestTimestamp: scopedEvents[scopedEvents.length - 1]?.timestamp ?? null,
     };

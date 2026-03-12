@@ -1520,13 +1520,14 @@ export function registerInlineRoutes(server: FastifyInstance): void {
   });
 
   server.get('/vista/default-patient-list', async (request) => {
+    const RPC_NAME = 'ORQPT DEFAULT PATIENT LIST';
     try {
       validateCredentials();
     } catch (err: any) {
       return { ok: false, error: safeErr(err) };
     }
     try {
-      const lines = await safeCallRpc('ORQPT DEFAULT PATIENT LIST', []);
+      const lines = await safeCallRpc(RPC_NAME, []);
       const results = lines
         .map((line) => {
           const parts = line.split('^').map((s) => s.trim());
@@ -1541,9 +1542,9 @@ export function registerInlineRoutes(server: FastifyInstance): void {
       audit('phi.patient-list', 'success', auditActor(request), {
         detail: { count: results.length },
       });
-      return { ok: true, count: results.length, results };
+      return { ok: true, count: results.length, results, patients: results, rpcUsed: RPC_NAME };
     } catch (err: any) {
-      return { ok: false, error: safeErr(err) };
+      return { ok: false, error: safeErr(err), results: [], patients: [], rpcUsed: RPC_NAME };
     }
   });
 

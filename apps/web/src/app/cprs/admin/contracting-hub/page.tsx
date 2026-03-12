@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { getCsrfTokenSync } from '@/lib/csrf';
+import { API_BASE } from '@/lib/api-config';
 
 /* -- Helpers -------------------------------------------------- */
 
@@ -44,6 +45,26 @@ interface Dashboard {
   payers: ContractingSummary[];
 }
 
+async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
+  const response = await fetch(`${API_BASE}${path}`, {
+    credentials: 'include',
+    ...init,
+  });
+
+  let payload: any = null;
+  try {
+    payload = await response.json();
+  } catch {
+    payload = null;
+  }
+
+  if (!response.ok || !payload?.ok) {
+    throw new Error(payload?.error || payload?.message || `Request failed: ${response.status}`);
+  }
+
+  return payload as T;
+}
+
 /* -- Badge ---------------------------------------------------- */
 
 function StatusBadge({ status }: { status: string }) {
@@ -81,14 +102,14 @@ export default function ContractingHubPage() {
 
   const loadDashboard = useCallback(() => {
     setLoading(true);
-    fetch('/rcm/hmo/contracting', { credentials: 'include' })
-      .then((r) => r.json())
+    setError(null);
+    apiFetch<{ dashboard: Dashboard }>('/rcm/hmo/contracting')
       .then((resp) => {
-        if (resp.ok) setDashboard(resp.dashboard);
-        else setError('Failed to load contracting dashboard');
+        setDashboard(resp.dashboard);
         setLoading(false);
       })
       .catch((e) => {
+        setDashboard(null);
         setError(e.message);
         setLoading(false);
       });
@@ -101,19 +122,16 @@ export default function ContractingHubPage() {
   const handleInit = async (payerId: string) => {
     setInitResult(null);
     try {
-      const resp = await fetch(`/rcm/hmo/contracting/${payerId}/init`, {
+      const data = await apiFetch<{ created: number; skipped: number }>(
+        `/rcm/hmo/contracting/${payerId}/init`,
+        {
         method: 'POST',
-        credentials: 'include',
         headers: { 'Content-Type': 'application/json', 'x-csrf-token': getCsrfToken() },
         body: JSON.stringify({ actor: 'admin' }),
-      });
-      const data = await resp.json();
-      if (data.ok) {
-        setInitResult(`Created ${data.created} tasks, skipped ${data.skipped}`);
-        loadDashboard();
-      } else {
-        setInitResult(`Error: ${data.error ?? 'unknown'}`);
-      }
+        }
+      );
+      setInitResult(`Created ${data.created} tasks, skipped ${data.skipped}`);
+      loadDashboard();
     } catch (e: any) {
       setInitResult(`Error: ${e.message}`);
     }
@@ -121,9 +139,8 @@ export default function ContractingHubPage() {
 
   const handleStatusChange = async (taskId: string, newStatus: string) => {
     try {
-      const resp = await fetch(`/rcm/hmo/contracting/tasks/${taskId}`, {
+      await apiFetch<{ task: Task }>(`/rcm/hmo/contracting/tasks/${taskId}`, {
         method: 'PATCH',
-        credentials: 'include',
         headers: { 'Content-Type': 'application/json', 'x-csrf-token': getCsrfToken() },
         body: JSON.stringify({
           status: newStatus,
@@ -131,8 +148,7 @@ export default function ContractingHubPage() {
           actor: 'admin',
         }),
       });
-      const data = await resp.json();
-      if (data.ok) loadDashboard();
+      loadDashboard();
     } catch {
       setError('Failed to update task status');
     }

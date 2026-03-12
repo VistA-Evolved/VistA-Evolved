@@ -176,7 +176,7 @@ const TYPE_LABELS: Record<string, string> = {
 /* ------------------------------------------------------------------ */
 
 export default function IntegrationsPage() {
-  const { hasRole } = useSession();
+  const { hasRole, user } = useSession();
   const [tab, setTab] = useState<
     'registry' | 'legacy' | 'onboard' | 'hl7hlo' | 'msgbrowser' | 'hybrids'
   >('registry');
@@ -252,7 +252,7 @@ export default function IntegrationsPage() {
   });
   const [onboardMsg, setOnboardMsg] = useState<string | null>(null);
 
-  const tenantId = 'default';
+  const tenantId = user?.tenantId ?? 'default';
 
   /* -- Fetchers ---------------------------------------------------- */
 
@@ -1822,9 +1822,9 @@ export default function IntegrationsPage() {
                             </tr>
                           </thead>
                           <tbody>
-                            {msgDetail.detail.segments.map((seg) => (
+                            {msgDetail.detail.segments.map((seg, index) => (
                               <tr
-                                key={seg.type}
+                                key={`${seg.type}-${seg.count}-${index}`}
                                 style={{ borderBottom: '1px solid var(--cprs-border)' }}
                               >
                                 <td

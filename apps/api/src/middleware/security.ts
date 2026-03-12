@@ -153,6 +153,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/portal\/staff\//, auth: 'session' }, // Phase 623: CPRS staff queues use clinician session auth
   { pattern: /^\/portal\/auth\//, auth: 'none' }, // Phase 26: portal login/logout/session (own auth)
   { pattern: /^\/portal\//, auth: 'none' }, // Phase 26: portal routes (own session check in handler)
+  { pattern: /^\/ai\/portal\//, auth: 'none' }, // Phase 33: portal AI endpoints use portal session auth in handler
   { pattern: /^\/telehealth\/health$/, auth: 'session' }, // Phase 30: telehealth health (clinician)
   { pattern: /^\/telehealth\/device-check\//, auth: 'none' }, // Phase 30: device check requirements (public)
   { pattern: /^\/telehealth\//, auth: 'session' }, // Phase 30: telehealth rooms (clinician session)

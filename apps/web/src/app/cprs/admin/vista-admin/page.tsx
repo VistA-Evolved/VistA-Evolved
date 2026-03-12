@@ -55,8 +55,20 @@ interface TabDef {
 async function apiFetch(path: string, opts?: RequestInit) {
   try {
     const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
-    if (!res.ok) return { ok: false, error: `HTTP ${res.status}`, data: [] };
-    return res.json();
+    let json: any = null;
+    try {
+      json = await res.json();
+    } catch {
+      json = null;
+    }
+    if (!res.ok) {
+      return {
+        ok: false,
+        error: typeof json?.error === 'string' ? json.error : `HTTP ${res.status}`,
+        data: [],
+      };
+    }
+    return json;
   } catch (e: unknown) {
     return { ok: false, error: e instanceof Error ? e.message : 'Network error', data: [] };
   }
@@ -275,12 +287,18 @@ function DetailModal({ title, data, onClose }: {
 /* Generic domain hook                                                 */
 /* ================================================================== */
 
-function useDomainData(endpoint: string) {
+function useDomainData(endpoint: string, enabled = true) {
   const [data, setData] = useState<Record<string, unknown>[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(enabled);
   const [error, setError] = useState('');
 
   const load = useCallback(async () => {
+    if (!enabled) {
+      setData([]);
+      setError('');
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     setError('');
     const res = await apiFetch(endpoint);
@@ -291,7 +309,7 @@ function useDomainData(endpoint: string) {
       setError(res.error || 'Failed to fetch data');
     }
     setLoading(false);
-  }, [endpoint]);
+  }, [enabled, endpoint]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -303,12 +321,12 @@ function useDomainData(endpoint: string) {
 /* ================================================================== */
 
 function SystemSecurityPanel() {
-  const users = useDomainData('/vista/admin/users');
-  const params = useDomainData('/vista/admin/parameters');
-  const taskman = useDomainData('/vista/admin/taskman');
-  const secKeys = useDomainData('/vista/admin/security-keys');
-  const [search, setSearch] = useState('');
   const [subTab, setSubTab] = useState<'users' | 'keys' | 'menus' | 'taskman' | 'params'>('users');
+  const users = useDomainData('/vista/admin/users', subTab === 'users' || subTab === 'menus');
+  const params = useDomainData('/vista/admin/parameters', subTab === 'params');
+  const taskman = useDomainData('/vista/admin/taskman', subTab === 'taskman');
+  const secKeys = useDomainData('/vista/admin/keys', subTab === 'keys');
+  const [search, setSearch] = useState('');
   const [selected, setSelected] = useState<Record<string, unknown> | null>(null);
 
   const filteredUsers = useMemo(() => {
@@ -1629,11 +1647,48 @@ function ClinicalAppsPanel() {
 export default function VistaAdminPage() {
   const [tab, setTab] = useState<DomainTab>('system');
   const [showTerminal, setShowTerminal] = useState(false);
+  const [bootstrapLoading, setBootstrapLoading] = useState(true);
+  const [bootstrapError, setBootstrapError] = useState('');
   const [vistaHealth, setVistaHealth] = useState<{ ok: boolean; vista?: string } | null>(null);
 
-  useEffect(() => {
-    apiFetch('/vista/ping').then(setVistaHealth).catch(() => setVistaHealth({ ok: false }));
+  const bootstrap = useCallback(async () => {
+    setBootstrapLoading(true);
+    setBootstrapError('');
+
+    const access = await apiFetch('/vista/admin/users?count=1');
+    if (access.ok === false) {
+      setShowTerminal(false);
+      setVistaHealth(null);
+      setBootstrapError(access.error || 'Failed to load VistA admin console');
+      setBootstrapLoading(false);
+      return;
+    }
+
+    const health = await apiFetch('/vista/ping');
+    setVistaHealth(health?.ok === false ? { ok: false } : health);
+    setBootstrapLoading(false);
   }, []);
+
+  useEffect(() => {
+    bootstrap().catch(() => {
+      setShowTerminal(false);
+      setVistaHealth(null);
+      setBootstrapError('Failed to load VistA admin console');
+      setBootstrapLoading(false);
+    });
+  }, [bootstrap]);
+
+  if (bootstrapLoading) {
+    return <LoadingState text="Loading VistA admin console..." />;
+  }
+
+  if (bootstrapError) {
+    return (
+      <div style={{ padding: 24 }}>
+        <ErrorState error={`Unable to load VistA admin console. ${bootstrapError}`} onRetry={() => { void bootstrap(); }} />
+      </div>
+    );
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', fontFamily: 'var(--font-geist-sans, system-ui, sans-serif)', color: 'var(--cprs-text, #1a1a1a)', background: 'var(--cprs-bg, #f5f5f5)' }}>

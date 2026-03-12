@@ -59,22 +59,41 @@ async function apiFetch(path: string, opts?: RequestInit) {
   return res.json();
 }
 
+async function apiFetchStrict<T>(path: string, opts?: RequestInit): Promise<T> {
+  const data = await apiFetch(path, opts);
+  if (data && typeof data === 'object' && 'ok' in data && data.ok === false) {
+    throw new Error(typeof data.error === 'string' ? data.error : 'Request failed');
+  }
+  return data as T;
+}
+
 export default function RcmPage() {
   const [tab, setTab] = useState<Tab>('claims');
   const [health, setHealth] = useState<any>(null);
   const [safetyStatus, setSafetyStatus] = useState<any>(null);
   const [backendInfo, setBackendInfo] = useState<{ backend: string } | null>(null);
+  const [bootstrapping, setBootstrapping] = useState(true);
+  const [pageError, setPageError] = useState<string | null>(null);
 
   useEffect(() => {
-    apiFetch('/rcm/health')
-      .then(setHealth)
-      .catch(() => {});
-    apiFetch('/rcm/submission-safety')
-      .then(setSafetyStatus)
-      .catch(() => {});
-    apiFetch('/admin/payer-db/backend')
-      .then(setBackendInfo)
-      .catch(() => {});
+    Promise.all([
+      apiFetchStrict<any>('/rcm/health'),
+      apiFetchStrict<any>('/rcm/submission-safety'),
+      apiFetchStrict<{ backend: string }>('/admin/payer-db/backend'),
+    ])
+      .then(([healthData, safetyData, backendData]) => {
+        setHealth(healthData);
+        setSafetyStatus(safetyData);
+        setBackendInfo(backendData);
+        setPageError(null);
+      })
+      .catch((error: unknown) => {
+        setHealth(null);
+        setSafetyStatus(null);
+        setBackendInfo(null);
+        setPageError(error instanceof Error ? error.message : 'Unable to load RCM console');
+      })
+      .finally(() => setBootstrapping(false));
   }, []);
 
   const tabs: { id: Tab; label: string }[] = [
@@ -114,12 +133,12 @@ export default function RcmPage() {
         }}
       >
         <h2 style={{ margin: 0, fontSize: 18 }}>Revenue Cycle Management</h2>
-        {health && (
+        {!bootstrapping && !pageError && health && (
           <span style={{ fontSize: 11, color: health.ok ? '#198754' : '#dc3545', fontWeight: 600 }}>
             {health.ok ? 'ONLINE' : 'OFFLINE'}
           </span>
         )}
-        {backendInfo && (
+        {!bootstrapping && !pageError && backendInfo && (
           <span
             style={{
               fontSize: 10,
@@ -139,7 +158,7 @@ export default function RcmPage() {
       </div>
 
       {/* Submission Safety Banner (Phase 40) */}
-      {safetyStatus && !safetyStatus.enabled && (
+      {!bootstrapping && !pageError && safetyStatus && !safetyStatus.enabled && (
         <div
           style={{
             padding: '8px 24px',
@@ -157,51 +176,72 @@ export default function RcmPage() {
         </div>
       )}
 
-      {/* Tabs */}
-      <div style={{ display: 'flex', borderBottom: '1px solid #dee2e6', background: '#f8f9fa' }}>
-        {tabs.map((t) => (
-          <button
-            key={t.id}
-            onClick={() => setTab(t.id)}
+      <div style={{ padding: 20 }}>
+        {bootstrapping ? (
+          <div style={{ fontSize: 13, color: '#6c757d' }}>Loading RCM console...</div>
+        ) : pageError ? (
+          <div
             style={{
-              padding: '10px 20px',
-              border: 'none',
-              borderBottom: tab === t.id ? '2px solid #0d6efd' : '2px solid transparent',
-              background: 'transparent',
-              cursor: 'pointer',
+              padding: 16,
+              border: '1px solid #f5c2c7',
+              background: '#f8d7da',
+              color: '#842029',
+              borderRadius: 8,
               fontSize: 13,
-              fontWeight: tab === t.id ? 600 : 400,
-              color: tab === t.id ? '#0d6efd' : '#495057',
             }}
           >
-            {t.label}
-          </button>
-        ))}
-      </div>
+            Unable to load RCM console. {pageError}
+          </div>
+        ) : (
+          <>
+            {/* Tabs */}
+            <div style={{ display: 'flex', borderBottom: '1px solid #dee2e6', background: '#f8f9fa' }}>
+              {tabs.map((t) => (
+                <button
+                  key={t.id}
+                  onClick={() => setTab(t.id)}
+                  style={{
+                    padding: '10px 20px',
+                    border: 'none',
+                    borderBottom: tab === t.id ? '2px solid #0d6efd' : '2px solid transparent',
+                    background: 'transparent',
+                    cursor: 'pointer',
+                    fontSize: 13,
+                    fontWeight: tab === t.id ? 600 : 400,
+                    color: tab === t.id ? '#0d6efd' : '#495057',
+                  }}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
 
-      <div style={{ padding: 20 }}>
-        {tab === 'claims' && <ClaimsTab />}
-        {tab === 'workqueues' && <WorkqueuesTab />}
-        {tab === 'draft-from-vista' && <DraftFromVistaTab />}
-        {tab === 'payers' && <PayersTab />}
-        {tab === 'directory' && <DirectoryTab />}
-        {tab === 'rules' && <RulesTab />}
-        {tab === 'connectors' && <ConnectorsTab />}
-        {tab === 'transactions' && <TransactionsTab />}
-        {tab === 'vista-billing' && <VistaBillingTab />}
-        {tab === 'gateways' && <GatewaysTab />}
-        {tab === 'adapters' && <AdaptersTab />}
-        {tab === 'jobs' && <JobsTab />}
-        {tab === 'eligibility' && <EligibilityTab />}
-        {tab === 'claim-status' && <ClaimStatusTab />}
-        {tab === 'ops-dashboard' && <OpsDashboardTab />}
-        {tab === 'credential-vault' && <CredentialVaultTab />}
-        {tab === 'accreditation' && <AccreditationTab />}
-        {tab === 'claim-lifecycle' && <ClaimLifecycleTab />}
-        {tab === 'evidence' && <EvidenceRegistryTab />}
-        {tab === 'durable-jobs' && <DurableJobsTab />}
-        {tab === 'evidence-gate' && <EvidenceGateTab />}
-        {tab === 'audit' && <AuditTab />}
+            <div style={{ paddingTop: 20 }}>
+              {tab === 'claims' && <ClaimsTab />}
+              {tab === 'workqueues' && <WorkqueuesTab />}
+              {tab === 'draft-from-vista' && <DraftFromVistaTab />}
+              {tab === 'payers' && <PayersTab />}
+              {tab === 'directory' && <DirectoryTab />}
+              {tab === 'rules' && <RulesTab />}
+              {tab === 'connectors' && <ConnectorsTab />}
+              {tab === 'transactions' && <TransactionsTab />}
+              {tab === 'vista-billing' && <VistaBillingTab />}
+              {tab === 'gateways' && <GatewaysTab />}
+              {tab === 'adapters' && <AdaptersTab />}
+              {tab === 'jobs' && <JobsTab />}
+              {tab === 'eligibility' && <EligibilityTab />}
+              {tab === 'claim-status' && <ClaimStatusTab />}
+              {tab === 'ops-dashboard' && <OpsDashboardTab />}
+              {tab === 'credential-vault' && <CredentialVaultTab />}
+              {tab === 'accreditation' && <AccreditationTab />}
+              {tab === 'claim-lifecycle' && <ClaimLifecycleTab />}
+              {tab === 'evidence' && <EvidenceRegistryTab />}
+              {tab === 'durable-jobs' && <DurableJobsTab />}
+              {tab === 'evidence-gate' && <EvidenceGateTab />}
+              {tab === 'audit' && <AuditTab />}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

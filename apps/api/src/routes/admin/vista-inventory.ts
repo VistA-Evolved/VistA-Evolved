@@ -17,7 +17,12 @@ export default async function vistaInventoryRoutes(server: FastifyInstance) {
       }
       const data = filtered.map((line: string) => {
         const parts = line.split('^');
-        return { ien: parts[0], name: parts[1], category: parts[2], status: parts[3] };
+        return {
+          ien: parts[0],
+          name: parts[1],
+          nsn: parts[2],
+          unitOfIssue: parts[3],
+        };
       });
       return { ok: true, source: 'vista', rpcUsed: 'VE INV ITEM LIST', count: data.length, data };
     } catch (err: any) {
@@ -81,7 +86,13 @@ export default async function vistaInventoryRoutes(server: FastifyInstance) {
       }
       const data = filtered.map((line: string) => {
         const parts = line.split('^');
-        return { ien: parts[0], poNumber: parts[1], vendor: parts[2], date: parts[3], status: parts[4] };
+        return {
+          ien: (parts[0] || '').trim(),
+          file0Name: (parts[1] || '').trim(),
+          file0Piece2: (parts[2] || '').trim(),
+          file0Piece3: (parts[3] || '').trim(),
+          file0Piece4: (parts[4] || '').trim(),
+        };
       });
       return { ok: true, source: 'vista', rpcUsed: 'VE INV PO LIST', count: data.length, data };
     } catch (err: any) {

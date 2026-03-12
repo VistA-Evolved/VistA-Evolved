@@ -113,8 +113,51 @@ async function apiFetch<T>(path: string, opts?: RequestInit): Promise<T> {
     ...opts,
     headers,
   });
-  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-  return res.json() as Promise<T>;
+  let json: any = null;
+  try {
+    json = await res.json();
+  } catch {
+    json = null;
+  }
+  if (!res.ok) {
+    throw new Error(typeof json?.error === 'string' ? json.error : `${res.status} ${res.statusText}`);
+  }
+  return json as T;
+}
+
+function ErrorBanner({ message, onRetry }: { message: string; onRetry?: () => void }) {
+  return (
+    <div
+      style={{
+        background: '#3f1d1d',
+        border: '1px solid #7f1d1d',
+        color: '#fecaca',
+        borderRadius: 8,
+        padding: 12,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 12,
+      }}
+    >
+      <span>{message}</span>
+      {onRetry && (
+        <button
+          onClick={onRetry}
+          style={{
+            padding: '6px 12px',
+            background: 'transparent',
+            color: '#fecaca',
+            border: '1px solid #fecaca',
+            borderRadius: 6,
+            cursor: 'pointer',
+          }}
+        >
+          Retry
+        </button>
+      )}
+    </div>
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -135,8 +178,10 @@ function DefinitionsTab({ onStarted }: { onStarted: () => void }) {
         '/admin/workflows/definitions'
       );
       setDefs(data.definitions ?? []);
-    } catch {
+      setError(null);
+    } catch (err) {
       setDefs([]);
+      setError(err instanceof Error ? err.message : 'Failed to load workflow definitions');
     } finally {
       setLoading(false);
     }
@@ -222,6 +267,8 @@ function DefinitionsTab({ onStarted }: { onStarted: () => void }) {
 
       {loading ? (
         <p style={{ color: '#94a3b8' }}>Loading definitions...</p>
+      ) : error ? (
+        <ErrorBanner message={`Unable to load workflow definitions. ${error}`} onRetry={() => { void load(); }} />
       ) : filtered.length === 0 ? (
         <p style={{ color: '#94a3b8' }}>
           No workflow definitions found. Seed department packs first.
@@ -306,10 +353,12 @@ function InstancesTab({ refreshToken }: { refreshToken: number }) {
         Object.fromEntries((defData.definitions ?? []).map((definition) => [definition.id, definition]))
       );
       setTitles(titleData.titles ?? titleData.defaultTitles ?? [{ ien: '10', name: 'GENERAL NOTE' }]);
-    } catch {
+      setError(null);
+    } catch (err) {
       setInstances([]);
       setDefinitions({});
       setTitles([{ ien: '10', name: 'GENERAL NOTE' }]);
+      setError(err instanceof Error ? err.message : 'Failed to load workflow instances');
     } finally {
       setLoading(false);
     }
@@ -397,6 +446,8 @@ function InstancesTab({ refreshToken }: { refreshToken: number }) {
 
       {loading ? (
         <p style={{ color: '#94a3b8' }}>Loading instances...</p>
+      ) : error ? (
+        <ErrorBanner message={`Unable to load workflow instances. ${error}`} onRetry={() => { void load(); }} />
       ) : instances.length === 0 ? (
         <p style={{ color: '#94a3b8' }}>No active workflow instances.</p>
       ) : (
@@ -559,6 +610,7 @@ function PacksTab() {
   const [packs, setPacks] = useState<DepartmentPack[]>([]);
   const [loading, setLoading] = useState(true);
   const [seeding, setSeeding] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -567,8 +619,10 @@ function PacksTab() {
         '/admin/workflows/packs'
       );
       setPacks(data.packs ?? []);
-    } catch {
+      setError(null);
+    } catch (err) {
       setPacks([]);
+      setError(err instanceof Error ? err.message : 'Failed to load workflow packs');
     } finally {
       setLoading(false);
     }
@@ -610,6 +664,8 @@ function PacksTab() {
 
       {loading ? (
         <p style={{ color: '#94a3b8' }}>Loading packs...</p>
+      ) : error ? (
+        <ErrorBanner message={`Unable to load workflow packs. ${error}`} onRetry={() => { void load(); }} />
       ) : (
         <div
           style={{
@@ -662,6 +718,7 @@ function PacksTab() {
 function StatsTab() {
   const [stats, setStats] = useState<WorkflowStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -670,8 +727,10 @@ function StatsTab() {
           '/admin/workflows/stats'
         );
         setStats(data.stats ?? null);
-      } catch {
+        setError(null);
+      } catch (err) {
         setStats(null);
+        setError(err instanceof Error ? err.message : 'Failed to load workflow stats');
       } finally {
         setLoading(false);
       }
@@ -679,6 +738,7 @@ function StatsTab() {
   }, []);
 
   if (loading) return <p style={{ color: '#94a3b8' }}>Loading stats...</p>;
+  if (error) return <ErrorBanner message={`Unable to load workflow stats. ${error}`} />;
   if (!stats) return <p style={{ color: '#94a3b8' }}>No stats available.</p>;
 
   return (
@@ -792,6 +852,7 @@ function SwitchboardTab() {
   const [workflows, setWorkflows] = useState<SwitchboardWorkflow[]>([]);
   const [selected, setSelected] = useState<SwitchboardDetail | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -802,8 +863,10 @@ function SwitchboardTab() {
           workflows: SwitchboardWorkflow[];
         }>('/workflow/switchboard');
         setWorkflows(data.workflows ?? []);
-      } catch {
+        setError(null);
+      } catch (err) {
         setWorkflows([]);
+        setError(err instanceof Error ? err.message : 'Failed to load switchboard workflows');
       } finally {
         setLoading(false);
       }
@@ -814,12 +877,15 @@ function SwitchboardTab() {
     try {
       const detail = await apiFetch<SwitchboardDetail>(`/workflow/switchboard/${name}`);
       setSelected(detail);
-    } catch {
+      setError(null);
+    } catch (err) {
       setSelected(null);
+      setError(err instanceof Error ? err.message : 'Failed to load workflow detail');
     }
   };
 
   if (loading) return <div style={{ color: '#94a3b8' }}>Loading switchboard...</div>;
+  if (error) return <ErrorBanner message={`Unable to load workflow switchboard. ${error}`} />;
 
   return (
     <div>
@@ -911,6 +977,36 @@ type Tab = (typeof TABS)[number];
 export default function WorkflowsAdminPage() {
   const [tab, setTab] = useState<Tab>('definitions');
   const [refreshToken, setRefreshToken] = useState(0);
+  const [bootstrapLoading, setBootstrapLoading] = useState(true);
+  const [bootstrapError, setBootstrapError] = useState<string | null>(null);
+
+  const bootstrap = useCallback(async () => {
+    setBootstrapLoading(true);
+    setBootstrapError(null);
+    try {
+      await apiFetch<{ ok: boolean; count: number }>('/admin/workflows/definitions');
+    } catch (err) {
+      setBootstrapError(err instanceof Error ? err.message : 'Failed to load workflow manager');
+    } finally {
+      setBootstrapLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void bootstrap();
+  }, [bootstrap]);
+
+  if (bootstrapLoading) {
+    return <div style={{ padding: 24, color: '#94a3b8' }}>Loading workflow manager...</div>;
+  }
+
+  if (bootstrapError) {
+    return (
+      <div style={{ padding: 24, maxWidth: 1200, margin: '0 auto' }}>
+        <ErrorBanner message={`Unable to load workflow manager. ${bootstrapError}`} onRetry={() => { void bootstrap(); }} />
+      </div>
+    );
+  }
 
   return (
     <div style={{ padding: 24, maxWidth: 1200, margin: '0 auto', color: '#e2e8f0' }}>

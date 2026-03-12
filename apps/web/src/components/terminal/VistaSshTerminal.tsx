@@ -19,6 +19,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { WS_BASE } from '@/lib/api-config';
+import type { IDisposable } from '@xterm/xterm';
 
 let TerminalClass: typeof import('@xterm/xterm').Terminal | null = null;
 let FitAddonClass: typeof import('@xterm/addon-fit').FitAddon | null = null;
@@ -80,6 +81,9 @@ export default function VistaSshTerminal({
   const [sessionId, setSessionId] = useState<string | null>(null);
   const reconnectTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const reconnectAttempts = useRef(0);
+  const shouldReconnectRef = useRef(true);
+  const connectInFlightRef = useRef(false);
+  const dataListenerRef = useRef<IDisposable | null>(null);
   const MAX_RECONNECT = 5;
 
   const effectiveWsUrl = wsUrl ??
@@ -88,7 +92,13 @@ export default function VistaSshTerminal({
       : `${WS_BASE}/ws/terminal`);
 
   const connect = useCallback(async () => {
-    if (!termRef.current) return;
+    if (!termRef.current || connectInFlightRef.current) return;
+    if (wsRef.current && (wsRef.current.readyState === WebSocket.OPEN || wsRef.current.readyState === WebSocket.CONNECTING)) {
+      return;
+    }
+
+    connectInFlightRef.current = true;
+    shouldReconnectRef.current = true;
 
     // Load xterm modules dynamically (no SSR)
     if (!TerminalClass) {
@@ -134,6 +144,7 @@ export default function VistaSshTerminal({
     ws.onopen = () => {
       setStatus('connecting');
       reconnectAttempts.current = 0;
+      connectInFlightRef.current = false;
     };
 
     if (sendRef) {
@@ -180,10 +191,14 @@ export default function VistaSshTerminal({
     };
 
     ws.onclose = () => {
+      connectInFlightRef.current = false;
+      if (wsRef.current === ws) {
+        wsRef.current = null;
+      }
       setStatus('disconnected');
       onConnectionChange?.(false);
 
-      if (reconnectAttempts.current < MAX_RECONNECT) {
+      if (shouldReconnectRef.current && reconnectAttempts.current < MAX_RECONNECT) {
         const delay = Math.min(1000 * Math.pow(2, reconnectAttempts.current), 30000);
         reconnectAttempts.current++;
         terminalRef.current?.writeln(`\r\n\x1b[33mReconnecting in ${delay / 1000}s... (${reconnectAttempts.current}/${MAX_RECONNECT})\x1b[0m`);
@@ -193,14 +208,16 @@ export default function VistaSshTerminal({
 
     ws.onerror = () => {
       setStatus('error');
+      connectInFlightRef.current = false;
     };
 
     // Forward keystrokes from terminal to WebSocket
-    terminalRef.current?.onData((data) => {
+    dataListenerRef.current?.dispose();
+    dataListenerRef.current = terminalRef.current?.onData((data) => {
       if (ws.readyState === WebSocket.OPEN) {
         ws.send(data);
       }
-    });
+    }) || null;
   }, [effectiveWsUrl, theme, onConnectionChange]);
 
   // Auto-connect on mount
@@ -208,10 +225,16 @@ export default function VistaSshTerminal({
     connect();
 
     return () => {
+      shouldReconnectRef.current = false;
       if (reconnectTimer.current) clearTimeout(reconnectTimer.current);
+      reconnectTimer.current = null;
+      dataListenerRef.current?.dispose();
+      dataListenerRef.current = null;
       if (wsRef.current) wsRef.current.close();
       if (terminalRef.current) terminalRef.current.dispose();
       terminalRef.current = null;
+      wsRef.current = null;
+      connectInFlightRef.current = false;
     };
   }, [connect]);
 
@@ -263,7 +286,12 @@ export default function VistaSshTerminal({
             <button
               className="px-2 py-0.5 text-xs bg-primary text-primary-foreground rounded hover:bg-primary/90"
               onClick={() => {
+                shouldReconnectRef.current = true;
                 reconnectAttempts.current = 0;
+                if (reconnectTimer.current) {
+                  clearTimeout(reconnectTimer.current);
+                  reconnectTimer.current = null;
+                }
                 if (wsRef.current) wsRef.current.close();
                 connect();
               }}

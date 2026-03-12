@@ -29,7 +29,17 @@ async function apiFetch(path: string, opts?: RequestInit) {
     ...opts,
     headers: { ...csrfHeaders(), ...(opts?.headers || {}) },
   });
-  return res.json();
+  const data = await res.json().catch(() => null);
+  if (!res.ok || !data?.ok) {
+    const message =
+      typeof data?.error === 'string'
+        ? data.error
+        : res.status === 401
+          ? 'Authentication required'
+          : `Request failed (${res.status})`;
+    throw new Error(message);
+  }
+  return data;
 }
 
 async function apiPost(path: string, body: unknown) {
@@ -71,6 +81,7 @@ export default function DenialCasesPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [detail, setDetail] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [message, setMessage] = useState('');
 
   // Create form state
@@ -91,13 +102,19 @@ export default function DenialCasesPage() {
       const params = new URLSearchParams({ page: String(page), limit: '20' });
       if (statusFilter) params.set('status', statusFilter);
       const data = await apiFetch(`/rcm/denials?${params}`);
-      if (data.ok) {
-        setDenials(data.items ?? []);
-        setTotal(data.total ?? 0);
-        setTotalPages(data.totalPages ?? 1);
-      }
-    } catch {
-      /* ignore */
+      setDenials(data.items ?? []);
+      setTotal(Number(data.total ?? 0));
+      setTotalPages(Math.max(1, Number(data.totalPages ?? 1)));
+      setError('');
+    } catch (err) {
+      setDenials([]);
+      setTotal(0);
+      setTotalPages(1);
+      setDetail(null);
+      setSelectedId(null);
+      setError(
+        `Unable to load denial cases. ${err instanceof Error ? err.message : 'Request failed'}`
+      );
     }
     setLoading(false);
   }, [page, statusFilter]);
@@ -105,22 +122,28 @@ export default function DenialCasesPage() {
   const loadStats = useCallback(async () => {
     try {
       const data = await apiFetch('/rcm/denials/stats');
-      if (data.ok) setStats(data.stats ?? {});
-    } catch {
-      /* ignore */
+      setStats(data.stats ?? {});
+    } catch (err) {
+      setStats({});
+      setError(
+        `Unable to load denial dashboard. ${err instanceof Error ? err.message : 'Request failed'}`
+      );
     }
   }, []);
 
   const loadDetail = useCallback(async (id: string) => {
     try {
       const data = await apiFetch(`/rcm/denials/${id}`);
-      if (data.ok) {
-        setDetail(data);
-        setSelectedId(id);
-        setTab('detail');
-      }
-    } catch {
-      /* ignore */
+      setDetail(data);
+      setSelectedId(id);
+      setTab('detail');
+      setError('');
+    } catch (err) {
+      setDetail(null);
+      setSelectedId(null);
+      setError(
+        `Unable to load denial detail. ${err instanceof Error ? err.message : 'Request failed'}`
+      );
     }
   }, []);
 
@@ -152,8 +175,8 @@ export default function DenialCasesPage() {
         description: createForm.carcDesc || '',
       });
     }
-    const data = await apiPost('/rcm/denials', body);
-    if (data.ok) {
+    try {
+      const data = await apiPost('/rcm/denials', body);
       setMessage(`Created denial ${(data.denial?.id as string)?.slice(0, 8) ?? ''}`);
       setCreateForm({
         claimRef: '',
@@ -164,23 +187,25 @@ export default function DenialCasesPage() {
         carcCode: '',
         carcDesc: '',
       });
+      setError('');
       loadDenials();
       loadStats();
-    } else {
-      setMessage(`Error: ${JSON.stringify(data.error)}`);
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : 'Unable to create denial');
     }
   };
 
   /* -- Update status handler ------------------------------- */
   const handleTransition = async (id: string, newStatus: string, reason: string) => {
-    const data = await apiPatch(`/rcm/denials/${id}`, { denialStatus: newStatus, reason });
-    if (data.ok) {
+    try {
+      await apiPatch(`/rcm/denials/${id}`, { denialStatus: newStatus, reason });
       setMessage(`Updated to ${newStatus}`);
+      setError('');
       loadDetail(id);
       loadDenials();
       loadStats();
-    } else {
-      setMessage(`Error: ${JSON.stringify(data.error)}`);
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : 'Unable to update denial');
     }
   };
 
@@ -227,6 +252,20 @@ export default function DenialCasesPage() {
         </div>
       )}
 
+      {error && (
+        <div
+          style={{
+            padding: '8px 24px',
+            background: '#f8d7da',
+            borderBottom: '1px solid #f1aeb5',
+            color: '#842029',
+            fontSize: 12,
+          }}
+        >
+          {error}
+        </div>
+      )}
+
       {/* Tabs */}
       <div style={{ display: 'flex', borderBottom: '1px solid #dee2e6', background: '#f8f9fa' }}>
         {tabs.map((t) => (
@@ -265,6 +304,8 @@ export default function DenialCasesPage() {
       </div>
 
       <div style={{ padding: 24 }}>
+        {error ? null : (
+          <>
         {/* -- Work Queue Tab -------------------------------- */}
         {tab === 'queue' && (
           <div>
@@ -732,6 +773,8 @@ export default function DenialCasesPage() {
               Total: {Object.values(stats).reduce((a: number, b: number) => a + b, 0)} denial cases
             </div>
           </div>
+        )}
+          </>
         )}
       </div>
     </div>

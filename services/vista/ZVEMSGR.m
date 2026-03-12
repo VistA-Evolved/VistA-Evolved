@@ -249,22 +249,37 @@ SEND(RES,PARAM) ;
  I $L(XMSUBJ)<3 D ERR(.RES,"PARAM","Subject too short (min 3 chars)") Q
  I $L(XMSUBJ)>65 D ERR(.RES,"PARAM","Subject too long (max 65 chars)") Q
  ;
- ; Body lines arrive as flat "TEXT,n" keys from XWB LIST protocol
+ ; Body lines usually arrive as nested PARAM("TEXT",n) via XWB LIST parsing.
+ ; Keep flat-key fallback for compatibility with older callers.
  N K,LNUM,BLINES S BLINES=0,K=""
  K ^TMP("ZVEMSGB",$J)
- F  S K=$O(PARAM(K)) Q:K=""  D
- . I $E(K,1,5)="TEXT," S LNUM=+$E(K,6,99) I LNUM>0 S ^TMP("ZVEMSGB",$J,LNUM)=$G(PARAM(K)),BLINES=BLINES+1
+ I $D(PARAM("TEXT")) D
+ . S LNUM=0
+ . F  S LNUM=$O(PARAM("TEXT",LNUM)) Q:LNUM'>0  D
+ . . S ^TMP("ZVEMSGB",$J,LNUM)=$G(PARAM("TEXT",LNUM)),BLINES=BLINES+1
+ E  D
+ . F  S K=$O(PARAM(K)) Q:K=""  D
+ . . I $E(K,1,5)="TEXT," S LNUM=+$E(K,6,99) I LNUM>0 S ^TMP("ZVEMSGB",$J,LNUM)=$G(PARAM(K)),BLINES=BLINES+1
  I BLINES=0 D ERR(.RES,"PARAM","Message body required") Q
  ;
- ; Recipients arrive as flat "REC,n" keys from XWB LIST protocol
+ ; Recipients also arrive as nested PARAM("REC",n) through XWB LIST parsing.
  N K,RCOUNT S K="",RCOUNT=0
- F  S K=$O(PARAM(K)) Q:K=""  D
- . I $E(K,1,4)="REC," D
- . . N RSPEC S RSPEC=$G(PARAM(K))
+ I $D(PARAM("REC")) D
+ . S LNUM=0
+ . F  S LNUM=$O(PARAM("REC",LNUM)) Q:LNUM'>0  D
+ . . N RSPEC S RSPEC=$G(PARAM("REC",LNUM))
  . . Q:RSPEC=""
  . . S RCOUNT=RCOUNT+1
  . . I RSPEC?1.N S XMTO(+RSPEC)=""
  . . E  S XMTO(RSPEC)=""
+ E  D
+ . F  S K=$O(PARAM(K)) Q:K=""  D
+ . . I $E(K,1,4)="REC," D
+ . . . N RSPEC S RSPEC=$G(PARAM(K))
+ . . . Q:RSPEC=""
+ . . . S RCOUNT=RCOUNT+1
+ . . . I RSPEC?1.N S XMTO(+RSPEC)=""
+ . . . E  S XMTO(RSPEC)=""
  I RCOUNT=0 D ERR(.RES,"PARAM","At least one recipient required") Q
  ;
  ; Priority

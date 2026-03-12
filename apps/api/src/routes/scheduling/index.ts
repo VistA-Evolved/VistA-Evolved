@@ -41,7 +41,7 @@
  *   GET  /scheduling/verify/:ref                -- Truth gate: verify appointment in VistA
  *   GET  /scheduling/mode                       -- Scheduling writeback mode indicator
  *   --- Phase 539 additions ---
- *   GET  /scheduling/recall                     -- Recall/Reminder list (SD RECALL LIST)
+ *   GET  /scheduling/recall                     -- Recall/Reminder list (SD RECALL LIST BY PATIENT)
  *   GET  /scheduling/recall/:ien                -- Recall detail (SD RECALL GET)
  *   GET  /scheduling/parity                     -- VSE vs VistA-Evolved parity matrix
  *
@@ -52,7 +52,7 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { getAdapter } from '../../adapters/adapter-loader.js';
 import type { SchedulingAdapter } from '../../adapters/scheduling/interface.js';
-import { getRequestStore } from '../../adapters/scheduling/vista-adapter.js';
+import { getRequestStore, hasVistaRuntimeError } from '../../adapters/scheduling/vista-adapter.js';
 import { immutableAudit } from '../../lib/immutable-audit.js';
 import { log } from '../../lib/logger.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
@@ -113,6 +113,78 @@ function requireTenantId(request: FastifyRequest, reply: FastifyReply): string |
   if (tenantId) return tenantId;
   reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
   return null;
+}
+
+function extractJsonPayload(rawLines: string[]): string | null {
+  const raw = rawLines.join('\n').trim();
+  const firstBrace = raw.indexOf('{');
+  const lastBrace = raw.lastIndexOf('}');
+  if (firstBrace === -1 || lastBrace === -1 || lastBrace < firstBrace) {
+    return null;
+  }
+  return raw.slice(firstBrace, lastBrace + 1);
+}
+
+export function parseRecallEntries(rawLines: string[]): Array<{
+  ien?: string;
+  description?: string;
+  recallType?: string;
+  detail: string;
+}> {
+  if (hasVistaRuntimeError(rawLines)) {
+    return [];
+  }
+
+  const payload = extractJsonPayload(rawLines);
+  if (payload) {
+    try {
+      const parsed = JSON.parse(payload);
+      const candidates = Array.isArray(parsed)
+        ? parsed
+        : Array.isArray(parsed?.recalls)
+          ? parsed.recalls
+          : Array.isArray(parsed?.Recall)
+            ? parsed.Recall
+            : Array.isArray(parsed?.data)
+              ? parsed.data
+              : [];
+
+      return candidates
+        .map((entry: any) => ({
+          ien: String(entry?.RecallIEN || entry?.IEN || entry?.ien || '').trim() || undefined,
+          description:
+            String(entry?.RecallName || entry?.RecallType || entry?.description || '').trim() ||
+            undefined,
+          recallType:
+            String(entry?.RecallType || entry?.Type || entry?.recallType || '').trim() || undefined,
+          detail: JSON.stringify(entry),
+        }))
+        .filter((entry) => !/RECALL LIST EMPTY/i.test(entry.description || ''))
+        .filter((entry) => entry.ien || entry.description || entry.recallType);
+    } catch {
+      // Fall through to delimited parsing.
+    }
+  }
+
+  return rawLines
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith('-1') && !hasVistaRuntimeError([line]))
+    .map((line) => {
+      const parts = line.split('^');
+      if (parts.length < 2) {
+        return null;
+      }
+      if ((parts[0]?.trim() || '') === '1' && /RECALL LIST EMPTY/i.test(parts[1] || '')) {
+        return null;
+      }
+      return {
+        ien: parts[0]?.trim() || undefined,
+        description: parts[1]?.trim() || undefined,
+        recallType: parts[2]?.trim() || undefined,
+        detail: line,
+      };
+    })
+    .filter((entry): entry is { ien?: string; description?: string; recallType?: string; detail: string } => Boolean(entry));
 }
 
 /* ------------------------------------------------------------------ */
@@ -1403,33 +1475,71 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
     }
 
     const rpcUsed: string[] = [];
+    const vistaGrounding = {
+      vistaFiles: ['RECALL REMINDERS (File 403.5)'],
+      targetRpcs: ['SD RECALL LIST BY PATIENT', 'SDES GET RECALL ENTRIES'],
+      migrationPath: 'Recall data depends on VistA Recall Reminder configuration in File 403.5',
+    };
     try {
-      const lines = await safeCallRpc('SD RECALL LIST', [dfn]);
-      rpcUsed.push('SD RECALL LIST');
-      const data = lines.filter((l: string) => l.trim()).map((line: string) => {
-        const parts = line.split('^');
-        return { ien: parts[0]?.trim(), date: parts[1]?.trim(), provider: parts[2]?.trim(), detail: line };
-      });
-      return { ok: true, data, rpcUsed, source: 'vista' };
+      const lines = await safeCallRpc('SD RECALL LIST BY PATIENT', [dfn]);
+      rpcUsed.push('SD RECALL LIST BY PATIENT');
+      if (!hasVistaRuntimeError(lines)) {
+        const data = parseRecallEntries(lines);
+        return {
+          ok: true,
+          data,
+          rpcUsed,
+          source: 'vista',
+          vistaGrounding: {
+            ...vistaGrounding,
+            sandboxNote:
+              data.length > 0
+                ? `${data.length} recall entries returned for patient ${dfn}`
+                : 'No recall entries found for patient in sandbox File 403.5',
+          },
+        };
+      }
     } catch (err: any) {
-      rpcUsed.push('SD RECALL LIST');
-      log.warn('SD RECALL LIST failed, trying SDES GET RECALL ENTRIES', { err: err?.message });
+      log.warn('SD RECALL LIST BY PATIENT failed, trying SDES GET RECALL ENTRIES', {
+        err: err?.message,
+      });
     }
 
     try {
       const lines = await safeCallRpc('SDES GET RECALL ENTRIES', [dfn]);
       rpcUsed.push('SDES GET RECALL ENTRIES');
-      const data = lines.filter((l: string) => l.trim()).map((line: string) => {
-        const parts = line.split('^');
-        return { ien: parts[0]?.trim(), date: parts[1]?.trim(), provider: parts[2]?.trim(), detail: line };
-      });
-      return { ok: true, data, rpcUsed, source: 'vista' };
+      if (hasVistaRuntimeError(lines)) {
+        return {
+          ok: true,
+          data: [],
+          rpcUsed,
+          source: 'vista',
+          vistaGrounding: {
+            ...vistaGrounding,
+            sandboxNote: 'Recall RPCs are installed but returned no sandbox recall entries',
+          },
+        };
+      }
+      const data = parseRecallEntries(lines);
+      return {
+        ok: true,
+        data,
+        rpcUsed,
+        source: 'vista',
+        vistaGrounding: {
+          ...vistaGrounding,
+          sandboxNote:
+            data.length > 0
+              ? `${data.length} recall entries returned by SDES fallback`
+              : 'No recall entries found for patient in sandbox File 403.5',
+        },
+      };
     } catch (err2: any) {
-      rpcUsed.push('SDES GET RECALL ENTRIES');
       return reply.code(502).send({
         ok: false,
         error: `Recall RPCs failed: ${err2?.message || 'RPC error'}`,
         rpcUsed,
+        vistaGrounding,
       });
     }
   });

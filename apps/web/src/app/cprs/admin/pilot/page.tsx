@@ -48,7 +48,11 @@ interface PreflightResult {
 
 async function apiFetch(path: string) {
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include' });
-  return res.json();
+  const data = await res.json();
+  if (!res.ok || data?.ok === false) {
+    throw new Error(data?.error || `Request failed: ${res.status}`);
+  }
+  return data;
 }
 
 async function apiPost(path: string, body?: unknown) {
@@ -61,7 +65,11 @@ async function apiPost(path: string, body?: unknown) {
     headers,
     body: body ? JSON.stringify(body) : undefined,
   });
-  return res.json();
+  const data = await res.json();
+  if (!res.ok || data?.ok === false) {
+    throw new Error(data?.error || `Request failed: ${res.status}`);
+  }
+  return data;
 }
 
 /* ------------------------------------------------------------------ */
@@ -73,6 +81,7 @@ export default function PilotPage() {
   const [sites, setSites] = useState<SiteConfig[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [sitesError, setSitesError] = useState('');
   const [preflight, setPreflight] = useState<PreflightResult | null>(null);
   const [_selectedSiteId, setSelectedSiteId] = useState('');
 
@@ -84,11 +93,13 @@ export default function PilotPage() {
 
   const loadSites = useCallback(async () => {
     setLoading(true);
+    setSitesError('');
     try {
       const data = await apiFetch('/admin/pilot/sites');
-      if (data.ok) setSites(data.sites || []);
-    } catch {
-      /* ignore */
+      setSites(data.sites || []);
+    } catch (err) {
+      setSites([]);
+      setSitesError(err instanceof Error ? err.message : 'Unable to load pilot sites.');
     }
     setLoading(false);
   }, []);
@@ -101,21 +112,17 @@ export default function PilotPage() {
     if (!newName || !newCode) return setError('Name and code are required');
     setError('');
     try {
-      const data = await apiPost('/admin/pilot/sites', {
+      await apiPost('/admin/pilot/sites', {
         name: newName,
         code: newCode,
         environment: newEnv,
       });
-      if (data.ok) {
-        setNewName('');
-        setNewCode('');
-        setShowForm(false);
-        loadSites();
-      } else {
-        setError(data.error || 'Failed to create site');
-      }
-    } catch {
-      setError('Request failed');
+      setNewName('');
+      setNewCode('');
+      setShowForm(false);
+      loadSites();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to create site');
     }
   };
 
@@ -124,12 +131,12 @@ export default function PilotPage() {
     setPreflight(null);
     setSelectedSiteId(siteId);
     setTab('preflight');
+    setError('');
     try {
       const data = await apiPost(`/admin/pilot/sites/${siteId}/preflight`);
-      if (data.ok) setPreflight(data.preflight);
-      else setError(data.error || 'Preflight failed');
-    } catch {
-      setError('Request failed');
+      setPreflight(data.preflight);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Preflight failed');
     }
     setLoading(false);
     loadSites(); // refresh scores
@@ -164,7 +171,7 @@ export default function PilotPage() {
         ))}
       </div>
 
-      {error && (
+      {(error || sitesError) && (
         <div
           style={{
             background: '#fef2f2',
@@ -175,7 +182,7 @@ export default function PilotPage() {
             color: '#991b1b',
           }}
         >
-          {error}
+          {error || sitesError}
         </div>
       )}
 
@@ -271,95 +278,100 @@ export default function PilotPage() {
 
           {loading && <p style={{ color: '#6b7280' }}>Loading...</p>}
 
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
-            <thead>
-              <tr style={{ borderBottom: '2px solid #e5e7eb', textAlign: 'left' }}>
-                <th style={{ padding: 8 }}>Name</th>
-                <th style={{ padding: 8 }}>Code</th>
-                <th style={{ padding: 8 }}>Environment</th>
-                <th style={{ padding: 8 }}>Status</th>
-                <th style={{ padding: 8 }}>Score</th>
-                <th style={{ padding: 8 }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sites.map((s) => (
-                <tr key={s.id} style={{ borderBottom: '1px solid #f3f4f6' }}>
-                  <td style={{ padding: 8, fontWeight: 500 }}>{s.name}</td>
-                  <td style={{ padding: 8, fontFamily: 'monospace', fontSize: 13 }}>{s.code}</td>
-                  <td style={{ padding: 8 }}>
-                    <span
-                      style={{
-                        padding: '2px 8px',
-                        borderRadius: 4,
-                        fontSize: 12,
-                        background: s.environment === 'production' ? '#fef3c7' : '#eff6ff',
-                        color: s.environment === 'production' ? '#92400e' : '#1d4ed8',
-                      }}
-                    >
-                      {s.environment}
-                    </span>
-                  </td>
-                  <td style={{ padding: 8 }}>
-                    <span
-                      style={{
-                        padding: '2px 8px',
-                        borderRadius: 4,
-                        fontSize: 12,
-                        background:
-                          s.status === 'ready'
-                            ? '#dcfce7'
-                            : s.status === 'active'
-                              ? '#dbeafe'
-                              : '#f3f4f6',
-                        color:
-                          s.status === 'ready'
-                            ? '#166534'
-                            : s.status === 'active'
-                              ? '#1e40af'
-                              : '#374151',
-                      }}
-                    >
-                      {s.status}
-                    </span>
-                  </td>
-                  <td style={{ padding: 8, textAlign: 'right' }}>
-                    {s.lastPreflightScore != null ? `${s.lastPreflightScore}%` : '-'}
-                  </td>
-                  <td style={{ padding: 8 }}>
-                    <button
-                      onClick={() => handleRunPreflight(s.id)}
-                      style={{
-                        padding: '4px 10px',
-                        background: '#059669',
-                        color: '#fff',
-                        border: 'none',
-                        borderRadius: 4,
-                        cursor: 'pointer',
-                        fontSize: 12,
-                      }}
-                    >
-                      Run Preflight
-                    </button>
-                  </td>
+          {!sitesError && (
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
+              <thead>
+                <tr style={{ borderBottom: '2px solid #e5e7eb', textAlign: 'left' }}>
+                  <th style={{ padding: 8 }}>Name</th>
+                  <th style={{ padding: 8 }}>Code</th>
+                  <th style={{ padding: 8 }}>Environment</th>
+                  <th style={{ padding: 8 }}>Status</th>
+                  <th style={{ padding: 8 }}>Score</th>
+                  <th style={{ padding: 8 }}>Actions</th>
                 </tr>
-              ))}
-              {sites.length === 0 && !loading && (
-                <tr>
-                  <td colSpan={6} style={{ padding: 16, textAlign: 'center', color: '#9ca3af' }}>
-                    No pilot sites configured
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {sites.map((s) => (
+                  <tr key={s.id} style={{ borderBottom: '1px solid #f3f4f6' }}>
+                    <td style={{ padding: 8, fontWeight: 500 }}>{s.name}</td>
+                    <td style={{ padding: 8, fontFamily: 'monospace', fontSize: 13 }}>{s.code}</td>
+                    <td style={{ padding: 8 }}>
+                      <span
+                        style={{
+                          padding: '2px 8px',
+                          borderRadius: 4,
+                          fontSize: 12,
+                          background: s.environment === 'production' ? '#fef3c7' : '#eff6ff',
+                          color: s.environment === 'production' ? '#92400e' : '#1d4ed8',
+                        }}
+                      >
+                        {s.environment}
+                      </span>
+                    </td>
+                    <td style={{ padding: 8 }}>
+                      <span
+                        style={{
+                          padding: '2px 8px',
+                          borderRadius: 4,
+                          fontSize: 12,
+                          background:
+                            s.status === 'ready'
+                              ? '#dcfce7'
+                              : s.status === 'active'
+                                ? '#dbeafe'
+                                : '#f3f4f6',
+                          color:
+                            s.status === 'ready'
+                              ? '#166534'
+                              : s.status === 'active'
+                                ? '#1e40af'
+                                : '#374151',
+                        }}
+                      >
+                        {s.status}
+                      </span>
+                    </td>
+                    <td style={{ padding: 8, textAlign: 'right' }}>
+                      {s.lastPreflightScore != null ? `${s.lastPreflightScore}%` : '-'}
+                    </td>
+                    <td style={{ padding: 8 }}>
+                      <button
+                        onClick={() => handleRunPreflight(s.id)}
+                        style={{
+                          padding: '4px 10px',
+                          background: '#059669',
+                          color: '#fff',
+                          border: 'none',
+                          borderRadius: 4,
+                          cursor: 'pointer',
+                          fontSize: 12,
+                        }}
+                      >
+                        Run Preflight
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                {sites.length === 0 && !loading && (
+                  <tr>
+                    <td colSpan={6} style={{ padding: 16, textAlign: 'center', color: '#9ca3af' }}>
+                      No pilot sites configured
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
         </div>
       )}
 
       {/* -- Preflight tab ---------------------------------------- */}
       {tab === 'preflight' && (
         <div>
-          {!preflight && !loading && (
+          {sitesError && !loading && (
+            <p style={{ color: '#991b1b' }}>Unable to load pilot sites. {sitesError}</p>
+          )}
+          {!preflight && !loading && !sitesError && (
             <p style={{ color: '#6b7280' }}>
               Select a site and run preflight checks from the Sites tab.
             </p>

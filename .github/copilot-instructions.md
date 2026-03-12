@@ -1,5 +1,19 @@
 # VistA-Evolved -- Copilot Build Protocol (MANDATORY)
 
+## Governed build protocol (no uncontrolled feature generation)
+
+This repo is a **governed, proof-driven platform**. Follow these rules in addition to RULE ZERO below:
+
+- **No broad uncontrolled feature generation.** Work one slice at a time; complete verification and human review before the next slice. See `docs/canonical/governed-build-protocol.md`.
+- **No claiming done without proof.** Proof = exact files changed + exact commands run + exact outputs + pass/fail. See `docs/canonical/verification-standard.md` and `docs/governance/PROOF-AND-GOVERNANCE.md`.
+- **No silent mocks.** In paths labeled as real VistA, do not silently fall back to stubs, mocks, or fake data. Return explicit integration-pending or error state. See `docs/canonical/repo-status-model.md`.
+- **No next stage without stop-and-report.** After each slice/stage, produce a completion report (what was done, not done, verified, unverified, next step) and stop. Do not proceed until explicitly instructed. See `docs/governance/PROOF-AND-GOVERNANCE.md`.
+- **Prioritize runtime truth over surface UI.** Verify against live Docker and real RPC/API first; UI must reflect real or explicit pending state. See `docs/canonical/runtime-truth.md`.
+
+Canonical index: `docs/canonical/source-of-truth-index.md`.
+
+---
+
 ## RULE ZERO -- Docker-First Verification (NON-NEGOTIABLE)
 
 **Before writing ANY code**, verify the infrastructure is running. This is the

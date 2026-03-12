@@ -232,6 +232,7 @@ export function acceptHandoffReport(
 ): HandoffReport | undefined {
   const report = handoffStore.get(id);
   if (!report || report.status !== 'submitted') return undefined;
+  if (report.createdBy.duz === acceptedBy.duz) return undefined;
   const now = new Date().toISOString();
   const updated: HandoffReport = {
     ...report,

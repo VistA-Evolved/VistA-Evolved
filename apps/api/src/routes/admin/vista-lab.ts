@@ -4,6 +4,10 @@ import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 import { requireSession, requireRole } from '../../auth/auth-routes.js';
 
+function normalizeField(value?: string) {
+  return String(value || '').trim();
+}
+
 export default async function vistaLabRoutes(server: FastifyInstance) {
   server.get('/admin/vista/lab-tests', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -18,7 +22,12 @@ export default async function vistaLabRoutes(server: FastifyInstance) {
       const dataLines = filtered.filter((l: string) => !/^\d+$/.test(l.trim()));
       const data = dataLines.map((line: string) => {
         const parts = line.split('^');
-        return { ien: parts[0], name: parts[1], type: parts[2], subscript: parts[3] };
+        return {
+          ien: parts[0],
+          name: normalizeField(parts[1]),
+          typeCode: normalizeField(parts[2]),
+          subscript: normalizeField(parts[3]),
+        };
       });
       return { ok: true, source: 'vista', rpcUsed: 'VE LAB TEST LIST', count: data.length, data };
     } catch (err: any) {
@@ -37,11 +46,11 @@ export default async function vistaLabRoutes(server: FastifyInstance) {
       if (filtered[0]?.startsWith('-1^')) {
         return reply.code(400).send({ ok: false, error: filtered[0].split('^').slice(1).join('^') });
       }
-      const dataLines = filtered.filter((l: string) => !/^\d+$/.test(l.trim()));
+      const dataLines = filtered.slice(1).filter((l: string) => !/^\d+$/.test(l.trim()));
       const detail: Record<string, string> = {};
       dataLines.forEach((line: string) => {
         const [key, ...rest] = line.split('^');
-        if (key) detail[key] = rest.join('^');
+        if (key) detail[key] = normalizeField(rest.join('^'));
       });
       return { ok: true, source: 'vista', rpcUsed: 'VE LAB TEST DETAIL', data: detail };
     } catch (err: any) {
@@ -62,7 +71,7 @@ export default async function vistaLabRoutes(server: FastifyInstance) {
       const dataLines = filtered.filter((l: string) => !/^\d+$/.test(l.trim()));
       const data = dataLines.map((line: string) => {
         const parts = line.split('^');
-        return { ien: parts[0], name: parts[1], tube: parts[2] };
+        return { ien: parts[0], name: normalizeField(parts[1]), tubeIen: normalizeField(parts[2]) };
       });
       return { ok: true, source: 'vista', rpcUsed: 'VE LAB COLL SAMP', count: data.length, data };
     } catch (err: any) {
@@ -83,7 +92,7 @@ export default async function vistaLabRoutes(server: FastifyInstance) {
       const dataLines = filtered.filter((l: string) => !/^\d+$/.test(l.trim()));
       const data = dataLines.map((line: string) => {
         const parts = line.split('^');
-        return { ien: parts[0], name: parts[1] };
+        return { ien: parts[0], name: normalizeField(parts[1]) };
       });
       return { ok: true, source: 'vista', rpcUsed: 'VE LAB URGENCY', count: data.length, data };
     } catch (err: any) {

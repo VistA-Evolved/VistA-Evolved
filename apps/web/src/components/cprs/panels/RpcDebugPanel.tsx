@@ -12,6 +12,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
+import { API_BASE } from '@/lib/api-config';
 
 /* ------------------------------------------------------------------ */
 /*  Types (mirrored from actionRegistry to avoid cross-app import)    */
@@ -40,6 +41,29 @@ interface RpcRegistryEntry {
   domain: string;
   tag: string;
   description: string;
+}
+
+interface RpcDebugActionsResponse {
+  ok: boolean;
+  actions?: CprsAction[];
+  count?: number;
+  error?: string;
+}
+
+interface RpcCatalogResponse {
+  ok: boolean;
+  catalog?: RpcCatalogEntry[];
+  count?: number;
+  hint?: string;
+  error?: string;
+}
+
+interface RpcDebugRegistryResponse {
+  ok: boolean;
+  registry?: RpcRegistryEntry[];
+  exceptions?: Array<{ name: string; reason: string }>;
+  count?: number;
+  error?: string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -83,40 +107,52 @@ export default function RpcDebugPanel() {
   const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState<string | null>(null);
 
+  const fetchJsonStrict = useCallback(async <T extends { ok?: boolean; error?: string }>(path: string) => {
+    const response = await fetch(`${API_BASE}${path}`, { credentials: 'include' });
+    const text = await response.text();
+    let data: T | null = null;
+
+    try {
+      data = text ? (JSON.parse(text) as T) : null;
+    } catch {
+      throw new Error(`Unexpected response from ${path}`);
+    }
+
+    if (!response.ok || !data?.ok) {
+      throw new Error(data?.error || `Request failed for ${path}`);
+    }
+
+    return data;
+  }, []);
+
   const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      // Fetch action registry from API
-      const actionsResp = await fetch('/vista/rpc-debug/actions', { credentials: 'include' });
-      if (actionsResp.ok) {
-        const data = await actionsResp.json();
-        setActions(data.actions || []);
-      }
+      const [actionsData, catalogData, registryData] = await Promise.all([
+        fetchJsonStrict<RpcDebugActionsResponse>('/vista/rpc-debug/actions'),
+        fetchJsonStrict<RpcCatalogResponse>('/vista/rpc-catalog'),
+        fetchJsonStrict<RpcDebugRegistryResponse>('/vista/rpc-debug/registry'),
+      ]);
 
-      // Fetch live RPC catalog
-      const catalogResp = await fetch('/vista/rpc-catalog', { credentials: 'include' });
-      if (catalogResp.ok) {
-        const data = await catalogResp.json();
-        const map = new Map<string, boolean>();
-        (data.catalog || []).forEach((entry: RpcCatalogEntry) => {
-          map.set(entry.name.toUpperCase(), true);
-        });
-        setCatalog(map);
-      }
+      setActions(actionsData.actions || []);
 
-      // Fetch registry
-      const registryResp = await fetch('/vista/rpc-debug/registry', { credentials: 'include' });
-      if (registryResp.ok) {
-        const data = await registryResp.json();
-        setRegistry(data.registry || []);
-      }
-    } catch (err: any) {
-      setError(err.message || 'Failed to load RPC debug data');
+      const map = new Map<string, boolean>();
+      (catalogData.catalog || []).forEach((entry) => {
+        map.set(entry.name.toUpperCase(), true);
+      });
+      setCatalog(map);
+
+      setRegistry(registryData.registry || []);
+    } catch (err) {
+      setActions([]);
+      setCatalog(new Map());
+      setRegistry([]);
+      setError(err instanceof Error ? err.message : 'Failed to load RPC debug data');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [fetchJsonStrict]);
 
   useEffect(() => {
     fetchData();
@@ -155,14 +191,21 @@ export default function RpcDebugPanel() {
     return <div className="p-4 text-sm text-gray-500">Loading RPC debug data...</div>;
   }
 
-  return (
-    <div className="space-y-4">
-      {error && (
+  if (error) {
+    return (
+      <div className="space-y-4">
         <div className="bg-red-50 border border-red-200 rounded p-3 text-sm text-red-700">
           {error}
         </div>
-      )}
+        <button className="text-xs px-2 py-1 border rounded hover:bg-gray-50" onClick={fetchData}>
+          Refresh
+        </button>
+      </div>
+    );
+  }
 
+  return (
+    <div className="space-y-4">
       {/* Summary Stats */}
       <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
         <Stat label="Total Actions" value={stats.total} />

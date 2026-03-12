@@ -279,8 +279,10 @@ export function queryAnalyticsEvents(q: AnalyticsEventQuery): {
  */
 export function getEventBufferStats(tenantId?: string): {
   totalEvents: number;
+  bufferUsage: number;
   oldestTimestamp: string | null;
   newestTimestamp: string | null;
+  categories: Record<string, number>;
   categoryCounts: Record<string, number>;
 } {
   const filtered = tenantId ? eventBuffer.filter((e) => e.tenantId === tenantId) : eventBuffer;
@@ -290,8 +292,10 @@ export function getEventBufferStats(tenantId?: string): {
   }
   return {
     totalEvents: filtered.length,
+    bufferUsage: MAX_EVENTS > 0 ? filtered.length / MAX_EVENTS : 0,
     oldestTimestamp: filtered.length > 0 ? filtered[0].timestamp : null,
     newestTimestamp: filtered.length > 0 ? filtered[filtered.length - 1].timestamp : null,
+    categories: categoryCounts,
     categoryCounts,
   };
 }

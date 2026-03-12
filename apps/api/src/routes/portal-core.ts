@@ -739,6 +739,22 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     return reply.send({ ok: true, appointment: appt });
   });
 
+  server.get('/portal/appointments/mode', async (request, reply) => {
+    requirePortalSession(request, reply);
+    try {
+      const { getAdapter } = await import('../adapters/adapter-loader.js');
+      const adapter = getAdapter('scheduling') as any;
+      if (!adapter || typeof adapter.getSchedulingMode !== 'function') {
+        return reply.code(503).send({ ok: false, error: 'Scheduling mode unavailable' });
+      }
+
+      const result = await adapter.getSchedulingMode();
+      return reply.send(result);
+    } catch {
+      return reply.code(500).send({ ok: false, error: 'Failed to retrieve scheduling mode' });
+    }
+  });
+
   server.post('/portal/appointments/request', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const body = (request.body as any) || {};

@@ -11,7 +11,10 @@
  */
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { usePatient } from '@/stores/patient-context';
+import { useSession } from '@/stores/session-context';
+import { useTenant } from '@/stores/tenant-context';
 import CPRSMenuBar from '@/components/cprs/CPRSMenuBar';
 import PatientBanner from '@/components/cprs/PatientBanner';
 import styles from '@/components/cprs/cprs.module.css';
@@ -43,6 +46,11 @@ interface ExternalSource {
   enabled: boolean;
   host: string;
   port: number;
+}
+
+interface ApiError extends Error {
+  status?: number;
+  payload?: unknown;
 }
 
 /* ------------------------------------------------------------------ */
@@ -105,73 +113,131 @@ const REMOTE_DOMAINS: RemoteDataDomain[] = [
 /* ------------------------------------------------------------------ */
 
 export default function RemoteDataViewerPage() {
+  const router = useRouter();
   const { dfn, demographics } = usePatient();
+  const { ready, authenticated } = useSession();
+  const { tenant } = useTenant();
   const [facilities, setFacilities] = useState<RemoteFacility[]>([]);
   const [externalSources, setExternalSources] = useState<ExternalSource[]>([]);
   const [loading, setLoading] = useState(true);
+  const [facilitiesError, setFacilitiesError] = useState<string | null>(null);
+  const [registryError, setRegistryError] = useState<string | null>(null);
   const [selectedFacility, setSelectedFacility] = useState<string | null>(null);
   const [selectedDomain, setSelectedDomain] = useState<string>('allergies');
   const [queryResult, setQueryResult] = useState<string | null>(null);
   const [querying, setQuerying] = useState(false);
 
   useEffect(() => {
+    if (ready && !authenticated) {
+      router.replace('/cprs/login?redirect=%2Fcprs%2Fremote-data-viewer');
+    }
+  }, [authenticated, ready, router]);
+
+  async function apiFetch(path: string) {
+    const res = await fetch(`${API_BASE}${path}`, { credentials: 'include' });
+    let payload: any = null;
+    try {
+      payload = await res.json();
+    } catch {
+      payload = null;
+    }
+    if (!res.ok) {
+      const error = new Error(payload?.error || payload?.message || `Request failed (${res.status})`) as ApiError;
+      error.status = res.status;
+      error.payload = payload;
+      throw error;
+    }
+    return payload;
+  }
+
+  function describeRemoteFacilitiesError(error: unknown): string {
+    const status = (error as ApiError | undefined)?.status;
+    if (status === 401) return 'Authentication required to inspect remote facilities.';
+    if (status === 404) return 'Remote facilities route is not registered on this stack.';
+    return 'Remote facilities could not be loaded on this stack.';
+  }
+
+  function describeRegistryError(error: unknown): string {
+    const status = (error as ApiError | undefined)?.status;
+    const message = error instanceof Error ? error.message : 'External source registry unavailable.';
+    if (status === 401) return 'Authentication required to inspect external registry sources.';
+    if (status === 404) return 'Integration registry route is not registered on this stack.';
+    return message;
+  }
+
+  useEffect(() => {
+    if (!ready || !authenticated) return;
+
     async function init() {
+      setLoading(true);
+      setFacilitiesError(null);
+      setRegistryError(null);
+
       // 1. Attempt real CIRN facility fetch (sandbox will return empty/error)
       try {
-        const facRes = await fetch(`${API_BASE}/vista/remote-facilities`, {
-          credentials: 'include',
-        });
-        const facData = await facRes.json();
+        const facData = await apiFetch('/vista/remote-facilities');
         if (facData.ok && facData.facilities?.length > 0) {
           setFacilities(facData.facilities);
         } else {
           setFacilities([]);
         }
-      } catch {
+      } catch (error) {
         setFacilities([]);
+        setFacilitiesError(describeRemoteFacilitiesError(error));
       }
 
       // 2. Fetch external sources from integration registry (Phase 18E)
-      try {
-        const res = await fetch(`${API_BASE}/admin/registry/default`, { credentials: 'include' });
-        const data = await res.json();
-        if (data.ok && data.integrations) {
-          // Filter to FHIR, HL7v2, and external types (exclude internal RPC + devices)
-          const external = data.integrations.filter(
-            (i: any) =>
-              i.enabled && ['fhir', 'fhir-c0fhir', 'fhir-vpr', 'hl7v2', 'external'].includes(i.type)
-          );
-          setExternalSources(external);
+      if (tenant?.tenantId) {
+        try {
+          const data = await apiFetch(`/admin/registry/${tenant.tenantId}`);
+          if (data.ok && data.integrations) {
+            const external = data.integrations.filter(
+              (i: any) =>
+                i.enabled && ['fhir', 'fhir-c0fhir', 'fhir-vpr', 'hl7v2', 'external'].includes(i.type)
+            );
+            setExternalSources(external);
+          } else {
+            setExternalSources([]);
+          }
+        } catch (error) {
+          setExternalSources([]);
+          setRegistryError(describeRegistryError(error));
         }
-      } catch {
-        /* ignore -- admin API may not be accessible for non-admin users */
+      } else {
+        setExternalSources([]);
+        setRegistryError('Tenant context did not load, so external registry sources cannot be resolved on this stack.');
       }
 
       setLoading(false);
     }
     init();
-  }, []);
+  }, [authenticated, ready, tenant?.tenantId]);
 
   function handleQuery() {
-    if (!selectedFacility) return;
+    if (!selectedFacility || !dfn) return;
     setQuerying(true);
     setQueryResult(null);
 
     // Attempt real API call; fall back to unavailable notice
     (async () => {
       try {
-        const res = await fetch(
-          `${API_BASE}/vista/remote-data?facility=${encodeURIComponent(selectedFacility)}&domain=${encodeURIComponent(selectedDomain)}&dfn=${dfn || ''}`,
-          { credentials: 'include' }
+        const data = await apiFetch(
+          `/vista/remote-data?facility=${encodeURIComponent(selectedFacility)}&domain=${encodeURIComponent(selectedDomain)}&dfn=${encodeURIComponent(dfn)}`
         );
-        const data = await res.json();
         if (data.ok && data.result) {
           setQueryResult(data.result);
         } else {
           setQueryResult(integrationPendingMessage(selectedFacility));
         }
-      } catch {
+      } catch (error) {
+        const status = (error as ApiError | undefined)?.status;
+        if (status === 404) {
+          setQueryResult('--- ROUTE UNAVAILABLE ---\n\nGET /vista/remote-data is not registered on this stack. Remote patient query cannot run from this page.');
+        } else if (status === 401) {
+          setQueryResult('--- AUTHENTICATION REQUIRED ---\n\nSign in again before querying remote data.');
+        } else {
         setQueryResult(integrationPendingMessage(selectedFacility));
+        }
       } finally {
         setQuerying(false);
       }
@@ -201,6 +267,17 @@ export default function RemoteDataViewerPage() {
     return lines.join('\n');
   }
 
+  if (!ready || !authenticated) {
+    return (
+      <div
+        className={styles.shell}
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}
+      >
+        <p style={{ color: 'var(--cprs-text-muted)' }}>Checking session...</p>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.shell}>
       <CPRSMenuBar dfn={dfn || undefined} />
@@ -214,6 +291,25 @@ export default function RemoteDataViewerPage() {
           Registry sources
         </p>
 
+        {(facilitiesError || registryError) && (
+          <div
+            style={{
+              marginBottom: 16,
+              padding: 12,
+              border: '1px solid #c6b36a',
+              borderRadius: 6,
+              background: '#fff8df',
+              color: '#6b5600',
+            }}
+          >
+            <strong>Remote data integration unavailable on this stack.</strong>
+            <div style={{ marginTop: 6 }}>
+              {facilitiesError && <div>CIRN facilities: {facilitiesError}</div>}
+              {registryError && <div>External registry: {registryError}</div>}
+            </div>
+          </div>
+        )}
+
         <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: 16, minHeight: 400 }}>
           {/* Left: Facilities + External Sources + Domains */}
           <div>
@@ -222,6 +318,22 @@ export default function RemoteDataViewerPage() {
               <p style={{ fontSize: 12, color: 'var(--cprs-text-muted)' }}>
                 Querying remote facilities...
               </p>
+            ) : facilitiesError ? (
+              <div
+                style={{
+                  padding: 12,
+                  border: '1px dashed var(--cprs-border)',
+                  borderRadius: 6,
+                  marginBottom: 12,
+                }}
+              >
+                <p style={{ fontSize: 12, fontWeight: 600, margin: '0 0 4px' }}>
+                  CIRN Facilities Unavailable
+                </p>
+                <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', margin: 0 }}>
+                  {facilitiesError}
+                </p>
+              </div>
             ) : facilities.length === 0 ? (
               <div
                 style={{
@@ -272,7 +384,23 @@ export default function RemoteDataViewerPage() {
             )}
 
             {/* Phase 18E: External integration sources from registry */}
-            {externalSources.length > 0 && (
+            {registryError ? (
+              <div
+                style={{
+                  padding: 12,
+                  border: '1px dashed var(--cprs-border)',
+                  borderRadius: 6,
+                  marginBottom: 12,
+                }}
+              >
+                <p style={{ fontSize: 12, fontWeight: 600, margin: '0 0 4px' }}>
+                  External Sources Unavailable
+                </p>
+                <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', margin: 0 }}>
+                  {registryError}
+                </p>
+              </div>
+            ) : externalSources.length > 0 && (
               <>
                 <div className={styles.panelTitle} style={{ marginTop: 12 }}>
                   External Sources (Registry)
@@ -341,10 +469,10 @@ export default function RemoteDataViewerPage() {
             <button
               className={`${styles.btn} ${styles.btnPrimary}`}
               style={{ width: '100%', marginTop: 12 }}
-              disabled={!selectedFacility || querying}
+              disabled={!selectedFacility || !dfn || querying}
               onClick={handleQuery}
             >
-              {querying ? 'Querying...' : 'Query Remote Data'}
+              {querying ? 'Querying...' : !dfn ? 'Select Patient To Query' : 'Query Remote Data'}
             </button>
           </div>
 
@@ -378,7 +506,9 @@ export default function RemoteDataViewerPage() {
             ) : (
               <div style={{ textAlign: 'center', padding: 40 }}>
                 <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--cprs-text-muted)' }}>
-                  {facilities.length === 0 && externalSources.length === 0
+                  {facilitiesError || registryError
+                    ? 'Remote source contracts unavailable'
+                    : facilities.length === 0 && externalSources.length === 0
                     ? 'No Remote Sources Available'
                     : 'Select a source and domain, then click Query'}
                 </p>
@@ -390,7 +520,7 @@ export default function RemoteDataViewerPage() {
                     margin: '8px auto',
                   }}
                 >
-                  Patient: {demographics?.name || `DFN ${dfn}`}
+                  Patient: {demographics?.name || (dfn ? `DFN ${dfn}` : 'No patient selected')}
                   {demographics?.name && (
                     <>
                       <br />

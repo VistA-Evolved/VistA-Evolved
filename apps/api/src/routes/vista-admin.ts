@@ -884,7 +884,7 @@ export default async function vistaAdminRoutes(server: FastifyInstance) {
       const err = checkError(lines);
       if (err) return reply.code(400).send({ ok: false, error: err });
       const data = parseListResponse(lines).map((p) => ({
-        ien: p[0], name: p[1], category: p[2],
+        ien: p[0], name: p[1], nsn: p[2], unitOfIssue: p[3],
       }));
       return { ok: true, source: 'vista', rpcUsed: ['VE INV ITEM LIST'], count: data.length, data };
     } catch (err: any) {
@@ -918,7 +918,7 @@ export default async function vistaAdminRoutes(server: FastifyInstance) {
       const err = checkError(lines);
       if (err) return reply.code(400).send({ ok: false, error: err });
       const data = parseListResponse(lines).map((p) => ({
-        ien: p[0], name: p[1],
+        ien: p[0], name: p[1], phone: p[2], city: p[3],
       }));
       return { ok: true, source: 'vista', rpcUsed: ['VE INV VENDOR LIST'], count: data.length, data };
     } catch (err: any) {

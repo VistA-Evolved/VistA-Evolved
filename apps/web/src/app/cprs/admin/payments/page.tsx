@@ -160,13 +160,15 @@ function BatchesTab() {
 
   const fetchBatches = useCallback(async () => {
     setLoading(true);
+    setError('');
     try {
       const res = await fetch(`${API}/payerops/payments/batches`, { credentials: 'include' });
       const data = await res.json();
       if (data.ok) setBatches(data.items || []);
       else setError(data.error || 'Failed to load batches');
     } catch (e: any) {
-      setError(e.message);
+      setError(e.message || 'Failed to load batches');
+      setBatches([]);
     } finally {
       setLoading(false);
     }
@@ -305,6 +307,10 @@ function BatchesTab() {
           {loading ? (
             <div style={{ padding: 24, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>
               Loading...
+            </div>
+          ) : error ? (
+            <div style={{ padding: 24, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>
+              Unable to load remittance batches.
             </div>
           ) : batches.length === 0 ? (
             <div style={{ padding: 24, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>
@@ -545,19 +551,23 @@ function BatchesTab() {
 function ReconciliationTab() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [linkingId, setLinkingId] = useState<string | null>(null);
   const [claimIdInput, setClaimIdInput] = useState('');
 
   const fetchReconciliation = useCallback(async () => {
     setLoading(true);
+    setError('');
     try {
       const res = await fetch(`${API}/payerops/payments/reconciliation`, {
         credentials: 'include',
       });
       const data = await res.json();
       if (data.ok) setItems(data.items || []);
-    } catch {
-      /* ignore */
+      else setError(data.error || 'Failed to load reconciliation worklist');
+    } catch (e: any) {
+      setError(e.message || 'Failed to load reconciliation worklist');
+      setItems([]);
     } finally {
       setLoading(false);
     }
@@ -603,6 +613,10 @@ function ReconciliationTab() {
       {loading ? (
         <div style={{ padding: 24, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>
           Loading...
+        </div>
+      ) : error ? (
+        <div style={{ padding: 24, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>
+          Unable to load reconciliation worklist.
         </div>
       ) : items.length === 0 ? (
         <div style={{ padding: 24, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>
@@ -727,6 +741,7 @@ function AgingTab() {
     totalClaims: number;
   } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -734,8 +749,10 @@ function AgingTab() {
         const res = await fetch(`${API}/payerops/analytics/aging`, { credentials: 'include' });
         const data = await res.json();
         if (data.ok) setReport(data.report);
-      } catch {
-        /* ignore */
+        else setError(data.error || 'Failed to load aging data');
+      } catch (e: any) {
+        setError(e.message || 'Failed to load aging data');
+        setReport(null);
       } finally {
         setLoading(false);
       }
@@ -754,7 +771,7 @@ function AgingTab() {
   if (!report)
     return (
       <div style={{ padding: 24, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>
-        No aging data.
+        {error ? 'Unable to load aging data.' : 'No aging data.'}
       </div>
     );
 
@@ -809,6 +826,7 @@ function UnderpaymentTab() {
   const [items, setItems] = useState<Underpayment[]>([]);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -820,9 +838,13 @@ function UnderpaymentTab() {
         if (data.ok) {
           setItems(data.items || []);
           setTotal(data.total || 0);
+        } else {
+          setError(data.error || 'Failed to load underpayment cases');
         }
-      } catch {
-        /* ignore */
+      } catch (e: any) {
+        setError(e.message || 'Failed to load underpayment cases');
+        setItems([]);
+        setTotal(0);
       } finally {
         setLoading(false);
       }
@@ -844,7 +866,11 @@ function UnderpaymentTab() {
       <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 8 }}>
         Underpayment Cases ({total})
       </div>
-      {items.length === 0 ? (
+      {error ? (
+        <div style={{ padding: 24, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>
+          Unable to load underpayment cases.
+        </div>
+      ) : items.length === 0 ? (
         <div style={{ padding: 24, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>
           No underpayment cases detected.
         </div>

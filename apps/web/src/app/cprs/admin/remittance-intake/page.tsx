@@ -33,11 +33,15 @@ const TABS: React.CSSProperties = {
 const TAB_BASE: React.CSSProperties = {
   padding: '10px 20px',
   cursor: 'pointer',
-  border: 'none',
+  borderTop: 'none',
+  borderRight: 'none',
+  borderLeft: 'none',
+  borderBottomWidth: 2,
+  borderBottomStyle: 'solid',
+  borderBottomColor: 'transparent',
   background: 'transparent',
   color: '#888',
   fontSize: 14,
-  borderBottom: '2px solid transparent',
 };
 const TAB_ACTIVE: React.CSSProperties = {
   ...TAB_BASE,
@@ -141,6 +145,8 @@ export default function RemittanceIntakePage() {
   const [tab, setTab] = useState<'documents' | 'upload' | 'stats'>('documents');
   const [docs, setDocs] = useState<RemittanceDoc[]>([]);
   const [stats, setStats] = useState<RemitStats | null>(null);
+  const [docsError, setDocsError] = useState('');
+  const [statsError, setStatsError] = useState('');
   const [selectedDoc, setSelectedDoc] = useState<RemittanceDoc | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -155,26 +161,36 @@ export default function RemittanceIntakePage() {
 
   const fetchDocs = useCallback(async () => {
     setLoading(true);
+    setDocsError('');
     try {
       const url = statusFilter
         ? `${API}/rcm/remittance?status=${statusFilter}`
         : `${API}/rcm/remittance`;
       const res = await fetch(url, { credentials: 'include' });
       const data = await res.json();
-      if (data.ok) setDocs(data.documents ?? []);
-    } catch {
-      /* ignore */
+      if (data.ok) {
+        setDocs(data.documents ?? []);
+      } else {
+        setDocsError(data.error || 'Unable to load remittance documents.');
+      }
+    } catch (err) {
+      setDocsError(err instanceof Error ? err.message : 'Unable to load remittance documents.');
     }
     setLoading(false);
   }, [statusFilter]);
 
   const fetchStats = useCallback(async () => {
+    setStatsError('');
     try {
       const res = await fetch(`${API}/rcm/remittance/stats`, { credentials: 'include' });
       const data = await res.json();
-      if (data.ok) setStats(data);
-    } catch {
-      /* ignore */
+      if (data.ok) {
+        setStats(data);
+      } else {
+        setStatsError(data.error || 'Unable to load remittance stats.');
+      }
+    } catch (err) {
+      setStatsError(err instanceof Error ? err.message : 'Unable to load remittance stats.');
     }
   }, []);
 
@@ -324,6 +340,10 @@ export default function RemittanceIntakePage() {
 
           {loading ? (
             <p style={{ color: '#888' }}>Loading...</p>
+          ) : docsError ? (
+            <div style={CARD}>
+              <p style={{ color: '#888' }}>{docsError}</p>
+            </div>
           ) : docs.length === 0 ? (
             <div style={CARD}>
               <p style={{ color: '#888' }}>
@@ -578,7 +598,9 @@ export default function RemittanceIntakePage() {
       {/* -- Stats ---------------------------------------------- */}
       {tab === 'stats' && (
         <div>
-          {stats ? (
+          {statsError ? (
+            <p style={{ color: '#888' }}>{statsError}</p>
+          ) : stats ? (
             <div
               style={{
                 display: 'grid',

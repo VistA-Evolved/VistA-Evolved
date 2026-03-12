@@ -4,6 +4,10 @@ import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 import { requireSession, requireRole } from '../../auth/auth-routes.js';
 
+function normalizeField(value?: string) {
+  return (value ?? '').trim();
+}
+
 export default async function vistaBillingConfigRoutes(server: FastifyInstance) {
   server.get('/admin/vista/ib-site', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -14,11 +18,17 @@ export default async function vistaBillingConfigRoutes(server: FastifyInstance) 
       if (filtered[0]?.startsWith('-1^')) {
         return reply.code(400).send({ ok: false, error: filtered[0].split('^').slice(1).join('^') });
       }
-      const dataLines = filtered.filter((l: string) => !/^\d+$/.test(l.trim()));
+      const dataLines = filtered.slice(1).filter((l: string) => !/^\d+$/.test(l.trim()));
       const detail: Record<string, string> = {};
       dataLines.forEach((line: string) => {
         const [key, ...rest] = line.split('^');
-        if (key) detail[key] = rest.join('^');
+        const rawValue = normalizeField(rest.join('^'));
+        if (!key) return;
+        if (key === 'IEN') detail.ien = rawValue;
+        else if (key === 'SITE_NAME') detail.siteIen = rawValue;
+        else if (key === 'RATE_TYPE') detail.rateTypeCode = rawValue;
+        else if (key === 'BILLING_CLOCK') detail.billingClockDays = rawValue;
+        else detail[normalizeField(key)] = rawValue;
       });
       return { ok: true, source: 'vista', rpcUsed: 'VE IB SITE', data: detail };
     } catch (err: any) {
@@ -40,7 +50,12 @@ export default async function vistaBillingConfigRoutes(server: FastifyInstance) 
       const dataLines = filtered.filter((l: string) => !/^\d+$/.test(l.trim()));
       const data = dataLines.map((line: string) => {
         const parts = line.split('^');
-        return { ien: parts[0], name: parts[1], reimburseType: parts[2], city: parts[3] };
+        return {
+          ien: normalizeField(parts[0]),
+          name: normalizeField(parts[1]),
+          reimburseType: normalizeField(parts[2]),
+          city: normalizeField(parts[3]),
+        };
       });
       return { ok: true, source: 'vista', rpcUsed: 'VE INS LIST', count: data.length, data };
     } catch (err: any) {
@@ -61,11 +76,14 @@ export default async function vistaBillingConfigRoutes(server: FastifyInstance) 
         if (filtered[0]?.startsWith('-1^')) {
           return reply.code(400).send({ ok: false, error: filtered[0].split('^').slice(1).join('^') });
         }
-        const dataLines = filtered.filter((l: string) => !/^\d+$/.test(l.trim()));
+        const dataLines = filtered.slice(1).filter((l: string) => !/^\d+$/.test(l.trim()));
         const detail: Record<string, string> = {};
         dataLines.forEach((line: string) => {
           const [key, ...rest] = line.split('^');
-          if (key) detail[key] = rest.join('^');
+          const rawValue = normalizeField(rest.join('^'));
+          if (!key) return;
+          if (key === 'REIMBURSE') detail.REIMBURSE_FLAG = rawValue;
+          else detail[normalizeField(key)] = rawValue;
         });
         return { ok: true, source: 'vista', rpcUsed: 'VE INS DETAIL', data: detail };
       } catch (err: any) {
@@ -84,11 +102,14 @@ export default async function vistaBillingConfigRoutes(server: FastifyInstance) 
       if (filtered[0]?.startsWith('-1^')) {
         return reply.code(400).send({ ok: false, error: filtered[0].split('^').slice(1).join('^') });
       }
-      const dataLines = filtered.filter((l: string) => !/^\d+$/.test(l.trim()));
+      const dataLines = filtered.slice(1).filter((l: string) => !/^\d+$/.test(l.trim()));
       const detail: Record<string, string> = {};
       dataLines.forEach((line: string) => {
         const [key, ...rest] = line.split('^');
-        if (key) detail[key] = rest.join('^');
+        const rawValue = normalizeField(rest.join('^'));
+        if (!key) return;
+        if (key === 'TOTAL_CLAIMS') detail.totalClaims = rawValue;
+        else detail[normalizeField(key)] = rawValue;
       });
       return { ok: true, source: 'vista', rpcUsed: 'VE CLAIM COUNT', data: detail };
     } catch (err: any) {

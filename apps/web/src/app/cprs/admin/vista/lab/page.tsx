@@ -15,8 +15,8 @@ const S = {
   page: { padding: 24, fontFamily: 'system-ui, -apple-system, sans-serif', color: '#1a1a1a' } as React.CSSProperties,
   h1: { fontSize: 22, fontWeight: 700, marginBottom: 16 } as React.CSSProperties,
   tabBar: { display: 'flex', gap: 0, borderBottom: '2px solid #e0e0e0', marginBottom: 20 } as React.CSSProperties,
-  tab: { padding: '10px 20px', cursor: 'pointer', fontSize: 14, border: 'none', background: 'none', color: '#555' } as React.CSSProperties,
-  tabActive: { padding: '10px 20px', cursor: 'pointer', fontSize: 14, border: 'none', background: 'none', color: '#1a56db', fontWeight: 700, borderBottom: '3px solid #1a56db', marginBottom: -2 } as React.CSSProperties,
+  tab: { padding: '10px 20px', cursor: 'pointer', fontSize: 14, borderTop: 'none', borderLeft: 'none', borderRight: 'none', background: 'none', color: '#555' } as React.CSSProperties,
+  tabActive: { padding: '10px 20px', cursor: 'pointer', fontSize: 14, borderTop: 'none', borderLeft: 'none', borderRight: 'none', background: 'none', color: '#1a56db', fontWeight: 700, borderBottom: '3px solid #1a56db', marginBottom: -2 } as React.CSSProperties,
   search: { width: '100%', padding: '10px 14px', fontSize: 14, border: '1px solid #d0d5dd', borderRadius: 6, marginBottom: 16, outline: 'none' } as React.CSSProperties,
   table: { width: '100%', borderCollapse: 'collapse' as const, fontSize: 13 },
   th: { textAlign: 'left' as const, padding: '10px 12px', background: '#f8fafc', borderBottom: '2px solid #e0e0e0', fontWeight: 600, color: '#374151' },
@@ -94,7 +94,7 @@ export default function VistaLabPage() {
         <table style={S.table}>
           <thead><tr>
             <th style={S.th}>IEN</th><th style={S.th}>Name</th>
-            <th style={S.th}>Type</th><th style={S.th}>Subscript</th>
+            <th style={S.th}>Type Code</th><th style={S.th}>Subscript</th>
           </tr></thead>
           <tbody>
             {data.map((t: any, i: number) => (
@@ -103,7 +103,7 @@ export default function VistaLabPage() {
                 onClick={() => showDetail(t.ien)}>
                 <td style={S.td}>{t.ien}</td>
                 <td style={S.td}>{t.name}</td>
-                <td style={S.td}>{t.type ?? '-'}</td>
+                <td style={S.td}>{t.typeCode ?? '-'}</td>
                 <td style={S.td}>{t.subscript ?? '-'}</td>
               </tr>
             ))}
@@ -113,12 +113,12 @@ export default function VistaLabPage() {
 
       {!loading && tab === 'samples' && (
         <table style={S.table}>
-          <thead><tr><th style={S.th}>IEN</th><th style={S.th}>Name</th><th style={S.th}>Tube</th></tr></thead>
+          <thead><tr><th style={S.th}>IEN</th><th style={S.th}>Name</th><th style={S.th}>Tube IEN</th></tr></thead>
           <tbody>
             {data.map((s: any, i: number) => (
               <tr key={s.ien ?? i} style={{ background: rowBg(i, hov === i) }}
                 onMouseEnter={() => setHov(i)} onMouseLeave={() => setHov(-1)}>
-                <td style={S.td}>{s.ien}</td><td style={S.td}>{s.name}</td><td style={S.td}>{s.tube ?? s.tubeType ?? '-'}</td>
+                <td style={S.td}>{s.ien}</td><td style={S.td}>{s.name}</td><td style={S.td}>{s.tubeIen ?? '-'}</td>
               </tr>
             ))}
           </tbody>
@@ -127,12 +127,12 @@ export default function VistaLabPage() {
 
       {!loading && tab === 'urgency' && (
         <table style={S.table}>
-          <thead><tr><th style={S.th}>IEN</th><th style={S.th}>Name</th><th style={S.th}>Code</th></tr></thead>
+          <thead><tr><th style={S.th}>IEN</th><th style={S.th}>Name</th></tr></thead>
           <tbody>
             {data.map((u: any, i: number) => (
               <tr key={u.ien ?? i} style={{ background: rowBg(i, hov === i) }}
                 onMouseEnter={() => setHov(i)} onMouseLeave={() => setHov(-1)}>
-                <td style={S.td}>{u.ien}</td><td style={S.td}>{u.name}</td><td style={S.td}>{u.code ?? '-'}</td>
+                <td style={S.td}>{u.ien}</td><td style={S.td}>{u.name}</td>
               </tr>
             ))}
           </tbody>

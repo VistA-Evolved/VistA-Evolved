@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { API_BASE } from '@/lib/api-config';
 
 /* -- Types ---------------------------------------------------- */
 
@@ -145,24 +146,56 @@ export default function PhMarketPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    Promise.all([
-      fetch('/rcm/hmo/market-summary', { credentials: 'include' }).then((r) => r.json()),
-      fetch('/rcm/hmo/manifest', { credentials: 'include' }).then((r) => r.json()),
-    ])
-      .then(([sumResp, manResp]) => {
-        if (sumResp.ok) setSummary(sumResp.summary);
-        if (manResp.ok) setManifest(manResp.manifest.entries ?? []);
+    async function load() {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const [summaryResponse, manifestResponse] = await Promise.all([
+          fetch(`${API_BASE}/rcm/hmo/market-summary`, { credentials: 'include' }),
+          fetch(`${API_BASE}/rcm/hmo/manifest`, { credentials: 'include' }),
+        ]);
+
+        const [summaryData, manifestData] = await Promise.all([
+          summaryResponse.json(),
+          manifestResponse.json(),
+        ]);
+
+        if (!summaryResponse.ok || summaryData?.ok === false) {
+          throw new Error(
+            summaryData?.error || summaryData?.message || 'Unable to load PH market summary.',
+          );
+        }
+
+        if (!manifestResponse.ok || manifestData?.ok === false) {
+          throw new Error(
+            manifestData?.error || manifestData?.message || 'Unable to load PH market manifest.',
+          );
+        }
+
+        setSummary(summaryData.summary);
+        setManifest(manifestData.manifest?.entries ?? []);
+      } catch (e) {
+        setSummary(null);
+        setManifest([]);
+        setError(e instanceof Error ? e.message : 'Unable to load PH market data.');
+      } finally {
         setLoading(false);
-      })
-      .catch((e) => {
-        setError(e.message);
-        setLoading(false);
-      });
+      }
+    }
+
+    load();
   }, []);
 
   if (loading)
     return <div style={{ padding: 32, color: '#94a3b8' }}>Loading PH market data...</div>;
-  if (error) return <div style={{ padding: 32, color: '#ef4444' }}>Error: {error}</div>;
+  if (error) {
+    return (
+      <div style={{ padding: 32, color: '#ef4444' }}>
+        Unable to load PH market data. {error}
+      </div>
+    );
+  }
 
   return (
     <div style={{ padding: '24px 32px', color: '#e2e8f0', maxWidth: 1200 }}>

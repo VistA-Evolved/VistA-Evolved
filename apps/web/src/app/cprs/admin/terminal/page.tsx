@@ -9,13 +9,54 @@
 
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
+import { API_BASE } from '@/lib/api-config';
 
 const BrowserTerminal = dynamic(() => import('../../../../components/terminal/BrowserTerminal'), {
   ssr: false,
   loading: () => <div style={{ color: '#94a3b8', padding: 24 }}>Loading terminal...</div>,
 });
 
+class TerminalBootstrapError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'TerminalBootstrapError';
+  }
+}
+
 export default function AdminTerminalPage() {
+  const [ready, setReady] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function bootstrap() {
+      try {
+        const res = await fetch(`${API_BASE}/terminal/health`, { credentials: 'include' });
+        const data = await res.json().catch(() => null);
+        if (!res.ok || !data?.ok) {
+          throw new TerminalBootstrapError(data?.error || 'Unable to load terminal health');
+        }
+        if (!cancelled) {
+          setReady(true);
+          setError(null);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setReady(false);
+          setError(err instanceof Error ? err.message : 'Unable to load terminal');
+        }
+      }
+    }
+
+    bootstrap();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <div style={{ padding: 24, maxWidth: 1200, margin: '0 auto', color: '#e2e8f0' }}>
       <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 4 }}>Browser Terminal</h1>
@@ -51,13 +92,29 @@ export default function AdminTerminalPage() {
         are logged to the immutable audit trail.
       </div>
 
-      <Suspense fallback={<div style={{ color: '#94a3b8' }}>Loading terminal...</div>}>
+      {error ? (
         <div
-          style={{ height: 500, border: '1px solid #334155', borderRadius: 8, overflow: 'hidden' }}
+          style={{
+            background: '#450a0a',
+            border: '1px solid #dc2626',
+            borderRadius: 8,
+            padding: 16,
+            color: '#fecaca',
+          }}
         >
-          <BrowserTerminal showStatus />
+          Unable to load terminal. {error}
         </div>
-      </Suspense>
+      ) : !ready ? (
+        <div style={{ color: '#94a3b8', padding: 24 }}>Loading terminal...</div>
+      ) : (
+        <Suspense fallback={<div style={{ color: '#94a3b8' }}>Loading terminal...</div>}>
+          <div
+            style={{ height: 500, border: '1px solid #334155', borderRadius: 8, overflow: 'hidden' }}
+          >
+            <BrowserTerminal showStatus />
+          </div>
+        </Suspense>
+      )}
     </div>
   );
 }

@@ -1,0 +1,786 @@
+{
+  "generatedAt": "2026-03-12T06:16:27.610Z",
+  "generatedBy": "Phase 726 - Full Truth And UX Audit",
+  "summary": {
+    "nextAppPageTotal": 120,
+    "mobileScreenTotal": 8,
+    "desktopShellFileTotal": 3,
+    "e2eSpecTotal": 61,
+    "panelRegistryCount": 76,
+    "actionRegistryCount": 92,
+    "moduleDocCount": 157,
+    "certifiedPackageTotal": 86
+  },
+  "uiEstate": {
+    "web": {
+      "app": "web",
+      "type": "next-app",
+      "pageCount": 90,
+      "routes": [
+        {
+          "route": "/chart/:dfn/:tab",
+          "file": "apps/web/src/app/chart/[dfn]/[tab]/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/adapters",
+          "file": "apps/web/src/app/cprs/admin/adapters/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/alignment",
+          "file": "apps/web/src/app/cprs/admin/alignment/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/analytics",
+          "file": "apps/web/src/app/cprs/admin/analytics/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/audit-viewer",
+          "file": "apps/web/src/app/cprs/admin/audit-viewer/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/billing",
+          "file": "apps/web/src/app/cprs/admin/billing/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/branding",
+          "file": "apps/web/src/app/cprs/admin/branding/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/break-glass",
+          "file": "apps/web/src/app/cprs/admin/break-glass/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/capability-matrix",
+          "file": "apps/web/src/app/cprs/admin/capability-matrix/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/certification",
+          "file": "apps/web/src/app/cprs/admin/certification/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/claims-queue",
+          "file": "apps/web/src/app/cprs/admin/claims-queue/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/claims-workbench",
+          "file": "apps/web/src/app/cprs/admin/claims-workbench/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/compliance",
+          "file": "apps/web/src/app/cprs/admin/compliance/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/contracting-hub",
+          "file": "apps/web/src/app/cprs/admin/contracting-hub/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/coverage",
+          "file": "apps/web/src/app/cprs/admin/coverage/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/denial-cases",
+          "file": "apps/web/src/app/cprs/admin/denial-cases/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/denials",
+          "file": "apps/web/src/app/cprs/admin/denials/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/exports",
+          "file": "apps/web/src/app/cprs/admin/exports/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/hmo-portal",
+          "file": "apps/web/src/app/cprs/admin/hmo-portal/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/integrations",
+          "file": "apps/web/src/app/cprs/admin/integrations/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/loa-queue",
+          "file": "apps/web/src/app/cprs/admin/loa-queue/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/loa-workbench",
+          "file": "apps/web/src/app/cprs/admin/loa-workbench/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/migration",
+          "file": "apps/web/src/app/cprs/admin/migration/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/module-disabled",
+          "file": "apps/web/src/app/cprs/admin/module-disabled/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/module-validation",
+          "file": "apps/web/src/app/cprs/admin/module-validation/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/modules",
+          "file": "apps/web/src/app/cprs/admin/modules/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/onboarding",
+          "file": "apps/web/src/app/cprs/admin/onboarding/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/ops",
+          "file": "apps/web/src/app/cprs/admin/ops/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/payer-db",
+          "file": "apps/web/src/app/cprs/admin/payer-db/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/payer-directory",
+          "file": "apps/web/src/app/cprs/admin/payer-directory/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/payer-intelligence",
+          "file": "apps/web/src/app/cprs/admin/payer-intelligence/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/payer-registry",
+          "file": "apps/web/src/app/cprs/admin/payer-registry/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/payerops",
+          "file": "apps/web/src/app/cprs/admin/payerops/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/payments",
+          "file": "apps/web/src/app/cprs/admin/payments/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/performance",
+          "file": "apps/web/src/app/cprs/admin/performance/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/ph-hmo-console",
+          "file": "apps/web/src/app/cprs/admin/ph-hmo-console/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/ph-market",
+          "file": "apps/web/src/app/cprs/admin/ph-market/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/philhealth-claims",
+          "file": "apps/web/src/app/cprs/admin/philhealth-claims/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/philhealth-eclaims3",
+          "file": "apps/web/src/app/cprs/admin/philhealth-eclaims3/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/philhealth-setup",
+          "file": "apps/web/src/app/cprs/admin/philhealth-setup/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/pilot",
+          "file": "apps/web/src/app/cprs/admin/pilot/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/qa-dashboard",
+          "file": "apps/web/src/app/cprs/admin/qa-dashboard/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/queue",
+          "file": "apps/web/src/app/cprs/admin/queue/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/rcm",
+          "file": "apps/web/src/app/cprs/admin/rcm/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/reconciliation",
+          "file": "apps/web/src/app/cprs/admin/reconciliation/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/remittance-intake",
+          "file": "apps/web/src/app/cprs/admin/remittance-intake/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/reports",
+          "file": "apps/web/src/app/cprs/admin/reports/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/rpc-debug",
+          "file": "apps/web/src/app/cprs/admin/rpc-debug/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/service-lines",
+          "file": "apps/web/src/app/cprs/admin/service-lines/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/support",
+          "file": "apps/web/src/app/cprs/admin/support/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/templates",
+          "file": "apps/web/src/app/cprs/admin/templates/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/terminal",
+          "file": "apps/web/src/app/cprs/admin/terminal/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/vista/billing",
+          "file": "apps/web/src/app/cprs/admin/vista/billing/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/vista/clinical-setup",
+          "file": "apps/web/src/app/cprs/admin/vista/clinical-setup/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/vista/clinics",
+          "file": "apps/web/src/app/cprs/admin/vista/clinics/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/vista/dashboard",
+          "file": "apps/web/src/app/cprs/admin/vista/dashboard/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/vista/facilities",
+          "file": "apps/web/src/app/cprs/admin/vista/facilities/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/vista/inventory",
+          "file": "apps/web/src/app/cprs/admin/vista/inventory/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/vista/lab",
+          "file": "apps/web/src/app/cprs/admin/vista/lab/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/vista",
+          "file": "apps/web/src/app/cprs/admin/vista/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/vista/pharmacy",
+          "file": "apps/web/src/app/cprs/admin/vista/pharmacy/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/vista/provisioning",
+          "file": "apps/web/src/app/cprs/admin/vista/provisioning/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/vista/quality",
+          "file": "apps/web/src/app/cprs/admin/vista/quality/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/vista/radiology",
+          "file": "apps/web/src/app/cprs/admin/vista/radiology/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/vista/system",
+          "file": "apps/web/src/app/cprs/admin/vista/system/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/vista/users",
+          "file": "apps/web/src/app/cprs/admin/vista/users/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/vista/wards",
+          "file": "apps/web/src/app/cprs/admin/vista/wards/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/vista/workforce",
+          "file": "apps/web/src/app/cprs/admin/vista/workforce/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/vista-admin",
+          "file": "apps/web/src/app/cprs/admin/vista-admin/page.tsx"
+        },
+        {
+          "route": "/cprs/admin/workflows",
+          "file": "apps/web/src/app/cprs/admin/workflows/page.tsx"
+        },
+        {
+          "route": "/cprs/chart/:dfn/:tab",
+          "file": "apps/web/src/app/cprs/chart/[dfn]/[tab]/page.tsx"
+        },
+        {
+          "route": "/cprs/emar",
+          "file": "apps/web/src/app/cprs/emar/page.tsx"
+        },
+        {
+          "route": "/cprs/handoff",
+          "file": "apps/web/src/app/cprs/handoff/page.tsx"
+        },
+        {
+          "route": "/cprs/inbox",
+          "file": "apps/web/src/app/cprs/inbox/page.tsx"
+        },
+        {
+          "route": "/cprs/inpatient",
+          "file": "apps/web/src/app/cprs/inpatient/page.tsx"
+        },
+        {
+          "route": "/cprs/login",
+          "file": "apps/web/src/app/cprs/login/page.tsx"
+        },
+        {
+          "route": "/cprs/messages",
+          "file": "apps/web/src/app/cprs/messages/page.tsx"
+        },
+        {
+          "route": "/cprs/nursing",
+          "file": "apps/web/src/app/cprs/nursing/page.tsx"
+        },
+        {
+          "route": "/cprs/order-sets",
+          "file": "apps/web/src/app/cprs/order-sets/page.tsx"
+        },
+        {
+          "route": "/cprs/patient-search",
+          "file": "apps/web/src/app/cprs/patient-search/page.tsx"
+        },
+        {
+          "route": "/cprs/remote-data-viewer",
+          "file": "apps/web/src/app/cprs/remote-data-viewer/page.tsx"
+        },
+        {
+          "route": "/cprs/scheduling",
+          "file": "apps/web/src/app/cprs/scheduling/page.tsx"
+        },
+        {
+          "route": "/cprs/settings/preferences",
+          "file": "apps/web/src/app/cprs/settings/preferences/page.tsx"
+        },
+        {
+          "route": "/cprs/verify",
+          "file": "apps/web/src/app/cprs/verify/page.tsx"
+        },
+        {
+          "route": "/cprs/vista-workspace",
+          "file": "apps/web/src/app/cprs/vista-workspace/page.tsx"
+        },
+        {
+          "route": "/encounter/note-builder",
+          "file": "apps/web/src/app/encounter/note-builder/page.tsx"
+        },
+        {
+          "route": "/inpatient/bedboard",
+          "file": "apps/web/src/app/inpatient/bedboard/page.tsx"
+        },
+        {
+          "route": "/inpatient/census",
+          "file": "apps/web/src/app/inpatient/census/page.tsx"
+        },
+        {
+          "route": "/page.tsx",
+          "file": "apps/web/src/app/page.tsx"
+        },
+        {
+          "route": "/patient-search",
+          "file": "apps/web/src/app/patient-search/page.tsx"
+        }
+      ]
+    },
+    "portal": {
+      "app": "portal",
+      "type": "next-app",
+      "pageCount": 27,
+      "routes": [
+        {
+          "route": "/dashboard/account",
+          "file": "apps/portal/src/app/dashboard/account/page.tsx"
+        },
+        {
+          "route": "/dashboard/activity",
+          "file": "apps/portal/src/app/dashboard/activity/page.tsx"
+        },
+        {
+          "route": "/dashboard/ai-help",
+          "file": "apps/portal/src/app/dashboard/ai-help/page.tsx"
+        },
+        {
+          "route": "/dashboard/appointments",
+          "file": "apps/portal/src/app/dashboard/appointments/page.tsx"
+        },
+        {
+          "route": "/dashboard/consents",
+          "file": "apps/portal/src/app/dashboard/consents/page.tsx"
+        },
+        {
+          "route": "/dashboard/documents",
+          "file": "apps/portal/src/app/dashboard/documents/page.tsx"
+        },
+        {
+          "route": "/dashboard/exports",
+          "file": "apps/portal/src/app/dashboard/exports/page.tsx"
+        },
+        {
+          "route": "/dashboard/health",
+          "file": "apps/portal/src/app/dashboard/health/page.tsx"
+        },
+        {
+          "route": "/dashboard/immunizations",
+          "file": "apps/portal/src/app/dashboard/immunizations/page.tsx"
+        },
+        {
+          "route": "/dashboard/intake",
+          "file": "apps/portal/src/app/dashboard/intake/page.tsx"
+        },
+        {
+          "route": "/dashboard/intake/:id",
+          "file": "apps/portal/src/app/dashboard/intake/[id]/page.tsx"
+        },
+        {
+          "route": "/dashboard/medications",
+          "file": "apps/portal/src/app/dashboard/medications/page.tsx"
+        },
+        {
+          "route": "/dashboard/messages",
+          "file": "apps/portal/src/app/dashboard/messages/page.tsx"
+        },
+        {
+          "route": "/dashboard",
+          "file": "apps/portal/src/app/dashboard/page.tsx"
+        },
+        {
+          "route": "/dashboard/profile",
+          "file": "apps/portal/src/app/dashboard/profile/page.tsx"
+        },
+        {
+          "route": "/dashboard/proxy",
+          "file": "apps/portal/src/app/dashboard/proxy/page.tsx"
+        },
+        {
+          "route": "/dashboard/records",
+          "file": "apps/portal/src/app/dashboard/records/page.tsx"
+        },
+        {
+          "route": "/dashboard/refills",
+          "file": "apps/portal/src/app/dashboard/refills/page.tsx"
+        },
+        {
+          "route": "/dashboard/registration",
+          "file": "apps/portal/src/app/dashboard/registration/page.tsx"
+        },
+        {
+          "route": "/dashboard/registration/verify",
+          "file": "apps/portal/src/app/dashboard/registration/verify/page.tsx"
+        },
+        {
+          "route": "/dashboard/sharing",
+          "file": "apps/portal/src/app/dashboard/sharing/page.tsx"
+        },
+        {
+          "route": "/dashboard/tasks",
+          "file": "apps/portal/src/app/dashboard/tasks/page.tsx"
+        },
+        {
+          "route": "/dashboard/telehealth",
+          "file": "apps/portal/src/app/dashboard/telehealth/page.tsx"
+        },
+        {
+          "route": "/kiosk/intake",
+          "file": "apps/portal/src/app/kiosk/intake/page.tsx"
+        },
+        {
+          "route": "/kiosk/intake/:id",
+          "file": "apps/portal/src/app/kiosk/intake/[id]/page.tsx"
+        },
+        {
+          "route": "/page.tsx",
+          "file": "apps/portal/src/app/page.tsx"
+        },
+        {
+          "route": "/share/:token",
+          "file": "apps/portal/src/app/share/[token]/page.tsx"
+        }
+      ]
+    },
+    "marketing": {
+      "app": "marketing",
+      "type": "next-app",
+      "pageCount": 3,
+      "routes": [
+        {
+          "route": "/page.tsx",
+          "file": "apps/marketing/src/app/page.tsx"
+        },
+        {
+          "route": "/pricing",
+          "file": "apps/marketing/src/app/pricing/page.tsx"
+        },
+        {
+          "route": "/signup",
+          "file": "apps/marketing/src/app/signup/page.tsx"
+        }
+      ]
+    },
+    "mobile": {
+      "app": "mobile",
+      "type": "react-native",
+      "appShell": "apps/mobile/src/App.tsx",
+      "screenCount": 8,
+      "screens": [
+        {
+          "id": "HomeScreen",
+          "file": "apps/mobile/src/screens/HomeScreen.tsx"
+        },
+        {
+          "id": "MedsScreen",
+          "file": "apps/mobile/src/screens/MedsScreen.tsx"
+        },
+        {
+          "id": "ModuleScreen",
+          "file": "apps/mobile/src/screens/ModuleScreen.tsx"
+        },
+        {
+          "id": "MoreScreen",
+          "file": "apps/mobile/src/screens/MoreScreen.tsx"
+        },
+        {
+          "id": "PatientScreen",
+          "file": "apps/mobile/src/screens/PatientScreen.tsx"
+        },
+        {
+          "id": "ScanScreen",
+          "file": "apps/mobile/src/screens/ScanScreen.tsx"
+        },
+        {
+          "id": "ScheduleScreen",
+          "file": "apps/mobile/src/screens/ScheduleScreen.tsx"
+        },
+        {
+          "id": "VitalsScreen",
+          "file": "apps/mobile/src/screens/VitalsScreen.tsx"
+        }
+      ]
+    },
+    "desktop": {
+      "app": "desktop",
+      "type": "electron-shell",
+      "shellFileCount": 3,
+      "files": [
+        "apps/desktop/main.js",
+        "apps/desktop/preload.js",
+        "apps/desktop/splash.html"
+      ]
+    }
+  },
+  "crossChecks": {
+    "panelRegistry": {
+      "file": "apps/web/src/lib/vista-panel-registry.ts",
+      "panelCount": 76,
+      "uniqueCategories": [
+        "Administrative",
+        "Ancillary",
+        "Clinical",
+        "Financial",
+        "Infrastructure",
+        "Pharmacy"
+      ],
+      "tierCounts": [
+        {
+          "tier": 1,
+          "count": 15
+        },
+        {
+          "tier": 2,
+          "count": 22
+        },
+        {
+          "tier": 3,
+          "count": 18
+        },
+        {
+          "tier": 4,
+          "count": 20
+        },
+        {
+          "tier": 5,
+          "count": 1
+        }
+      ],
+      "sampleIds": [
+        "xu",
+        "di",
+        "dg",
+        "sd",
+        "or",
+        "pso",
+        "psj",
+        "lr",
+        "ra",
+        "tiu",
+        "gmpl",
+        "gmv",
+        "gmra",
+        "ib",
+        "prca",
+        "sr",
+        "gmrc",
+        "fh",
+        "nur",
+        "psb"
+      ]
+    },
+    "actionRegistry": {
+      "file": "apps/web/src/actions/actionRegistry.ts",
+      "actionCount": 92,
+      "statuses": {
+        "wired": 88,
+        "requires_config": 1,
+        "unsupported-in-sandbox": 3,
+        "stub": 0
+      },
+      "sampleActionIds": [
+        "cover.load-allergies",
+        "cover.load-problems",
+        "cover.load-vitals",
+        "cover.load-meds",
+        "cover.load-notes",
+        "cover.load-labs",
+        "cover.load-immunizations",
+        "cover.load-orders",
+        "cover.load-appointments",
+        "cover.load-reminders",
+        "patient.search",
+        "patient.select",
+        "patient.default-list",
+        "problems.list",
+        "problems.search-icd",
+        "problems.add",
+        "problems.edit",
+        "meds.list-active",
+        "meds.order-detail",
+        "meds.quick-order"
+      ]
+    },
+    "docsModules": {
+      "dir": "docs/modules",
+      "moduleDocCount": 157,
+      "sampleNamespaces": [
+        "a1ae",
+        "absv",
+        "ackq",
+        "afjx",
+        "an",
+        "anrv",
+        "arc",
+        "arj",
+        "bch",
+        "bps",
+        "crhd",
+        "den",
+        "dent",
+        "dg",
+        "dgbt",
+        "dgj",
+        "di",
+        "dinz",
+        "dpt",
+        "dsir",
+        "dss",
+        "dvb",
+        "dvba",
+        "eas",
+        "ec"
+      ]
+    },
+    "certification": {
+      "file": "data/vista/package-certification.json",
+      "packageCount": 86,
+      "certificationCounts": {
+        "certified": 23,
+        "partial": 63
+      }
+    },
+    "e2e": [
+      {
+        "app": "web",
+        "specCount": 56,
+        "files": [
+          "apps/web/e2e/accessibility.spec.ts",
+          "apps/web/e2e/click-audit-v2.spec.ts",
+          "apps/web/e2e/click-audit.spec.ts",
+          "apps/web/e2e/clinic-day.spec.ts",
+          "apps/web/e2e/clinical-flows.spec.ts",
+          "apps/web/e2e/clinical-journey-evidence.spec.ts",
+          "apps/web/e2e/console-error-gate.spec.ts",
+          "apps/web/e2e/coversheet-layout.spec.ts",
+          "apps/web/e2e/cprs-tabs.spec.ts",
+          "apps/web/e2e/dead-click-crawler.spec.ts",
+          "apps/web/e2e/domain-journeys/domain-analytics.spec.ts",
+          "apps/web/e2e/domain-journeys/domain-clinical.spec.ts",
+          "apps/web/e2e/domain-journeys/domain-iam.spec.ts",
+          "apps/web/e2e/domain-journeys/domain-imaging.spec.ts",
+          "apps/web/e2e/domain-journeys/domain-infrastructure.spec.ts",
+          "apps/web/e2e/domain-journeys/domain-intake.spec.ts",
+          "apps/web/e2e/domain-journeys/domain-interop.spec.ts",
+          "apps/web/e2e/domain-journeys/domain-modules.spec.ts",
+          "apps/web/e2e/domain-journeys/domain-observability.spec.ts",
+          "apps/web/e2e/domain-journeys/domain-portal.spec.ts",
+          "apps/web/e2e/domain-journeys/domain-rcm.spec.ts",
+          "apps/web/e2e/domain-journeys/domain-scheduling.spec.ts",
+          "apps/web/e2e/login-flow.spec.ts",
+          "apps/web/e2e/menu-no-dead-clicks.spec.ts",
+          "apps/web/e2e/messaging-flows.spec.ts",
+          "apps/web/e2e/no-dead-clicks.spec.ts",
+          "apps/web/e2e/no-pending-smoke.spec.ts",
+          "apps/web/e2e/parity-enforcement.spec.ts",
+          "apps/web/e2e/phase-replay.spec.ts",
+          "apps/web/e2e/phases/phases-131-to-147.spec.ts",
+          "apps/web/e2e/phases/phases-154-to-245.spec.ts",
+          "apps/web/e2e/phases/phases-22-to-39.spec.ts",
+          "apps/web/e2e/phases/phases-246-to-437.spec.ts",
+          "apps/web/e2e/phases/phases-40-to-58.spec.ts",
+          "apps/web/e2e/phases/phases-438-to-539.spec.ts",
+          "apps/web/e2e/phases/phases-5-to-21.spec.ts",
+          "apps/web/e2e/phases/phases-540-to-598.spec.ts",
+          "apps/web/e2e/phases/phases-59-to-72.spec.ts",
+          "apps/web/e2e/phases/phases-599-to-610.spec.ts",
+          "apps/web/e2e/phases/phases-611-to-621.spec.ts",
+          "apps/web/e2e/phases/phases-623-to-634.spec.ts",
+          "apps/web/e2e/phases/phases-635-to-646.spec.ts",
+          "apps/web/e2e/phases/phases-647-to-660.spec.ts",
+          "apps/web/e2e/phases/phases-661-to-675.spec.ts",
+          "apps/web/e2e/phases/phases-676-to-691.spec.ts",
+          "apps/web/e2e/phases/phases-692-to-703.spec.ts",
+          "apps/web/e2e/phases/phases-704-to-715.spec.ts",
+          "apps/web/e2e/phases/phases-716-to-721.spec.ts",
+          "apps/web/e2e/phases/phases-76-to-87B.spec.ts",
+          "apps/web/e2e/phases/phases-88-to-97.spec.ts",
+          "apps/web/e2e/phases/phases-97B-to-130.spec.ts",
+          "apps/web/e2e/qa-ladder-journeys.spec.ts",
+          "apps/web/e2e/qa-smoke.spec.ts",
+          "apps/web/e2e/scenario-clinical.spec.ts",
+          "apps/web/e2e/scenario-rcm.spec.ts",
+          "apps/web/e2e/visual-regression.spec.ts"
+        ]
+      },
+      {
+        "app": "portal",
+        "specCount": 4,
+        "files": [
+          "apps/portal/e2e/portal-phase27.spec.ts",
+          "apps/portal/e2e/portal-smoke.spec.ts",
+          "apps/portal/e2e/record-portability.spec.ts",
+          "apps/portal/e2e/scenario-portal.spec.ts"
+        ]
+      },
+      {
+        "app": "api",
+        "specCount": 1,
+        "files": [
+          "apps/api/e2e/imaging-viewer.spec.ts"
+        ]
+      }
+    ],
+    "artifacts": {
+      "deadClickAuditCsv": "artifacts/DEAD_CLICK_AUDIT.csv",
+      "hasDeadClickArtifact": true
+    }
+  },
+  "auditBoundaryNotes": [
+    "This inventory is the outer boundary for the full UI and UX audit.",
+    "Generated breadth does not imply certified or live-backed completion.",
+    "VEHU remains the current truth lane until vista-distro proves parity."
+  ]
+}

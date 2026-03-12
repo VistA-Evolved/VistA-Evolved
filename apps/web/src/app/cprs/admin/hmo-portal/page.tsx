@@ -102,7 +102,21 @@ async function apiFetch<T>(path: string, opts?: RequestInit): Promise<T> {
       ...((opts?.headers as Record<string, string>) || {}),
     },
   });
-  return res.json() as Promise<T>;
+
+  let payload: any = null;
+  try {
+    payload = await res.json();
+  } catch {
+    payload = null;
+  }
+
+  if (!res.ok || (payload && payload.ok === false)) {
+    const message =
+      payload?.error || (res.status === 401 ? 'Authentication required' : `Request failed (${res.status})`);
+    throw new Error(message);
+  }
+
+  return payload as T;
 }
 
 /* -- Tab IDs -------------------------------------------------- */
@@ -171,16 +185,23 @@ export default function HmoPortalPage() {
 function AdaptersTab() {
   const [adapters, setAdapters] = useState<PortalAdapterInfo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     apiFetch<{ ok: boolean; adapters: PortalAdapterInfo[] }>('/rcm/hmo-portal/adapters')
       .then((r) => {
-        if (r.ok) setAdapters(r.adapters);
+        setError(null);
+        setAdapters(r.adapters ?? []);
+      })
+      .catch((err) => {
+        setAdapters([]);
+        setError(err instanceof Error ? err.message : 'Unable to load adapters.');
       })
       .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <p>Loading adapters...</p>;
+  if (error) return <p style={{ color: '#dc2626' }}>Unable to load adapters. {error}</p>;
 
   return (
     <div>
@@ -243,13 +264,18 @@ function LoaBuilderTab() {
   const [builtPacket, setBuiltPacket] = useState<LoaPacket | null>(null);
   const [submitResult, setSubmitResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   useEffect(() => {
-    apiFetch<{ ok: boolean; templates: SpecialtyTemplate[] }>('/rcm/hmo-portal/specialties').then(
-      (r) => {
-        if (r.ok) setSpecialties(r.templates);
-      }
-    );
+    apiFetch<{ ok: boolean; templates: SpecialtyTemplate[] }>('/rcm/hmo-portal/specialties')
+      .then((r) => {
+        setLoadError(null);
+        setSpecialties(r.templates ?? []);
+      })
+      .catch((err) => {
+        setSpecialties([]);
+        setLoadError(err instanceof Error ? err.message : 'Unable to load specialty templates.');
+      });
   }, []);
 
   const handleBuildDemo = useCallback(async () => {
@@ -285,37 +311,40 @@ function LoaBuilderTab() {
       updatedAt: new Date().toISOString(),
     };
 
-    const result = await apiFetch<{ ok: boolean; packet?: LoaPacket; errors?: string[] }>(
-      '/rcm/hmo-portal/loa/build',
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          loaRequest: demoLoaRequest,
-          specialty: 'general_medicine',
-          admissionType: 'outpatient',
-          requestedServices: ['Office visit', 'Lab workup'],
-        }),
-      }
-    );
+    try {
+      const result = await apiFetch<{ ok: boolean; packet?: LoaPacket; errors?: string[] }>(
+        '/rcm/hmo-portal/loa/build',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            loaRequest: demoLoaRequest,
+            specialty: 'general_medicine',
+            admissionType: 'outpatient',
+            requestedServices: ['Office visit', 'Lab workup'],
+          }),
+        }
+      );
 
-    if (!result.ok) {
-      setError(result.errors?.join(', ') ?? 'Build failed.');
-      return;
+      setBuiltPacket(result.packet ?? null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Build failed.');
     }
-
-    setBuiltPacket(result.packet ?? null);
   }, []);
 
   const handleSubmit = useCallback(async () => {
     if (!builtPacket) return;
     setSubmitResult(null);
 
-    const result = await apiFetch<{ ok: boolean; submissionId?: string; result?: any }>(
-      '/rcm/hmo-portal/loa/submit',
-      { method: 'POST', body: JSON.stringify({ packetId: builtPacket.packetId }) }
-    );
+    try {
+      const result = await apiFetch<{ ok: boolean; submissionId?: string; result?: any }>(
+        '/rcm/hmo-portal/loa/submit',
+        { method: 'POST', body: JSON.stringify({ packetId: builtPacket.packetId }) }
+      );
 
-    setSubmitResult(result);
+      setSubmitResult(result);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Submission failed.');
+    }
   }, [builtPacket]);
 
   return (
@@ -341,6 +370,7 @@ function LoaBuilderTab() {
         Build Demo LOA Packet (Maxicare)
       </button>
 
+      {loadError && <p style={{ color: '#dc2626' }}>Unable to load specialty templates. {loadError}</p>}
       {error && <p style={{ color: '#dc2626' }}>{error}</p>}
 
       {builtPacket && (
@@ -544,38 +574,41 @@ function ClaimBuilderTab() {
       updatedAt: new Date().toISOString(),
     };
 
-    const result = await apiFetch<{ ok: boolean; packet?: HmoClaimPacket; errors?: string[] }>(
-      '/rcm/hmo-portal/claims/build',
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          claim: demoClaim,
-          payerName: 'Maxicare',
-          memberId: 'MAX-DEMO-001',
-          memberType: 'principal',
-          specialty: 'general_medicine',
-        }),
-      }
-    );
+    try {
+      const result = await apiFetch<{ ok: boolean; packet?: HmoClaimPacket; errors?: string[] }>(
+        '/rcm/hmo-portal/claims/build',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            claim: demoClaim,
+            payerName: 'Maxicare',
+            memberId: 'MAX-DEMO-001',
+            memberType: 'principal',
+            specialty: 'general_medicine',
+          }),
+        }
+      );
 
-    if (!result.ok) {
-      setError(result.errors?.join(', ') ?? 'Build failed.');
-      return;
+      setBuiltPacket(result.packet ?? null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Build failed.');
     }
-
-    setBuiltPacket(result.packet ?? null);
   }, []);
 
   const handleSubmit = useCallback(async () => {
     if (!builtPacket) return;
     setSubmitResult(null);
 
-    const result = await apiFetch<{ ok: boolean; submissionId?: string; result?: any }>(
-      '/rcm/hmo-portal/claims/submit',
-      { method: 'POST', body: JSON.stringify({ packetId: builtPacket.packetId }) }
-    );
+    try {
+      const result = await apiFetch<{ ok: boolean; submissionId?: string; result?: any }>(
+        '/rcm/hmo-portal/claims/submit',
+        { method: 'POST', body: JSON.stringify({ packetId: builtPacket.packetId }) }
+      );
 
-    setSubmitResult(result);
+      setSubmitResult(result);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Submission failed.');
+    }
   }, [builtPacket]);
 
   return (
@@ -739,14 +772,23 @@ function SubmissionsTab() {
   const [submissions, setSubmissions] = useState<SubmissionRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<SubmissionRecord | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
-    const res = await apiFetch<{ ok: boolean; submissions: SubmissionRecord[] }>(
-      '/rcm/hmo-portal/submissions'
-    );
-    if (res.ok) setSubmissions(res.submissions);
-    setLoading(false);
+    try {
+      const res = await apiFetch<{ ok: boolean; submissions: SubmissionRecord[] }>(
+        '/rcm/hmo-portal/submissions'
+      );
+      setError(null);
+      setSubmissions(res.submissions ?? []);
+    } catch (err) {
+      setSubmissions([]);
+      setSelected(null);
+      setError(err instanceof Error ? err.message : 'Unable to load submissions.');
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -788,6 +830,8 @@ function SubmissionsTab() {
 
       {loading ? (
         <p>Loading submissions...</p>
+      ) : error ? (
+        <p style={{ color: '#dc2626' }}>Unable to load submissions. {error}</p>
       ) : submissions.length === 0 ? (
         <p style={{ color: '#999' }}>
           No submissions yet. Build and submit an LOA or claim packet to get started.
@@ -1023,17 +1067,25 @@ function SubmissionDetail({
 function StatsTab() {
   const [stats, setStats] = useState<SubmissionStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     apiFetch<{ ok: boolean; stats: SubmissionStats }>('/rcm/hmo-portal/submissions/stats')
       .then((r) => {
-        if (r.ok) setStats(r.stats);
+        setError(null);
+        setStats(r.stats ?? null);
+      })
+      .catch((err) => {
+        setStats(null);
+        setError(err instanceof Error ? err.message : 'Unable to load stats.');
       })
       .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <p>Loading stats...</p>;
-  if (!stats) return <p style={{ color: '#999' }}>Unable to load stats.</p>;
+  if (!stats) {
+    return <p style={{ color: error ? '#dc2626' : '#999' }}>Unable to load stats.{error ? ` ${error}` : ''}</p>;
+  }
 
   const statusOrder = [
     'draft',

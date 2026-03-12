@@ -59,7 +59,11 @@ const THEME_PACKS = [
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
-  return res.json();
+  const body = await res.json().catch(() => null);
+  if (!res.ok || body?.ok === false) {
+    throw new Error(body?.error || body?.errors?.join(', ') || `Request failed: ${res.status}`);
+  }
+  return body;
 }
 
 async function apiPut(path: string, body: unknown) {
@@ -128,51 +132,45 @@ function ColorInput({
 
 export default function BrandingAdminPage() {
   const [tab, setTab] = useState<Tab>('branding');
+  const [tenantId, setTenantId] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [branding, setBranding] = useState<BrandingConfig>(EMPTY_BRANDING);
-  const [_uiDefaults, setUiDefaults] = useState<UIDefaults | null>(null);
+  const [uiDefaults, setUiDefaults] = useState<UIDefaults | null>(null);
   const [selectedTheme, setSelectedTheme] = useState('modern-default');
-  const tenantId = 'default'; // single-tenant for now
 
   const loadData = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
-      const [brandRes, uiRes] = await Promise.all([
-        apiFetch(`/admin/branding/${tenantId}`),
-        apiFetch(`/admin/ui-defaults/${tenantId}`),
-      ]);
-      if (brandRes.ok) setBranding(brandRes.branding || EMPTY_BRANDING);
-      if (uiRes.ok) {
-        setUiDefaults(uiRes.uiDefaults);
-        setSelectedTheme(uiRes.uiDefaults?.themePack || 'modern-default');
-      }
+      const tenantRes = await apiFetch('/admin/my-tenant');
+      const resolvedTenantId = tenantRes?.tenant?.tenantId || '';
+      setTenantId(resolvedTenantId);
+      setBranding(tenantRes?.tenant?.branding || EMPTY_BRANDING);
+      setUiDefaults(tenantRes?.tenant?.uiDefaults || null);
+      setSelectedTheme(tenantRes?.tenant?.uiDefaults?.themePack || 'modern-default');
     } catch (e: any) {
       setError(e.message || 'Failed to load branding data');
     } finally {
       setLoading(false);
     }
-  }, [tenantId]);
+  }, []);
 
   useEffect(() => {
     loadData();
   }, [loadData]);
 
   const saveBranding = async () => {
+    if (!tenantId) return;
     setSaving(true);
     setError('');
     setSuccess('');
     try {
       const res = await apiPut(`/admin/branding/${tenantId}`, branding);
-      if (res.ok) {
-        setSuccess('Branding saved successfully');
-        setBranding(res.branding);
-      } else {
-        setError(res.errors?.join(', ') || res.error || 'Save failed');
-      }
+      setSuccess('Branding saved successfully');
+      setBranding(res.branding);
     } catch (e: any) {
       setError(e.message || 'Save failed');
     } finally {
@@ -181,17 +179,14 @@ export default function BrandingAdminPage() {
   };
 
   const saveThemePack = async () => {
+    if (!tenantId) return;
     setSaving(true);
     setError('');
     setSuccess('');
     try {
       const res = await apiPut(`/admin/ui-defaults/${tenantId}`, { themePack: selectedTheme });
-      if (res.ok) {
-        setSuccess('Default theme pack saved');
-        setUiDefaults(res.uiDefaults);
-      } else {
-        setError(res.error || 'Save failed');
-      }
+      setSuccess('Default theme pack saved');
+      setUiDefaults(res.uiDefaults);
     } catch (e: any) {
       setError(e.message || 'Save failed');
     } finally {
@@ -532,6 +527,12 @@ export default function BrandingAdminPage() {
         </span>
       </div>
 
+      {tenantId && (
+        <div style={{ margin: '8px 16px 0', fontSize: 12, color: '#666' }}>
+          Active tenant: <strong>{tenantId}</strong>
+        </div>
+      )}
+
       {error && (
         <div
           style={{
@@ -588,6 +589,13 @@ export default function BrandingAdminPage() {
           </>
         )}
       </div>
+
+      {!loading && uiDefaults && (
+        <div style={{ margin: '12px 16px 16px', fontSize: 12, color: '#666' }}>
+          Current defaults: theme <strong>{uiDefaults.theme}</strong>, density{' '}
+          <strong>{uiDefaults.density}</strong>, layout <strong>{uiDefaults.layoutMode}</strong>.
+        </div>
+      )}
     </div>
   );
 }

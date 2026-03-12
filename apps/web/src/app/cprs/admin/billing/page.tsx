@@ -11,13 +11,12 @@ import { csrfHeaders } from '@/lib/csrf';
 interface Plan {
   id: string;
   name: string;
-  tier: string;
-  basePriceCents: number;
-  includedPhysicians: number;
-  perPhysicianCents: number;
-  apiCallLimit: number;
-  modulesIncluded: string[];
-  description: string;
+  entityType: string;
+  priceMonthly: number;
+  currency: string;
+  features: string[];
+  maxProviders: number;
+  trialDays: number;
 }
 
 interface Subscription {
@@ -27,7 +26,11 @@ interface Subscription {
   status: string;
   currentPeriodStart: string;
   currentPeriodEnd: string;
-  cancelAtPeriodEnd: boolean;
+  trialEnd?: string;
+  cancelledAt?: string;
+  externalId?: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface UsageCounters {
@@ -41,6 +44,15 @@ interface UsageCounters {
   report_generated: number;
 }
 
+interface UsageResponse {
+  tenantId: string;
+  counters: UsageCounters;
+  source: string;
+  durable: boolean;
+  provider: string;
+  note?: string;
+}
+
 /* ------------------------------------------------------------------ */
 /* Helpers                                                             */
 /* ------------------------------------------------------------------ */
@@ -51,11 +63,20 @@ async function apiFetch(path: string, opts?: RequestInit) {
     headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
     ...opts,
   });
-  return res.json();
+  const data = await res.json().catch(() => null);
+  if (!res.ok || data?.ok === false) {
+    throw new Error(data?.error || `Request failed: ${res.status}`);
+  }
+  return data;
 }
 
-function formatCents(cents: number): string {
-  return `$${(cents / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+function formatDollars(amount: number, currency = 'USD'): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(amount);
 }
 
 /* ------------------------------------------------------------------ */
@@ -79,11 +100,12 @@ export default function BillingPage() {
   const [tab, setTab] = useState<TabId>('plans');
   const [plans, setPlans] = useState<Plan[]>([]);
   const [subscription, setSubscription] = useState<Subscription | null>(null);
-  const [usage, setUsage] = useState<UsageCounters | null>(null);
+  const [usage, setUsage] = useState<UsageResponse | null>(null);
   const [health, setHealth] = useState<any>(null);
-  const [tenantId, setTenantId] = useState('default');
+  const [tenantId, setTenantId] = useState('Loading...');
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (tab === 'plans') loadPlans();
@@ -91,77 +113,109 @@ export default function BillingPage() {
     if (tab === 'usage') loadUsage();
     if (tab === 'health') loadHealth();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tab, tenantId]);
+  }, [tab]);
+
+  useEffect(() => {
+    hydrateTenantId();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function syncTenantId(nextTenantId?: string) {
+    if (nextTenantId && nextTenantId !== tenantId) {
+      setTenantId(nextTenantId);
+    }
+  }
+
+  async function hydrateTenantId() {
+    try {
+      const data = await apiFetch('/billing/usage');
+      syncTenantId(data.tenantId);
+    } catch {
+      setTenantId('Unavailable');
+    }
+  }
 
   async function loadPlans() {
     setLoading(true);
+    setError('');
     try {
-      const data = await apiFetch('/admin/billing/plans');
+      const data = await apiFetch('/billing/plans');
       setPlans(data.plans || []);
-    } catch {
+    } catch (e: any) {
       setPlans([]);
+      setError(e.message || 'Unable to load billing plans.');
     }
     setLoading(false);
   }
 
   async function loadSubscription() {
     setLoading(true);
+    setError('');
     try {
-      const data = await apiFetch(`/admin/billing/subscriptions/${tenantId}`);
+      const data = await apiFetch('/billing/subscription');
       setSubscription(data.subscription || null);
-    } catch {
+      syncTenantId(data.subscription?.tenantId);
+    } catch (e: any) {
       setSubscription(null);
+      setError(e.message || 'Unable to load billing subscription.');
     }
     setLoading(false);
   }
 
   async function loadUsage() {
     setLoading(true);
+    setError('');
     try {
-      const data = await apiFetch(`/admin/billing/usage/${tenantId}`);
-      setUsage(data.counters || null);
-    } catch {
+      const data = await apiFetch('/billing/usage');
+      setUsage(data || null);
+      syncTenantId(data.tenantId);
+    } catch (e: any) {
       setUsage(null);
+      setError(e.message || 'Unable to load billing usage.');
     }
     setLoading(false);
   }
 
   async function loadHealth() {
     setLoading(true);
+    setError('');
     try {
-      const data = await apiFetch('/admin/billing/health');
+      const data = await apiFetch('/billing/health');
       setHealth(data);
     } catch (e: any) {
       setHealth({ ok: false, error: e.message });
+      setError(e.message || 'Unable to load billing health.');
     }
     setLoading(false);
   }
 
   async function subscribe(planId: string) {
     setMsg('');
+    setError('');
     try {
-      const data = await apiFetch('/admin/billing/subscriptions', {
+      const data = await apiFetch('/billing/subscribe', {
         method: 'POST',
-        body: JSON.stringify({ tenantId, planId }),
+        body: JSON.stringify({ planId }),
       });
       setMsg(data.ok ? 'Subscribed!' : data.error || 'Failed');
       loadSubscription();
+      loadUsage();
     } catch (e: any) {
-      setMsg(e.message);
+      setError(e.message);
     }
   }
 
   async function cancelSub() {
     setMsg('');
+    setError('');
     try {
-      const data = await apiFetch(`/admin/billing/subscriptions/${tenantId}`, {
-        method: 'DELETE',
-        body: JSON.stringify({ cancelAtPeriodEnd: true }),
+      const data = await apiFetch('/billing/cancel', {
+        method: 'POST',
       });
       setMsg(data.ok ? 'Cancellation scheduled' : data.error || 'Failed');
       loadSubscription();
     } catch (e: any) {
-      setMsg(e.message);
+      setError(e.message);
     }
   }
 
@@ -170,10 +224,11 @@ export default function BillingPage() {
   const tabStyle = (id: TabId) => ({
     padding: '8px 16px',
     cursor: 'pointer' as const,
-    borderBottom: tab === id ? '2px solid var(--accent-primary, #0078d4)' : '2px solid transparent',
     fontWeight: tab === id ? 600 : 400,
     background: 'transparent',
-    border: 'none',
+    borderTopWidth: 0,
+    borderRightWidth: 0,
+    borderLeftWidth: 0,
     borderBottomWidth: '2px',
     borderBottomStyle: 'solid' as const,
     borderBottomColor: tab === id ? 'var(--accent-primary, #0078d4)' : 'transparent',
@@ -189,12 +244,11 @@ export default function BillingPage() {
 
       {/* Tenant selector */}
       <div style={{ marginBottom: 16 }}>
-        <label style={{ marginRight: 8, fontWeight: 500 }}>Tenant ID:</label>
-        <input
-          value={tenantId}
-          onChange={(e) => setTenantId(e.target.value)}
-          style={{ padding: '4px 8px', border: '1px solid #ccc', borderRadius: 4, width: 200 }}
-        />
+        <div style={{ fontWeight: 500, marginBottom: 4 }}>Session Tenant</div>
+        <div style={{ fontFamily: 'monospace', fontSize: 13 }}>{tenantId}</div>
+        <div style={{ color: 'var(--text-secondary, #666)', fontSize: 13, marginTop: 4 }}>
+          Billing routes are session-scoped. This page reflects the currently authenticated tenant.
+        </div>
       </div>
 
       {/* Tabs */}
@@ -217,6 +271,21 @@ export default function BillingPage() {
           }}
         >
           {msg}
+        </div>
+      )}
+
+      {error && (
+        <div
+          style={{
+            padding: 8,
+            marginBottom: 12,
+            background: '#ffebee',
+            color: '#b71c1c',
+            borderRadius: 4,
+            fontSize: 14,
+          }}
+        >
+          {error}
         </div>
       )}
 
@@ -247,20 +316,16 @@ export default function BillingPage() {
               <div
                 style={{ fontSize: 28, fontWeight: 700, color: 'var(--accent-primary, #0078d4)' }}
               >
-                {p.basePriceCents === 0 ? 'Free' : formatCents(p.basePriceCents)}
-                {p.basePriceCents > 0 && <span style={{ fontSize: 14, fontWeight: 400 }}>/mo</span>}
+                {p.priceMonthly === 0 ? 'Free' : formatDollars(p.priceMonthly, p.currency)}
+                {p.priceMonthly > 0 && <span style={{ fontSize: 14, fontWeight: 400 }}>/mo</span>}
               </div>
-              <p style={{ fontSize: 13, color: '#666', margin: 0 }}>{p.description}</p>
+              <p style={{ fontSize: 13, color: '#666', margin: 0 }}>{p.entityType.replace(/_/g, ' ')}</p>
               <ul style={{ fontSize: 13, margin: 0, paddingLeft: 16 }}>
-                <li>{p.includedPhysicians} physicians included</li>
-                {p.perPhysicianCents > 0 && (
-                  <li>{formatCents(p.perPhysicianCents)}/additional physician</li>
-                )}
-                <li>
-                  {p.apiCallLimit === 0 ? 'Unlimited' : p.apiCallLimit.toLocaleString()} API calls
-                </li>
-                <li>{p.modulesIncluded.length} modules</li>
+                <li>Up to {p.maxProviders.toLocaleString()} providers</li>
+                <li>{p.trialDays}-day trial</li>
+                <li>{p.features.length} included capabilities</li>
               </ul>
+              <div style={{ fontSize: 12, color: '#666' }}>{p.features.join(' • ')}</div>
               <button
                 onClick={() => subscribe(p.id)}
                 style={{
@@ -298,6 +363,10 @@ export default function BillingPage() {
                     <td>{subscription.planId}</td>
                   </tr>
                   <tr>
+                    <td style={{ fontWeight: 500, paddingRight: 16 }}>Tenant</td>
+                    <td style={{ fontFamily: 'monospace' }}>{subscription.tenantId}</td>
+                  </tr>
+                  <tr>
                     <td style={{ fontWeight: 500, paddingRight: 16 }}>Status</td>
                     <td>
                       <span
@@ -321,25 +390,31 @@ export default function BillingPage() {
                       {new Date(subscription.currentPeriodEnd).toLocaleDateString()}
                     </td>
                   </tr>
-                  {subscription.cancelAtPeriodEnd && (
+                  {subscription.trialEnd && (
                     <tr>
-                      <td colSpan={2} style={{ color: '#e65100', fontStyle: 'italic' }}>
-                        Cancels at period end
-                      </td>
+                      <td style={{ fontWeight: 500, paddingRight: 16 }}>Trial End</td>
+                      <td>{new Date(subscription.trialEnd).toLocaleDateString()}</td>
+                    </tr>
+                  )}
+                  {subscription.cancelledAt && (
+                    <tr>
+                      <td style={{ fontWeight: 500, paddingRight: 16 }}>Cancelled</td>
+                      <td>{new Date(subscription.cancelledAt).toLocaleString()}</td>
                     </tr>
                   )}
                 </tbody>
               </table>
               <button
                 onClick={cancelSub}
+                disabled={subscription.status === 'cancelled'}
                 style={{
                   marginTop: 12,
                   padding: '6px 12px',
-                  background: '#d32f2f',
+                  background: subscription.status === 'cancelled' ? '#bdbdbd' : '#d32f2f',
                   color: '#fff',
                   border: 'none',
                   borderRadius: 4,
-                  cursor: 'pointer',
+                  cursor: subscription.status === 'cancelled' ? 'default' : 'pointer',
                 }}
               >
                 Cancel Subscription
@@ -357,26 +432,34 @@ export default function BillingPage() {
       {tab === 'usage' && !loading && (
         <div>
           {usage ? (
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
-              <thead>
-                <tr style={{ borderBottom: '2px solid #ddd' }}>
-                  <th style={{ textAlign: 'left', padding: 8 }}>Meter</th>
-                  <th style={{ textAlign: 'right', padding: 8 }}>Count</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.entries(usage).map(([key, val]) => (
-                  <tr key={key} style={{ borderBottom: '1px solid #eee' }}>
-                    <td style={{ padding: 8 }}>{key.replace(/_/g, ' ')}</td>
-                    <td style={{ textAlign: 'right', padding: 8, fontFamily: 'monospace' }}>
-                      {(val as number).toLocaleString()}
-                    </td>
+            <div>
+              <div style={{ color: 'var(--text-secondary, #666)', fontSize: 13, marginBottom: 12 }}>
+                {usage.note || 'Current metering snapshot for the authenticated tenant.'}
+              </div>
+              <div style={{ color: 'var(--text-secondary, #666)', fontSize: 13, marginBottom: 12 }}>
+                Source: {usage.source} • Durable: {usage.durable ? 'yes' : 'no'} • Provider: {usage.provider}
+              </div>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
+                <thead>
+                  <tr style={{ borderBottom: '2px solid #ddd' }}>
+                    <th style={{ textAlign: 'left', padding: 8 }}>Meter</th>
+                    <th style={{ textAlign: 'right', padding: 8 }}>Count</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {Object.entries(usage.counters).map(([key, val]) => (
+                    <tr key={key} style={{ borderBottom: '1px solid #eee' }}>
+                      <td style={{ padding: 8 }}>{key.replace(/_/g, ' ')}</td>
+                      <td style={{ textAlign: 'right', padding: 8, fontFamily: 'monospace' }}>
+                        {(val as number).toLocaleString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           ) : (
-            <p style={{ color: '#999' }}>No usage data for tenant &quot;{tenantId}&quot;.</p>
+            <p style={{ color: '#999' }}>No usage data available for the authenticated tenant.</p>
           )}
         </div>
       )}

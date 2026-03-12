@@ -29,20 +29,22 @@ interface OnboardingSession {
   completedAt?: string;
 }
 
-async function apiFetch(path: string) {
-  const res = await fetch(`${API_BASE}${path}`, { credentials: 'include' });
-  return res.json();
+async function requestJson(path: string, init?: RequestInit) {
+  const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...init });
+  const payload = await res.json().catch(() => null);
+  if (!res.ok) {
+    throw new Error((payload as any)?.error || `Request failed (${res.status})`);
+  }
+  return payload;
 }
 
 async function apiPost(path: string, body?: unknown) {
   const csrf = await getCsrfToken();
-  const res = await fetch(`${API_BASE}${path}`, {
+  return requestJson(path, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...(csrf ? { 'X-CSRF-Token': csrf } : {}) },
-    credentials: 'include',
     body: body ? JSON.stringify(body) : undefined,
   });
-  return res.json();
 }
 
 const STEP_LABELS: Record<string, string> = {
@@ -64,6 +66,8 @@ const STEP_ICONS: Record<string, string> = {
 export default function OnboardingPage() {
   const [sessions, setSessions] = useState<OnboardingSession[]>([]);
   const [active, setActive] = useState<OnboardingSession | null>(null);
+  const [sessionsLoaded, setSessionsLoaded] = useState(false);
+  const [sessionsError, setSessionsError] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -85,13 +89,19 @@ export default function OnboardingPage() {
     Array<{ moduleId: string; name: string; enabled: boolean }>
   >([]);
   const [selectedModules, setSelectedModules] = useState<string[]>([]);
+  const [modulesLoading, setModulesLoading] = useState(false);
+  const [moduleLoadError, setModuleLoadError] = useState('');
 
   const loadSessions = useCallback(async () => {
     try {
-      const data = await apiFetch('/admin/onboarding');
+      setSessionsError('');
+      const data = await requestJson('/admin/onboarding');
       if (data.ok) setSessions(data.sessions);
-    } catch {
-      /* ignore */
+    } catch (err) {
+      setSessions([]);
+      setSessionsError((err as Error).message || 'Unable to load onboarding sessions');
+    } finally {
+      setSessionsLoaded(true);
     }
   }, []);
 
@@ -119,10 +129,10 @@ export default function OnboardingPage() {
 
   const loadSession = async (id: string) => {
     try {
-      const data = await apiFetch(`/admin/onboarding/${id}`);
+      const data = await requestJson(`/admin/onboarding/${id}`);
       if (data.ok) setActive(data.session);
-    } catch {
-      /* ignore */
+    } catch (err) {
+      setError((err as Error).message);
     }
   };
 
@@ -160,15 +170,27 @@ export default function OnboardingPage() {
 
   const loadModules = useCallback(async () => {
     try {
-      const data = await apiFetch('/api/modules');
+      setModulesLoading(true);
+      setModuleLoadError('');
+      const data = await requestJson('/api/modules/status');
       if (data.ok && data.modules) {
         setAvailableModules(data.modules);
         setSelectedModules(data.modules.filter((m: any) => m.enabled).map((m: any) => m.moduleId));
       }
-    } catch {
-      /* ignore */
+    } catch (err) {
+      setAvailableModules([]);
+      setSelectedModules([]);
+      setModuleLoadError((err as Error).message || 'Unable to load modules');
+    } finally {
+      setModulesLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    if (active?.currentStep === 'modules' && availableModules.length === 0 && !modulesLoading && !moduleLoadError) {
+      loadModules();
+    }
+  }, [active?.currentStep, availableModules.length, loadModules, moduleLoadError, modulesLoading]);
 
   const toggleModule = (moduleId: string) => {
     setSelectedModules((prev) =>
@@ -321,14 +343,30 @@ export default function OnboardingPage() {
         );
 
       case 'modules':
-        // Load modules on first render of this step
-        if (availableModules.length === 0) loadModules();
         return (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <h3 style={{ margin: 0 }}>Module Selection</h3>
             <p style={{ color: '#666', margin: 0 }}>
               Choose which modules to enable for this facility.
             </p>
+            {modulesLoading && availableModules.length === 0 && (
+              <p style={{ color: '#666', margin: 0 }}>Loading available modules...</p>
+            )}
+            {moduleLoadError && (
+              <div
+                style={{
+                  padding: 12,
+                  background: '#ffebee',
+                  borderRadius: 4,
+                  border: '1px solid #f44336',
+                }}
+              >
+                Unable to load available modules. {moduleLoadError}
+              </div>
+            )}
+            {!modulesLoading && !moduleLoadError && availableModules.length === 0 && (
+              <p style={{ color: '#666', margin: 0 }}>No modules available for this tenant.</p>
+            )}
             <div
               style={{
                 display: 'grid',
@@ -361,7 +399,7 @@ export default function OnboardingPage() {
             </div>
             <button
               onClick={() => advance({ modules: selectedModules })}
-              disabled={loading}
+              disabled={loading || modulesLoading || !!moduleLoadError}
               style={{
                 padding: '10px 24px',
                 background: '#0066cc',
@@ -489,91 +527,108 @@ export default function OnboardingPage() {
 
       {!active ? (
         <div>
-          <p>Start a new onboarding session to configure a facility, or resume an existing one.</p>
-          <button
-            onClick={startNew}
-            disabled={loading}
-            style={{
-              padding: '10px 24px',
-              background: '#0066cc',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 4,
-              cursor: 'pointer',
-              marginBottom: 24,
-            }}
-          >
-            {loading ? 'Starting...' : 'Start New Onboarding'}
-          </button>
+          {!sessionsLoaded && !sessionsError && <p>Loading onboarding sessions...</p>}
 
-          {sessions.length > 0 && (
-            <div>
-              <h3>Existing Sessions</h3>
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                <thead>
-                  <tr style={{ borderBottom: '2px solid #ddd', textAlign: 'left' }}>
-                    <th style={{ padding: 8 }}>ID</th>
-                    <th style={{ padding: 8 }}>Tenant</th>
-                    <th style={{ padding: 8 }}>Current Step</th>
-                    <th style={{ padding: 8 }}>Created</th>
-                    <th style={{ padding: 8 }}>Status</th>
-                    <th style={{ padding: 8 }}></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sessions.map((s) => (
-                    <tr key={s.id} style={{ borderBottom: '1px solid #eee' }}>
-                      <td style={{ padding: 8, fontFamily: 'monospace', fontSize: 12 }}>
-                        {s.id.slice(0, 16)}
-                      </td>
-                      <td style={{ padding: 8 }}>{s.tenantId}</td>
-                      <td style={{ padding: 8 }}>{STEP_LABELS[s.currentStep] || s.currentStep}</td>
-                      <td style={{ padding: 8, fontSize: 12 }}>
-                        {new Date(s.createdAt).toLocaleDateString()}
-                      </td>
-                      <td style={{ padding: 8 }}>
-                        <span
-                          style={{
-                            padding: '2px 8px',
-                            borderRadius: 12,
-                            fontSize: 12,
-                            fontWeight: 600,
-                            background: s.completedAt ? '#e8f5e9' : '#fff3e0',
-                            color: s.completedAt ? '#2e7d32' : '#e65100',
-                          }}
-                        >
-                          {s.completedAt ? 'Completed' : 'In Progress'}
-                        </span>
-                      </td>
-                      <td style={{ padding: 8 }}>
-                        {!s.completedAt && (
-                          <button
-                            onClick={() => loadSession(s.id)}
-                            style={{
-                              padding: '4px 12px',
-                              background: '#0066cc',
-                              color: '#fff',
-                              border: 'none',
-                              borderRadius: 4,
-                              cursor: 'pointer',
-                              fontSize: 12,
-                            }}
-                          >
-                            Resume
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          {sessionsError ? (
+            <div
+              style={{
+                padding: 12,
+                background: '#ffebee',
+                border: '1px solid #f44336',
+                borderRadius: 4,
+              }}
+            >
+              Unable to load onboarding sessions. {sessionsError}
             </div>
-          )}
+          ) : (
+            <>
+              <p>Start a new onboarding session to configure a facility, or resume an existing one.</p>
+              <button
+                onClick={startNew}
+                disabled={loading || !sessionsLoaded}
+                style={{
+                  padding: '10px 24px',
+                  background: '#0066cc',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: 4,
+                  cursor: 'pointer',
+                  marginBottom: 24,
+                }}
+              >
+                {loading ? 'Starting...' : 'Start New Onboarding'}
+              </button>
 
-          {sessions.length === 0 && !loading && (
-            <p style={{ color: '#666', fontStyle: 'italic' }}>
-              No onboarding sessions yet. Click above to start one.
-            </p>
+              {sessions.length > 0 && (
+                <div>
+                  <h3>Existing Sessions</h3>
+                  <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                    <thead>
+                      <tr style={{ borderBottom: '2px solid #ddd', textAlign: 'left' }}>
+                        <th style={{ padding: 8 }}>ID</th>
+                        <th style={{ padding: 8 }}>Tenant</th>
+                        <th style={{ padding: 8 }}>Current Step</th>
+                        <th style={{ padding: 8 }}>Created</th>
+                        <th style={{ padding: 8 }}>Status</th>
+                        <th style={{ padding: 8 }}></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sessions.map((s) => (
+                        <tr key={s.id} style={{ borderBottom: '1px solid #eee' }}>
+                          <td style={{ padding: 8, fontFamily: 'monospace', fontSize: 12 }}>
+                            {s.id.slice(0, 16)}
+                          </td>
+                          <td style={{ padding: 8 }}>{s.tenantId}</td>
+                          <td style={{ padding: 8 }}>{STEP_LABELS[s.currentStep] || s.currentStep}</td>
+                          <td style={{ padding: 8, fontSize: 12 }}>
+                            {new Date(s.createdAt).toLocaleDateString()}
+                          </td>
+                          <td style={{ padding: 8 }}>
+                            <span
+                              style={{
+                                padding: '2px 8px',
+                                borderRadius: 12,
+                                fontSize: 12,
+                                fontWeight: 600,
+                                background: s.completedAt ? '#e8f5e9' : '#fff3e0',
+                                color: s.completedAt ? '#2e7d32' : '#e65100',
+                              }}
+                            >
+                              {s.completedAt ? 'Completed' : 'In Progress'}
+                            </span>
+                          </td>
+                          <td style={{ padding: 8 }}>
+                            {!s.completedAt && (
+                              <button
+                                onClick={() => loadSession(s.id)}
+                                style={{
+                                  padding: '4px 12px',
+                                  background: '#0066cc',
+                                  color: '#fff',
+                                  border: 'none',
+                                  borderRadius: 4,
+                                  cursor: 'pointer',
+                                  fontSize: 12,
+                                }}
+                              >
+                                Resume
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              {sessionsLoaded && sessions.length === 0 && !loading && (
+                <p style={{ color: '#666', fontStyle: 'italic' }}>
+                  No onboarding sessions yet. Click above to start one.
+                </p>
+              )}
+            </>
           )}
         </div>
       ) : (

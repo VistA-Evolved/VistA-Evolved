@@ -38,12 +38,38 @@ interface SupportTicket {
   createdAt: string;
 }
 
-async function apiFetch(path: string) {
-  const res = await fetch(`${API_BASE}${path}`, { credentials: 'include' });
-  return res.json();
+interface SupportApiSuccess<T> {
+  ok: true;
 }
 
-async function apiPost(path: string, body?: unknown) {
+class SupportApiError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'SupportApiError';
+  }
+}
+
+async function parseSupportResponse<T extends SupportApiSuccess<T>>(res: Response): Promise<T> {
+  let data: any = null;
+  try {
+    data = await res.json();
+  } catch {
+    throw new SupportApiError('Support request returned an invalid response');
+  }
+
+  if (!res.ok || !data?.ok) {
+    throw new SupportApiError(data?.error || 'Support request failed');
+  }
+
+  return data as T;
+}
+
+async function apiFetch<T extends SupportApiSuccess<T>>(path: string): Promise<T> {
+  const res = await fetch(`${API_BASE}${path}`, { credentials: 'include' });
+  return parseSupportResponse<T>(res);
+}
+
+async function apiPost<T extends SupportApiSuccess<T>>(path: string, body?: unknown): Promise<T> {
   const csrf = await getCsrfToken();
   const res = await fetch(`${API_BASE}${path}`, {
     method: 'POST',
@@ -51,7 +77,7 @@ async function apiPost(path: string, body?: unknown) {
     credentials: 'include',
     body: body ? JSON.stringify(body) : undefined,
   });
-  return res.json();
+  return parseSupportResponse<T>(res);
 }
 
 const PRIORITY_COLORS: Record<string, string> = {
@@ -66,7 +92,8 @@ export default function SupportPage() {
   const [diag, setDiag] = useState<DiagnosticReport | null>(null);
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [diagnosticsError, setDiagnosticsError] = useState<string | null>(null);
+  const [ticketsError, setTicketsError] = useState<string | null>(null);
 
   // New ticket form
   const [title, setTitle] = useState('');
@@ -76,23 +103,29 @@ export default function SupportPage() {
 
   const loadDiagnostics = useCallback(async () => {
     setLoading(true);
-    setError(null);
+    setDiagnosticsError(null);
     try {
-      const data = await apiFetch('/admin/support/diagnostics');
-      if (data.ok) setDiag(data.report);
-    } catch {
-      setError('Failed to load diagnostics');
+      const data = await apiFetch<{ ok: true; report: DiagnosticReport }>('/admin/support/diagnostics');
+      setDiag(data.report);
+    } catch (error) {
+      setDiag(null);
+      setDiagnosticsError(
+        error instanceof Error ? error.message : 'Failed to load diagnostics'
+      );
     }
     setLoading(false);
   }, []);
 
   const loadTickets = useCallback(async () => {
-    setError(null);
+    setTicketsError(null);
     try {
-      const data = await apiFetch('/admin/support/tickets');
-      if (data.ok) setTickets(data.tickets);
-    } catch {
-      setError('Failed to load tickets');
+      const data = await apiFetch<{ ok: true; tickets: SupportTicket[]; total: number }>(
+        '/admin/support/tickets'
+      );
+      setTickets(data.tickets);
+    } catch (error) {
+      setTickets([]);
+      setTicketsError(error instanceof Error ? error.message : 'Failed to load tickets');
     }
   }, []);
 
@@ -104,13 +137,19 @@ export default function SupportPage() {
   const createNewTicket = async () => {
     if (!title || !description) return;
     setLoading(true);
+    setTicketsError(null);
     try {
-      await apiPost('/admin/support/tickets', { title, description, category, priority });
+      await apiPost<{ ok: true; ticket: SupportTicket }>('/admin/support/tickets', {
+        title,
+        description,
+        category,
+        priority,
+      });
       setTitle('');
       setDescription('');
-      loadTickets();
-    } catch {
-      setError('Failed to create ticket');
+      await loadTickets();
+    } catch (error) {
+      setTicketsError(error instanceof Error ? error.message : 'Failed to create ticket');
     }
     setLoading(false);
   };
@@ -118,20 +157,6 @@ export default function SupportPage() {
   return (
     <div className={styles.cprsPage} style={{ padding: 24 }}>
       <h2 style={{ marginTop: 0 }}>Support Tooling</h2>
-
-      {error && (
-        <div
-          style={{
-            background: '#fee',
-            color: '#c00',
-            padding: '8px 12px',
-            borderRadius: 4,
-            marginBottom: 12,
-          }}
-        >
-          {error}
-        </div>
-      )}
 
       <div style={{ display: 'flex', gap: 4, marginBottom: 16 }}>
         {(['diagnostics', 'tickets'] as Tab[]).map((t) => (
@@ -155,6 +180,20 @@ export default function SupportPage() {
 
       {tab === 'diagnostics' && (
         <div>
+          {diagnosticsError ? (
+            <div
+              style={{
+                background: '#fee',
+                color: '#c00',
+                padding: '8px 12px',
+                borderRadius: 4,
+                marginBottom: 12,
+              }}
+            >
+              Unable to load diagnostics. {diagnosticsError}
+            </div>
+          ) : null}
+
           <button
             onClick={loadDiagnostics}
             disabled={loading}
@@ -171,7 +210,7 @@ export default function SupportPage() {
             {loading ? 'Collecting...' : 'Refresh Diagnostics'}
           </button>
 
-          {diag && (
+          {!diagnosticsError && diag && (
             <div
               style={{
                 display: 'grid',
@@ -278,6 +317,22 @@ export default function SupportPage() {
 
       {tab === 'tickets' && (
         <div>
+          {ticketsError ? (
+            <div
+              style={{
+                background: '#fee',
+                color: '#c00',
+                padding: '8px 12px',
+                borderRadius: 4,
+                marginBottom: 12,
+              }}
+            >
+              Unable to load support tickets. {ticketsError}
+            </div>
+          ) : null}
+
+          {!ticketsError && (
+            <>
           {/* Create ticket form */}
           <div
             style={{
@@ -390,6 +445,8 @@ export default function SupportPage() {
               )}
             </tbody>
           </table>
+            </>
+          )}
         </div>
       )}
     </div>

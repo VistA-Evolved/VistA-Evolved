@@ -365,7 +365,13 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
         detail: { userId: session.userId },
       });
     }
-    reply.clearCookie(IAM_COOKIE, { path: '/' }).send({ ok: true });
+    return reply.clearCookie(IAM_COOKIE, { path: '/' }).send({
+      ok: true,
+      effectProof: {
+        cookieCleared: true,
+        sessionDeleted: Boolean(session),
+      },
+    });
   });
 
   /* ================================================================ */

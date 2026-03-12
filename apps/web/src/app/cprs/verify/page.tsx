@@ -9,6 +9,17 @@ import { useSession } from '@/stores/session-context';
 const VERIFY_DFN = '46';
 const VERIFY_SEARCH = 'ZZZRETFOURNINETYFOUR';
 
+function resultCount(payload: any): number {
+  if (typeof payload?.count === 'number') return payload.count;
+  if (Array.isArray(payload?.results)) return payload.results.length;
+  if (Array.isArray(payload?.allergies)) return payload.allergies.length;
+  if (Array.isArray(payload?.vitals)) return payload.vitals.length;
+  if (Array.isArray(payload?.notes)) return payload.notes.length;
+  if (Array.isArray(payload?.medications)) return payload.medications.length;
+  if (Array.isArray(payload?.problems)) return payload.problems.length;
+  return 0;
+}
+
 /** Fetch helper that always sends session cookie */
 function apiFetch(url: string, init?: RequestInit): Promise<Response> {
   return fetch(`${API_BASE}${url}`, { credentials: 'include', ...init });
@@ -59,7 +70,7 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
       fn: async () => {
         const r = await apiFetch(`/vista/patient-demographics?dfn=${VERIFY_DFN}`);
         const d = await r.json();
-        return { ok: d.ok === true, detail: d.name ?? 'N/A' };
+        return { ok: d.ok === true, detail: d.patient?.name ?? 'N/A' };
       },
     },
     {
@@ -68,7 +79,7 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
       fn: async () => {
         const r = await apiFetch(`/vista/allergies?dfn=${VERIFY_DFN}`);
         const d = await r.json();
-        return { ok: d.ok === true, detail: `${d.allergies?.length ?? 0} allergy(s)` };
+        return { ok: d.ok === true, detail: `${resultCount(d)} allergy(s)` };
       },
     },
     {
@@ -77,7 +88,7 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
       fn: async () => {
         const r = await apiFetch(`/vista/vitals?dfn=${VERIFY_DFN}`);
         const d = await r.json();
-        return { ok: d.ok === true, detail: `${d.vitals?.length ?? 0} vital(s)` };
+        return { ok: d.ok === true, detail: `${resultCount(d)} vital(s)` };
       },
     },
     {
@@ -86,7 +97,7 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
       fn: async () => {
         const r = await apiFetch(`/vista/notes?dfn=${VERIFY_DFN}`);
         const d = await r.json();
-        return { ok: d.ok === true, detail: `${d.notes?.length ?? 0} note(s)` };
+        return { ok: d.ok === true, detail: `${resultCount(d)} note(s)` };
       },
     },
     {
@@ -95,7 +106,7 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
       fn: async () => {
         const r = await apiFetch(`/vista/medications?dfn=${VERIFY_DFN}`);
         const d = await r.json();
-        return { ok: d.ok === true, detail: `${d.medications?.length ?? 0} med(s)` };
+        return { ok: d.ok === true, detail: `${resultCount(d)} med(s)` };
       },
     },
     {
@@ -104,7 +115,7 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
       fn: async () => {
         const r = await apiFetch(`/vista/problems?dfn=${VERIFY_DFN}`);
         const d = await r.json();
-        return { ok: d.ok === true, detail: `${d.problems?.length ?? 0} problem(s)` };
+        return { ok: d.ok === true, detail: `${resultCount(d)} problem(s)` };
       },
     },
     // --- Phase 12 endpoints ---
@@ -116,7 +127,7 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
         const d = await r.json();
         return {
           ok: d.ok === true && Array.isArray(d.results),
-          detail: `${d.results?.length ?? 0} result(s)`,
+          detail: `${resultCount(d)} result(s)`,
         };
       },
     },
@@ -288,12 +299,12 @@ export default function CPRSVerifyPage() {
       <div className={styles.menuBar}>
         <span style={{ fontWeight: 600, fontSize: 13 }}>EHR &mdash; Evolved</span>
         <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--cprs-text-muted)' }}>
-          Phase 12 Verification
+          System Verification
         </span>
       </div>
 
       <div style={{ flex: 1, padding: 24, maxWidth: 700, margin: '0 auto', width: '100%' }}>
-        <h2 style={{ fontSize: 18, margin: '0 0 4px' }}>CPRS Web Replica â€" Verification</h2>
+        <h2 style={{ fontSize: 18, margin: '0 0 4px' }}>CPRS Web Replica - Verification</h2>
         <p style={{ fontSize: 12, color: 'var(--cprs-text-muted)', margin: '0 0 16px' }}>
           {running ? 'Running checks...' : `${passed}/${total} passed, ${failed} failed`}
         </p>

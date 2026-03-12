@@ -24,8 +24,14 @@ interface CertificationPosture {
 /*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
 
-const jsonGet = (path: string) =>
-  fetch(`${API}${path}`, { credentials: 'include' }).then((r) => r.json());
+const jsonGet = async (path: string) => {
+  const response = await fetch(`${API}${path}`, { credentials: 'include' });
+  const body = await response.json().catch(() => null);
+  if (!response.ok || body?.ok === false) {
+    throw new Error(body?.error || `Request failed: ${response.status}`);
+  }
+  return body;
+};
 
 function readinessBadge(level: CertificationPosture['readinessLevel']): React.ReactNode {
   const colors: Record<string, string> = {
@@ -65,6 +71,9 @@ export default function CertificationPage() {
     setError(null);
     try {
       const data = await jsonGet('/posture/certification');
+      if (!Array.isArray(data?.gates)) {
+        throw new Error('Certification posture payload missing gates');
+      }
       setPosture(data);
     } catch (e: any) {
       setError(e?.message ?? 'Failed to load certification posture');

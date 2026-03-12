@@ -1,0 +1,54 @@
+# =============================================================================
+# Local VistA Lane -- Docker Compose (local sources only)
+# =============================================================================
+# Build uses vendor/upstream/VistA-M only. No pull during build.
+# Canonical dev runtime for this repo: service "local-vista", port 9432.
+#
+# Usage:
+#   From repo root: docker compose -f docker/local-vista/compose.yaml --profile local-vista up -d
+#   Or: .\scripts\runtime\start-local-vista.ps1
+#
+# Ports (canonical):
+#   RPC Broker: 9432 (host) -> 9430 (container)
+#   SSH:        2224 (host) -> 22 (container)
+# =============================================================================
+
+services:
+  local-vista:
+    build:
+      context: ../..
+      dockerfile: docker/local-vista/build/Dockerfile
+      args:
+        BUILD_SHA: ${BUILD_SHA:-dev}
+        BUILD_DATE: ${BUILD_DATE:-unknown}
+    image: vista-evolved/local-vista:latest
+    container_name: local-vista
+    profiles: ["local-vista"]
+    ports:
+      - "${LOCAL_VISTA_PORT:-9432}:9430"
+      - "${LOCAL_VISTA_SSH_PORT:-2224}:22"
+    environment:
+      - VISTA_ADMIN_ACCESS=${LOCAL_VISTA_ACCESS:-}
+      - VISTA_ADMIN_VERIFY=${LOCAL_VISTA_VERIFY:-}
+      - VISTA_BROKER_PORT=9430
+      - VISTA_SSH_ENABLED=${VISTA_SSH_ENABLED:-true}
+    volumes:
+      - local-vista-data:/opt/vista/g
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: "4.0"
+        reservations:
+          memory: 1G
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "/opt/vista/health-check.sh"]
+      interval: 30s
+      timeout: 5s
+      start_period: 120s
+      retries: 3
+
+volumes:
+  local-vista-data:
+    driver: local

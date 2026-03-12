@@ -16,6 +16,21 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE as API } from '@/lib/api-config';
 
+async function apiFetch(path: string, opts?: RequestInit) {
+  const res = await fetch(`${API}${path}`, {
+    credentials: 'include',
+    ...opts,
+    headers: {
+      ...(opts?.headers || {}),
+    },
+  });
+  const data = await res.json();
+  if (!res.ok || data?.ok === false) {
+    throw new Error(data?.error || data?.message || 'Request failed');
+  }
+  return data;
+}
+
 /* -- Types ---------------------------------------------------- */
 
 interface ClaimDraft {
@@ -132,12 +147,14 @@ export default function PhilHealthEClaims3Page() {
   const [builtPacket, setBuiltPacket] = useState<ClaimPacket | null>(null);
   const [exportResult, setExportResult] = useState<ExportSummary | null>(null);
   const [buildError, setBuildError] = useState<string | null>(null);
+  const [draftsError, setDraftsError] = useState<string | null>(null);
   const [building, setBuilding] = useState(false);
   const [exporting, setExporting] = useState(false);
 
   // Submissions state
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null);
+  const [submissionsError, setSubmissionsError] = useState<string | null>(null);
 
   // Denial capture state
   const [denialText, setDenialText] = useState('');
@@ -147,52 +164,61 @@ export default function PhilHealthEClaims3Page() {
   // Spec gates state
   const [specGates, setSpecGates] = useState<SpecGate[]>([]);
   const [specProgress, setSpecProgress] = useState({ completed: 0, total: 0 });
+  const [specError, setSpecError] = useState<string | null>(null);
 
   // Adapter status
   const [adapterStatus, setAdapterStatus] = useState<Record<string, unknown> | null>(null);
+  const [adapterStatusError, setAdapterStatusError] = useState<string | null>(null);
 
   /* -- Fetchers --------------------------------------------- */
 
   const fetchDrafts = useCallback(async () => {
     try {
-      const res = await fetch(`${API}/rcm/philhealth/claims`, { credentials: 'include' });
-      const data = await res.json();
-      if (data.ok) setDrafts(data.drafts ?? []);
-    } catch {
-      /* ignore */
+      setDraftsError(null);
+      const data = await apiFetch('/rcm/philhealth/claims');
+      setDrafts(data.drafts ?? []);
+    } catch (err) {
+      setDrafts([]);
+      setSelectedDraftId(null);
+      setBuiltPacket(null);
+      setExportResult(null);
+      setDraftsError(err instanceof Error ? err.message : 'Unable to load claim drafts.');
     }
   }, []);
 
   const fetchSubmissions = useCallback(async () => {
     try {
-      const res = await fetch(`${API}/rcm/eclaims3/submissions`, { credentials: 'include' });
-      const data = await res.json();
-      if (data.ok) setSubmissions(data.submissions ?? []);
-    } catch {
-      /* ignore */
+      setSubmissionsError(null);
+      const data = await apiFetch('/rcm/eclaims3/submissions');
+      setSubmissions(data.submissions ?? []);
+    } catch (err) {
+      setSubmissions([]);
+      setSelectedSubmission(null);
+      setSubmissionsError(err instanceof Error ? err.message : 'Unable to load submissions.');
     }
   }, []);
 
   const fetchSpecGates = useCallback(async () => {
     try {
-      const res = await fetch(`${API}/rcm/eclaims3/spec-gates`, { credentials: 'include' });
-      const data = await res.json();
-      if (data.ok) {
-        setSpecGates(data.gates ?? []);
-        setSpecProgress(data.progress ?? { completed: 0, total: 0 });
-      }
-    } catch {
-      /* ignore */
+      setSpecError(null);
+      const data = await apiFetch('/rcm/eclaims3/spec-gates');
+      setSpecGates(data.gates ?? []);
+      setSpecProgress(data.progress ?? { completed: 0, total: 0 });
+    } catch (err) {
+      setSpecGates([]);
+      setSpecProgress({ completed: 0, total: 0 });
+      setSpecError(err instanceof Error ? err.message : 'Unable to load spec gates.');
     }
   }, []);
 
   const fetchAdapterStatus = useCallback(async () => {
     try {
-      const res = await fetch(`${API}/rcm/eclaims3/status`, { credentials: 'include' });
-      const data = await res.json();
-      if (data.ok) setAdapterStatus(data);
-    } catch {
-      /* ignore */
+      setAdapterStatusError(null);
+      const data = await apiFetch('/rcm/eclaims3/status');
+      setAdapterStatus(data);
+    } catch (err) {
+      setAdapterStatus(null);
+      setAdapterStatusError(err instanceof Error ? err.message : 'Unable to load eClaims3 adapter status.');
     }
   }, []);
 
@@ -343,8 +369,30 @@ export default function PhilHealthEClaims3Page() {
       <p style={{ color: '#6b7280', fontSize: 13, marginBottom: 16 }}>
         Deadline: April 1, 2026 &middot; Status: Manual submission workflow active &middot; XML
         spec:{' '}
-        {adapterStatus ? (adapterStatus.specAvailable ? 'Available' : 'Pending') : 'Loading...'}
+        {adapterStatus
+          ? adapterStatus.specAvailable
+            ? 'Available'
+            : 'Pending'
+          : adapterStatusError
+            ? 'Unavailable'
+            : 'Loading...'}
       </p>
+
+      {adapterStatusError && (
+        <div
+          style={{
+            background: '#fee2e2',
+            border: '1px solid #ef4444',
+            borderRadius: 8,
+            padding: '10px 14px',
+            marginBottom: 16,
+            fontSize: 13,
+            color: '#991b1b',
+          }}
+        >
+          Unable to load eClaims3 adapter status. {adapterStatusError}
+        </div>
+      )}
 
       {/* Warning banner */}
       <div
@@ -388,7 +436,11 @@ export default function PhilHealthEClaims3Page() {
             <p style={{ fontSize: 12, color: '#6b7280', marginBottom: 8 }}>
               Select an existing PhilHealth claim draft to build an eClaims 3.0 packet.
             </p>
-            {drafts.length === 0 ? (
+            {draftsError ? (
+              <p style={{ fontSize: 13, color: '#991b1b' }}>
+                Unable to load claim drafts. {draftsError}
+              </p>
+            ) : drafts.length === 0 ? (
               <p style={{ fontSize: 13, color: '#9ca3af' }}>
                 No claim drafts available. Create one in PH Claims first.
               </p>
@@ -579,7 +631,11 @@ export default function PhilHealthEClaims3Page() {
             <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 8 }}>
               Submission Status Board
             </h3>
-            {submissions.length === 0 ? (
+            {submissionsError ? (
+              <p style={{ fontSize: 13, color: '#991b1b' }}>
+                Unable to load submissions. {submissionsError}
+              </p>
+            ) : submissions.length === 0 ? (
               <p style={{ fontSize: 13, color: '#9ca3af' }}>
                 No submissions yet. Build and export a packet first.
               </p>
@@ -769,6 +825,13 @@ export default function PhilHealthEClaims3Page() {
             {/* Denied submissions */}
             {(() => {
               const denied = submissions.filter((s) => s.status === 'denied');
+              if (submissionsError) {
+                return (
+                  <p style={{ fontSize: 13, color: '#991b1b' }}>
+                    Unable to load denials. {submissionsError}
+                  </p>
+                );
+              }
               if (denied.length === 0) {
                 return (
                   <p style={{ fontSize: 13, color: '#9ca3af' }}>
@@ -883,33 +946,42 @@ export default function PhilHealthEClaims3Page() {
             <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 8 }}>
               eClaims 3.0 Spec Acquisition Progress
             </h3>
-            <div style={{ fontSize: 13, marginBottom: 12 }}>
-              <strong>{specProgress.completed}</strong> of <strong>{specProgress.total}</strong>{' '}
-              gates completed
-            </div>
-            <div
-              style={{
-                background: '#f3f4f6',
-                borderRadius: 4,
-                height: 8,
-                marginBottom: 16,
-                overflow: 'hidden',
-              }}
-            >
-              <div
-                style={{
-                  background: specProgress.completed === specProgress.total ? '#16a34a' : '#2563eb',
-                  height: '100%',
-                  width:
-                    specProgress.total > 0
-                      ? `${(specProgress.completed / specProgress.total) * 100}%`
-                      : '0%',
-                  borderRadius: 4,
-                  transition: 'width 0.3s',
-                }}
-              />
-            </div>
-            {specGates.map((g) => {
+            {specError && (
+              <p style={{ fontSize: 13, color: '#991b1b', marginBottom: 12 }}>
+                Unable to load spec gates. {specError}
+              </p>
+            )}
+            {!specError && (
+              <>
+                <div style={{ fontSize: 13, marginBottom: 12 }}>
+                  <strong>{specProgress.completed}</strong> of <strong>{specProgress.total}</strong>{' '}
+                  gates completed
+                </div>
+                <div
+                  style={{
+                    background: '#f3f4f6',
+                    borderRadius: 4,
+                    height: 8,
+                    marginBottom: 16,
+                    overflow: 'hidden',
+                  }}
+                >
+                  <div
+                    style={{
+                      background: specProgress.completed === specProgress.total ? '#16a34a' : '#2563eb',
+                      height: '100%',
+                      width:
+                        specProgress.total > 0
+                          ? `${(specProgress.completed / specProgress.total) * 100}%`
+                          : '0%',
+                      borderRadius: 4,
+                      transition: 'width 0.3s',
+                    }}
+                  />
+                </div>
+              </>
+            )}
+            {!specError && specGates.map((g) => {
               const statusColor: Record<string, string> = {
                 not_started: '#9ca3af',
                 in_progress: '#2563eb',

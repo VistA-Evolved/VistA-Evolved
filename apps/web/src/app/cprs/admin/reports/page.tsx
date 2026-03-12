@@ -245,7 +245,7 @@ export default function ReportsPage() {
           break;
         }
         case 'clinical': {
-          const d = await fetchReport('clinical');
+           const d = await fetchReport('clinical-activity');
           if (d) setClinicalReport(d);
           break;
         }

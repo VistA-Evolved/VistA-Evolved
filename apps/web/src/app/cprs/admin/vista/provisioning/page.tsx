@@ -31,6 +31,11 @@ interface SkuDef {
   modules: string[];
 }
 
+interface CountryOption {
+  code: string;
+  label: string;
+}
+
 interface ProvisionedTenant {
   id: string;
   name: string;
@@ -367,7 +372,7 @@ const S = {
 
 const STEP_LABELS = ['Entity Type', 'Organization', 'Modules', 'Review', 'Done'];
 
-const COUNTRIES = [
+const DEFAULT_COUNTRIES: CountryOption[] = [
   { code: 'US', label: 'United States' },
   { code: 'PH', label: 'Philippines' },
   { code: 'GH', label: 'Ghana' },
@@ -472,6 +477,7 @@ function StepOrgDetails({
   setEmail,
   country,
   setCountry,
+  countries,
 }: {
   orgName: string;
   setOrgName: (v: string) => void;
@@ -479,6 +485,7 @@ function StepOrgDetails({
   setEmail: (v: string) => void;
   country: string;
   setCountry: (v: string) => void;
+  countries: CountryOption[];
 }) {
   return (
     <div>
@@ -511,7 +518,7 @@ function StepOrgDetails({
       <div style={S.formGroup}>
         <label style={S.label}>Country</label>
         <select style={S.select} value={country} onChange={(e) => setCountry(e.target.value)}>
-          {COUNTRIES.map((c) => (
+          {countries.map((c) => (
             <option key={c.code} value={c.code}>{c.label}</option>
           ))}
         </select>
@@ -586,6 +593,7 @@ function StepReview({
   email,
   country,
   selectedModules,
+  countries,
 }: {
   entityTypes: Record<string, EntityType>;
   selectedEntityType: string;
@@ -593,9 +601,10 @@ function StepReview({
   email: string;
   country: string;
   selectedModules: Set<string>;
+  countries: CountryOption[];
 }) {
   const et = entityTypes[selectedEntityType];
-  const countryLabel = COUNTRIES.find((c) => c.code === country)?.label || country;
+  const countryLabel = countries.find((c) => c.code === country)?.label || country;
   const modules = Array.from(selectedModules);
 
   return (
@@ -702,6 +711,7 @@ export default function ProvisioningWizardPage() {
 
   const [entityTypes, setEntityTypes] = useState<Record<string, EntityType>>({});
   const [_skus, setSkus] = useState<Record<string, SkuDef>>({});
+  const [countries, setCountries] = useState<CountryOption[]>(DEFAULT_COUNTRIES);
 
   const [selectedEntityType, setSelectedEntityType] = useState('');
   const [orgName, setOrgName] = useState('');
@@ -714,16 +724,25 @@ export default function ProvisioningWizardPage() {
     setLoading(true);
     setError('');
     try {
-      const [etRes, skuRes] = await Promise.all([
+      const [etRes, skuRes, countryRes] = await Promise.all([
         fetch(`${API_BASE}/admin/provisioning/entity-types`, { credentials: 'include' }),
         fetch(`${API_BASE}/admin/provisioning/skus`, { credentials: 'include' }),
+        fetch(`${API_BASE}/admin/provisioning/country-configs`, { credentials: 'include' }),
       ]);
       const etJson = await etRes.json();
       const skuJson = await skuRes.json();
+      const countryJson = await countryRes.json();
       if (!etJson.ok) throw new Error(etJson.error || 'Failed to load entity types');
       if (!skuJson.ok) throw new Error(skuJson.error || 'Failed to load SKUs');
+      if (!countryJson.ok) throw new Error(countryJson.error || 'Failed to load country configs');
       setEntityTypes(etJson.entityTypes);
       setSkus(skuJson.skus);
+      setCountries(
+        Object.entries(countryJson.countries || {}).map(([code, value]) => ({
+          code,
+          label: typeof value === 'object' && value && 'name' in value ? String((value as { name?: string }).name || code) : code,
+        }))
+      );
     } catch (err: unknown) {
       setError((err as Error).message || 'Failed to load configuration');
     } finally {
@@ -870,6 +889,7 @@ export default function ProvisioningWizardPage() {
               setEmail={setEmail}
               country={country}
               setCountry={setCountry}
+              countries={countries}
             />
           )}
           {step === 2 && et && (
@@ -887,6 +907,7 @@ export default function ProvisioningWizardPage() {
               email={email}
               country={country}
               selectedModules={selectedModules}
+              countries={countries}
             />
           )}
           {step === 4 && createdTenant && (

@@ -29,6 +29,14 @@ async function apiFetch(path: string, opts?: RequestInit) {
   return res.json();
 }
 
+async function apiFetchStrict<T>(path: string, opts?: RequestInit): Promise<T> {
+  const data = await apiFetch(path, opts);
+  if (data && typeof data === 'object' && 'ok' in data && data.ok === false) {
+    throw new Error(typeof data.error === 'string' ? data.error : 'Request failed');
+  }
+  return data as T;
+}
+
 async function apiPost(path: string, body: unknown) {
   return apiFetch(path, {
     method: 'POST',
@@ -100,6 +108,8 @@ export default function ReconciliationPage() {
   const [tab, setTab] = useState<Tab>('upload');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [bootstrapping, setBootstrapping] = useState(true);
+  const [pageError, setPageError] = useState<string | null>(null);
 
   // Upload state
   const [jsonInput, setJsonInput] = useState('');
@@ -136,7 +146,7 @@ export default function ReconciliationPage() {
     if (data.ok) {
       setPayments(data.items ?? []);
       setPaymentTotal(data.total ?? 0);
-      setPaymentTotalPages(data.totalPages ?? 1);
+      setPaymentTotalPages(Math.max(1, Number(data.totalPages ?? 1) || 1));
     }
     setLoading(false);
   }, [paymentPage, paymentStatusFilter]);
@@ -155,7 +165,7 @@ export default function ReconciliationPage() {
     if (data.ok) {
       setUnderpayments(data.items ?? []);
       setUpTotal(data.total ?? 0);
-      setUpTotalPages(data.totalPages ?? 1);
+      setUpTotalPages(Math.max(1, Number(data.totalPages ?? 1) || 1));
     }
     setLoading(false);
   }, [upPage, upStatusFilter]);
@@ -175,12 +185,26 @@ export default function ReconciliationPage() {
   /* -- Tab data loading -------------------------------------- */
 
   useEffect(() => {
+    apiFetchStrict<any>('/rcm/reconciliation/imports')
+      .then((data) => {
+        setImports(data.imports ?? []);
+        setPageError(null);
+      })
+      .catch((error: unknown) => {
+        setImports([]);
+        setPageError(error instanceof Error ? error.message : 'Unable to load reconciliation console');
+      })
+      .finally(() => setBootstrapping(false));
+  }, []);
+
+  useEffect(() => {
+    if (bootstrapping || pageError) return;
     if (tab === 'upload') loadImports();
     if (tab === 'payments') loadPayments();
     if (tab === 'matches') loadReviewMatches();
     if (tab === 'underpayments') loadUnderpayments();
     if (tab === 'dashboard') loadStats();
-  }, [tab, loadPayments, loadReviewMatches, loadUnderpayments, loadStats, loadImports]);
+  }, [bootstrapping, pageError, tab, loadPayments, loadReviewMatches, loadUnderpayments, loadStats, loadImports]);
 
   /* -- Handlers ---------------------------------------------- */
 
@@ -259,53 +283,71 @@ export default function ReconciliationPage() {
         RCM Reconciliation
       </h1>
 
-      {/* Tab bar */}
-      <div style={{ display: 'flex', gap: '4px', marginBottom: '16px', flexWrap: 'wrap' }}>
-        {tabs.map((t) => (
-          <button
-            key={t.key}
-            onClick={() => {
-              setTab(t.key);
-              setMessage('');
-            }}
-            style={{
-              padding: '6px 14px',
-              borderRadius: '4px',
-              border: '1px solid #aaa',
-              background: tab === t.key ? '#0d6efd' : '#f8f9fa',
-              color: tab === t.key ? '#fff' : '#333',
-              cursor: 'pointer',
-              fontWeight: tab === t.key ? 600 : 400,
-              fontSize: '13px',
-            }}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Status message */}
-      {message && (
+      {bootstrapping ? (
+        <div style={{ marginBottom: '8px', color: '#666' }}>Loading reconciliation console...</div>
+      ) : pageError ? (
         <div
           style={{
             padding: '8px 12px',
             marginBottom: '12px',
-            backgroundColor:
-              message.includes('failed') || message.includes('Error') || message.includes('error')
-                ? '#f8d7da'
-                : '#d1e7dd',
+            backgroundColor: '#f8d7da',
             borderRadius: '4px',
             fontSize: '13px',
+            color: '#842029',
           }}
         >
-          {message}
+          Unable to load reconciliation console. {pageError}
         </div>
-      )}
+      ) : (
+        <>
 
-      {loading && <div style={{ marginBottom: '8px', color: '#666' }}>Loading...</div>}
+          {/* Tab bar */}
+          <div style={{ display: 'flex', gap: '4px', marginBottom: '16px', flexWrap: 'wrap' }}>
+            {tabs.map((t) => (
+              <button
+                key={t.key}
+                onClick={() => {
+                  setTab(t.key);
+                  setMessage('');
+                }}
+                style={{
+                  padding: '6px 14px',
+                  borderRadius: '4px',
+                  border: '1px solid #aaa',
+                  background: tab === t.key ? '#0d6efd' : '#f8f9fa',
+                  color: tab === t.key ? '#fff' : '#333',
+                  cursor: 'pointer',
+                  fontWeight: tab === t.key ? 600 : 400,
+                  fontSize: '13px',
+                }}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
 
-      {/* -- Upload Tab -------------------------------------- */}
-      {tab === 'upload' && (
+          {/* Status message */}
+          {message && (
+            <div
+              style={{
+                padding: '8px 12px',
+                marginBottom: '12px',
+                backgroundColor:
+                  message.includes('failed') || message.includes('Error') || message.includes('error')
+                    ? '#f8d7da'
+                    : '#d1e7dd',
+                borderRadius: '4px',
+                fontSize: '13px',
+              }}
+            >
+              {message}
+            </div>
+          )}
+
+          {loading && <div style={{ marginBottom: '8px', color: '#666' }}>Loading...</div>}
+
+          {/* -- Upload Tab -------------------------------------- */}
+          {tab === 'upload' && (
         <div>
           <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '8px' }}>
             Import Remittance Batch
@@ -397,10 +439,10 @@ export default function ReconciliationPage() {
             </div>
           )}
         </div>
-      )}
+          )}
 
-      {/* -- Payments Tab ------------------------------------ */}
-      {tab === 'payments' && (
+          {/* -- Payments Tab ------------------------------------ */}
+          {tab === 'payments' && (
         <div>
           <div style={{ display: 'flex', gap: '8px', marginBottom: '12px', alignItems: 'center' }}>
             <label style={{ fontSize: '13px' }}>Status:</label>
@@ -411,8 +453,6 @@ export default function ReconciliationPage() {
                 setPaymentPage(1);
               }}
               style={{
-                padding: '4px 8px',
-                borderRadius: '4px',
                 border: '1px solid #ccc',
                 fontSize: '12px',
               }}
@@ -492,8 +532,8 @@ export default function ReconciliationPage() {
         </div>
       )}
 
-      {/* -- Matches Review Tab ------------------------------ */}
-      {tab === 'matches' && (
+          {/* -- Matches Review Tab ------------------------------ */}
+          {tab === 'matches' && (
         <div>
           <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '8px' }}>
             Matches Pending Review
@@ -561,10 +601,10 @@ export default function ReconciliationPage() {
             </table>
           )}
         </div>
-      )}
+          )}
 
-      {/* -- Underpayments Tab ------------------------------- */}
-      {tab === 'underpayments' && (
+          {/* -- Underpayments Tab ------------------------------- */}
+          {tab === 'underpayments' && (
         <div>
           <div style={{ display: 'flex', gap: '8px', marginBottom: '12px', alignItems: 'center' }}>
             <label style={{ fontSize: '13px' }}>Status:</label>
@@ -684,10 +724,10 @@ export default function ReconciliationPage() {
             </button>
           </div>
         </div>
-      )}
+          )}
 
-      {/* -- Dashboard Tab ----------------------------------- */}
-      {tab === 'dashboard' && stats && (
+          {/* -- Dashboard Tab ----------------------------------- */}
+          {tab === 'dashboard' && stats && (
         <div>
           <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '12px' }}>
             Reconciliation Dashboard
@@ -728,6 +768,8 @@ export default function ReconciliationPage() {
             ))}
           </div>
         </div>
+          )}
+        </>
       )}
     </div>
   );

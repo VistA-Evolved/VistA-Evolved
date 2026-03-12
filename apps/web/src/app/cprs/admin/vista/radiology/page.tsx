@@ -59,7 +59,7 @@ export default function RadiologyAdminPage() {
       <div style={{ display: 'flex', gap: 0, borderBottom: '2px solid #e2e8f0', background: '#fff', padding: '0 32px' }}>
         {tabs.map(t => (
           <button key={t.id} onClick={() => { setTab(t.id); setSearch(''); }} style={{
-            padding: '12px 20px', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 600,
+            padding: '12px 20px', borderTop: 'none', borderRight: 'none', borderLeft: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 600,
             background: 'transparent', color: tab === t.id ? '#2563eb' : '#64748b',
             borderBottom: tab === t.id ? '2px solid #2563eb' : '2px solid transparent', marginBottom: -2,
           }}>{t.label}</button>
@@ -81,7 +81,7 @@ export default function RadiologyAdminPage() {
                 <thead><tr style={{ background: '#f8fafc' }}>
                   <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>IEN</th>
                   <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>Name</th>
-                  <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>Type</th>
+                  <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>Type Code</th>
                   <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>CPT</th>
                 </tr></thead>
                 <tbody>
@@ -90,7 +90,7 @@ export default function RadiologyAdminPage() {
                     <tr key={p.ien} onClick={() => fetchDetail(p.ien)} style={{ cursor: 'pointer', borderBottom: '1px solid #f1f5f9' }}>
                       <td style={{ padding: '8px 14px', color: '#64748b' }}>{p.ien}</td>
                       <td style={{ padding: '8px 14px', fontWeight: 600 }}>{p.name}</td>
-                      <td style={{ padding: '8px 14px' }}>{p.type}</td>
+                      <td style={{ padding: '8px 14px' }}>{p.typeCode}</td>
                       <td style={{ padding: '8px 14px', fontFamily: 'monospace' }}>{p.cpt}</td>
                     </tr>
                   ))}
@@ -117,7 +117,7 @@ export default function RadiologyAdminPage() {
               <thead><tr style={{ background: '#f8fafc' }}>
                 <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>IEN</th>
                 <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>Name</th>
-                <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>Type</th>
+                <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, borderBottom: '1px solid #e2e8f0' }}>Entry Type</th>
               </tr></thead>
               <tbody>
                 {locations.length === 0 && <tr><td colSpan={3} style={{ padding: 20, textAlign: 'center', color: '#94a3b8' }}>No imaging locations found</td></tr>}
@@ -125,7 +125,7 @@ export default function RadiologyAdminPage() {
                   <tr key={i} style={{ borderBottom: '1px solid #f1f5f9' }}>
                     <td style={{ padding: '8px 14px', color: '#64748b' }}>{l.ien}</td>
                     <td style={{ padding: '8px 14px', fontWeight: 600 }}>{l.name}</td>
-                    <td style={{ padding: '8px 14px' }}>{l.type}</td>
+                    <td style={{ padding: '8px 14px' }}>{l.entryType}</td>
                   </tr>
                 ))}
               </tbody>

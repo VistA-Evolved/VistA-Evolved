@@ -35,9 +35,21 @@ interface ValidationReport {
   tenantId: string;
 }
 
-async function apiFetch(path: string) {
+interface ApiResult<T> {
+  ok?: boolean;
+  error?: string;
+  report?: T;
+  category?: T;
+}
+
+async function apiFetch<T>(path: string): Promise<ApiResult<T>> {
   const res = await fetch(`${API}${path}`, { credentials: 'include' });
-  return res.json();
+  const payload = (await res.json().catch(() => null)) as ApiResult<T> | null;
+  if (!res.ok || !payload?.ok) {
+    if (res.status === 401) throw new Error('Authentication required');
+    throw new Error(payload?.error || `Request failed (${res.status})`);
+  }
+  return payload;
 }
 
 /* ------------------------------------------------------------------ */
@@ -45,15 +57,26 @@ async function apiFetch(path: string) {
 /* ------------------------------------------------------------------ */
 function ReportTab() {
   const [report, setReport] = useState<ValidationReport | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
-    const data = await apiFetch('/admin/module-validation/report');
-    if (data.ok) setReport(data.report);
+    try {
+      setLoadError(null);
+      const data = await apiFetch<ValidationReport>('/admin/module-validation/report');
+      setReport(data.report ?? null);
+    } catch (error) {
+      setReport(null);
+      setLoadError(error instanceof Error ? error.message : 'Unable to load validation report');
+    }
   }, []);
 
   useEffect(() => {
     load();
   }, [load]);
+
+  if (loadError) {
+    return <p className="p-4 text-sm text-red-600">Unable to load validation report. {loadError}</p>;
+  }
 
   if (!report) return <p className="p-4 text-sm text-gray-500">Loading...</p>;
 
@@ -152,15 +175,26 @@ function IssueRow({ issue }: { issue: ValidationIssue }) {
 /* ------------------------------------------------------------------ */
 function SingleCategoryTab({ endpoint, label }: { endpoint: string; label: string }) {
   const [category, setCategory] = useState<ValidationCategory | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
-    const data = await apiFetch(endpoint);
-    if (data.ok) setCategory(data.category);
+    try {
+      setLoadError(null);
+      const data = await apiFetch<ValidationCategory>(endpoint);
+      setCategory(data.category ?? null);
+    } catch (error) {
+      setCategory(null);
+      setLoadError(error instanceof Error ? error.message : `Unable to load ${label}`);
+    }
   }, [endpoint]);
 
   useEffect(() => {
     load();
   }, [load]);
+
+  if (loadError) {
+    return <p className="p-4 text-sm text-red-600">Unable to load {label}. {loadError}</p>;
+  }
 
   if (!category) return <p className="p-4 text-sm text-gray-500">Loading {label}...</p>;
 

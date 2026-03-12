@@ -38,6 +38,8 @@
 - **Pre-commit hook enforces these rules.** Set up with:
   `git config core.hooksPath .hooks`
 - **See `docs/POLICY.md`** for the full documentation policy.
+- **Governed build order and proof discipline:** See `docs/governance/PROOF-AND-GOVERNANCE.md` for the 9-stage canonical build order and required proof/task format. Do not skip stages; stop after each stage unless instructed to continue.
+- **Canonical framework:** See `docs/canonical/source-of-truth-index.md` for which doc governs repo rules, runtime truth, upstream sources, prompt sequencing, and verification. See `docs/canonical/governed-build-protocol.md` for one-slice-at-a-time development and evidence requirements. See `docs/canonical/repo-status-model.md` for status labels (VERIFIED_REAL, PARTIAL, PLACEHOLDER, STUB_OR_MOCK, BROKEN, LEGACY_REFERENCE, NOT_YET_AUDITED).
 
 ### 0A. Docker-First Verification Protocol (MANDATORY FOR ALL AI AGENTS)
 

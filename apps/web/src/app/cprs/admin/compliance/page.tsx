@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import { API_BASE } from '@/lib/api-config';
 
 /* ------------------------------------------------------------------ */
 /* Types (mirror server types)                                          */
@@ -58,6 +59,29 @@ interface PostureData {
 
 type Tab = 'posture' | 'frameworks' | 'attestations' | 'validators';
 
+async function apiFetch<T>(path: string, tenantId?: string): Promise<T> {
+  const headers: Record<string, string> = {};
+  if (tenantId) headers['X-Tenant-Id'] = tenantId;
+
+  const response = await fetch(`${API_BASE}${path}`, {
+    credentials: 'include',
+    headers,
+  });
+
+  let payload: any = null;
+  try {
+    payload = await response.json();
+  } catch {
+    payload = null;
+  }
+
+  if (!response.ok || !payload?.ok) {
+    throw new Error(payload?.error || payload?.message || `Request failed: ${response.status}`);
+  }
+
+  return payload as T;
+}
+
 /* ------------------------------------------------------------------ */
 /* Component                                                            */
 /* ------------------------------------------------------------------ */
@@ -75,31 +99,29 @@ export default function ComplianceDashboardPage() {
     setLoading(true);
     setError(null);
     try {
-      const [postureRes, fwRes, attRes, valRes] = await Promise.all([
-        fetch('/api/regulatory/posture', { credentials: 'include' }),
-        fetch('/api/regulatory/frameworks', { credentials: 'include' }),
-        fetch('/api/regulatory/attestations/summary', { credentials: 'include' }),
-        fetch('/api/regulatory/validators', { credentials: 'include' }),
+      const tenantData = await apiFetch<{ tenant: { tenantId: string } }>('/admin/my-tenant');
+      const tenantId = tenantData.tenant?.tenantId;
+      if (!tenantId) {
+        throw new Error('Tenant context required');
+      }
+
+      const [postureData, frameworkData, attestationData, validatorData] = await Promise.all([
+        apiFetch<{ posture: PostureData }>('/regulatory/posture', tenantId),
+        apiFetch<{ frameworks: FrameworkDef[] }>('/regulatory/frameworks', tenantId),
+        apiFetch<{ summary: AttestationSummary[] }>('/regulatory/attestations/summary', tenantId),
+        apiFetch<{ validators: ValidatorInfo[] }>('/regulatory/validators', tenantId),
       ]);
 
-      if (postureRes.ok) {
-        const pData = await postureRes.json();
-        if (pData.ok) setPosture(pData.posture);
-      }
-      if (fwRes.ok) {
-        const fData = await fwRes.json();
-        if (fData.ok) setFrameworks(fData.frameworks || []);
-      }
-      if (attRes.ok) {
-        const aData = await attRes.json();
-        if (aData.ok) setAttestations(aData.summary || []);
-      }
-      if (valRes.ok) {
-        const vData = await valRes.json();
-        if (vData.ok) setValidators(vData.validators || []);
-      }
+      setPosture(postureData.posture);
+      setFrameworks(frameworkData.frameworks || []);
+      setAttestations(attestationData.summary || []);
+      setValidators(validatorData.validators || []);
     } catch (err: any) {
-      setError(err.message || 'Failed to load compliance data');
+      setPosture(null);
+      setFrameworks([]);
+      setAttestations([]);
+      setValidators([]);
+      setError(`Unable to load compliance dashboard. ${err.message || 'Failed to load compliance data'}`);
     } finally {
       setLoading(false);
     }

@@ -1,6 +1,9 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useCPRSUI, type DensityMode, type LayoutMode } from '@/stores/cprs-ui-state';
+import { useSession } from '@/stores/session-context';
 import { useFacilityDefaults } from '@/stores/tenant-context';
 import styles from '@/components/cprs/cprs.module.css';
 
@@ -10,10 +13,20 @@ import styles from '@/components/cprs/cprs.module.css';
  * Phase 17D: adds "Reset to facility defaults" button.
  */
 export default function CPRSPreferencesPage() {
+  const router = useRouter();
   const { preferences, updatePreferences } = useCPRSUI();
+  const { ready, authenticated } = useSession();
   const facilityDefaults = useFacilityDefaults();
+  const canResetToFacilityDefaults = Boolean(facilityDefaults);
+
+  useEffect(() => {
+    if (ready && !authenticated) {
+      router.replace('/cprs/login?redirect=%2Fcprs%2Fsettings%2Fpreferences');
+    }
+  }, [authenticated, ready, router]);
 
   const handleResetToFacilityDefaults = () => {
+    if (!facilityDefaults) return;
     updatePreferences({
       theme: facilityDefaults.theme,
       density: facilityDefaults.density,
@@ -22,6 +35,17 @@ export default function CPRSPreferencesPage() {
       enableDragReorder: facilityDefaults.enableDragReorder,
     });
   };
+
+  if (!ready || !authenticated) {
+    return (
+      <div
+        className={styles.shell}
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}
+      >
+        <p style={{ color: 'var(--cprs-text-muted)' }}>Checking session...</p>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -122,16 +146,23 @@ export default function CPRSPreferencesPage() {
         <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', marginTop: 16 }}>
           Preferences are saved to browser localStorage and persist across sessions.
         </p>
+        {!canResetToFacilityDefaults && (
+          <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', marginTop: 8 }}>
+            Facility defaults are unavailable on this stack, so reset uses only local browser preferences.
+          </p>
+        )}
         <button
           onClick={handleResetToFacilityDefaults}
+          disabled={!canResetToFacilityDefaults}
           style={{
             marginTop: 12,
             padding: '6px 16px',
             fontSize: 12,
-            cursor: 'pointer',
+            cursor: canResetToFacilityDefaults ? 'pointer' : 'not-allowed',
             background: 'var(--cprs-surface, #f5f5f5)',
             border: '1px solid var(--cprs-border, #ccc)',
             borderRadius: 4,
+            opacity: canResetToFacilityDefaults ? 1 : 0.6,
           }}
         >
           Reset to Facility Defaults

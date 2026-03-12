@@ -18,23 +18,40 @@ import { API_BASE } from '@/lib/api-config';
 
 type Tab = 'payers' | 'sources' | 'merge';
 
+type ApiResult<T> = T & {
+  ok?: boolean;
+  error?: string;
+};
+
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, {
     credentials: 'include',
     ...opts,
     headers: { ...csrfHeaders(), ...(opts?.headers || {}) },
   });
-  return res.json();
+  const data = (await res.json().catch(() => null)) as ApiResult<any> | null;
+  if (!res.ok || data?.ok === false) {
+    const error = data?.error || (res.status === 401 ? 'Authentication required' : `Request failed (${res.status})`);
+    throw new Error(error);
+  }
+  return data;
 }
 
 export default function PayerDirectoryPage() {
   const [tab, setTab] = useState<Tab>('payers');
   const [health, setHealth] = useState<any>(null);
+  const [healthError, setHealthError] = useState<string | null>(null);
 
   useEffect(() => {
     apiFetch('/rcm/payerops/registry/health')
-      .then(setHealth)
-      .catch(() => {});
+      .then((data) => {
+        setHealth(data);
+        setHealthError(null);
+      })
+      .catch((error) => {
+        setHealth(null);
+        setHealthError(error instanceof Error ? error.message : 'Unable to load payer directory health');
+      });
   }, []);
 
   const tabs: { id: Tab; label: string }[] = [
@@ -89,6 +106,12 @@ export default function PayerDirectoryPage() {
       {tab === 'payers' && <PayersTab />}
       {tab === 'sources' && <SourcesTab />}
       {tab === 'merge' && <MergeTab />}
+
+      {healthError && (
+        <p style={{ marginTop: 12, fontSize: 12, color: '#dc3545' }}>
+          Unable to load payer directory health. {healthError}
+        </p>
+      )}
     </div>
   );
 }
@@ -148,6 +171,7 @@ function IngestButton({ onDone }: { onDone: () => void }) {
 function PayersTab() {
   const [payers, setPayers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [filters, setFilters] = useState({ type: '', status: '', tier: '', search: '' });
   const [editing, setEditing] = useState<string | null>(null);
 
@@ -159,8 +183,14 @@ function PayersTab() {
     if (filters.tier) qs.set('tier', filters.tier);
     if (filters.search) qs.set('search', filters.search);
     apiFetch(`/rcm/payerops/payers?${qs}`)
-      .then((d) => setPayers(d?.payers || []))
-      .catch(() => {})
+      .then((d) => {
+        setPayers(d?.payers || []);
+        setLoadError(null);
+      })
+      .catch((error) => {
+        setPayers([]);
+        setLoadError(error instanceof Error ? error.message : 'Unable to load payer registry');
+      })
       .finally(() => setLoading(false));
   }, [filters]);
 
@@ -230,6 +260,8 @@ function PayersTab() {
 
       {loading ? (
         <p style={{ fontSize: 13, color: '#6c757d' }}>Loading...</p>
+      ) : loadError ? (
+        <p style={{ fontSize: 13, color: '#dc3545' }}>Unable to load payer registry. {loadError}</p>
       ) : payers.length === 0 ? (
         <p style={{ fontSize: 13, color: '#6c757d' }}>
           No payers found. Run ingestion to populate from Insurance Commission data.
@@ -302,6 +334,7 @@ function SourcesTab() {
   const [sources, setSources] = useState<any[]>([]);
   const [snapshots, setSnapshots] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   useEffect(() => {
     Promise.all([
@@ -311,8 +344,13 @@ function SourcesTab() {
       .then(([src, snap]) => {
         setSources(src?.sources || []);
         setSnapshots(snap?.snapshots || []);
+        setLoadError(null);
       })
-      .catch(() => {})
+      .catch((error) => {
+        setSources([]);
+        setSnapshots([]);
+        setLoadError(error instanceof Error ? error.message : 'Unable to load ingestion sources');
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -322,6 +360,8 @@ function SourcesTab() {
 
       {loading ? (
         <p style={{ fontSize: 13, color: '#6c757d' }}>Loading...</p>
+      ) : loadError ? (
+        <p style={{ fontSize: 13, color: '#dc3545' }}>Unable to load ingestion sources. {loadError}</p>
       ) : sources.length === 0 ? (
         <p style={{ fontSize: 13, color: '#6c757d' }}>
           No sources ingested yet. Click "Run Ingestion" to fetch Insurance Commission data.
@@ -432,11 +472,18 @@ function MergeTab() {
   const [targetId, setTargetId] = useState('');
   const [sourceId, setSourceId] = useState('');
   const [result, setResult] = useState<any>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   useEffect(() => {
     apiFetch('/rcm/payerops/payers')
-      .then((d) => setPayers(d?.payers || []))
-      .catch(() => {});
+      .then((d) => {
+        setPayers(d?.payers || []);
+        setLoadError(null);
+      })
+      .catch((error) => {
+        setPayers([]);
+        setLoadError(error instanceof Error ? error.message : 'Unable to load merge candidates');
+      });
   }, []);
 
   const merge = async () => {
@@ -461,62 +508,69 @@ function MergeTab() {
         becomes an alias on the target.
       </p>
 
-      <div style={{ display: 'flex', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
-        <label style={{ fontSize: 12 }}>
-          Keep (target):
-          <select
-            value={targetId}
-            onChange={(e) => setTargetId(e.target.value)}
-            style={{ marginLeft: 4, fontSize: 12, padding: 4, minWidth: 250 }}
-          >
-            <option value="">Select payer...</option>
-            {payers.map((p: any) => (
-              <option key={p.id} value={p.id}>
-                {p.canonicalName}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label style={{ fontSize: 12 }}>
-          Remove (source):
-          <select
-            value={sourceId}
-            onChange={(e) => setSourceId(e.target.value)}
-            style={{ marginLeft: 4, fontSize: 12, padding: 4, minWidth: 250 }}
-          >
-            <option value="">Select duplicate...</option>
-            {payers
-              .filter((p: any) => p.id !== targetId)
-              .map((p: any) => (
-                <option key={p.id} value={p.id}>
-                  {p.canonicalName}
-                </option>
-              ))}
-          </select>
-        </label>
-        <button
-          onClick={merge}
-          disabled={!targetId || !sourceId}
-          style={{ padding: '4px 16px', fontSize: 12, cursor: 'pointer', alignSelf: 'flex-end' }}
-        >
-          Merge
-        </button>
-      </div>
+      {loadError ? (
+        <p style={{ fontSize: 13, color: '#dc3545' }}>Unable to load merge candidates. {loadError}</p>
+      ) : (
+        <>
 
-      {result && (
-        <div
-          style={{
-            padding: 8,
-            borderRadius: 4,
-            fontSize: 12,
-            background: result.ok ? '#d4edda' : '#f8d7da',
-            color: result.ok ? '#155724' : '#721c24',
-          }}
-        >
-          {result.ok
-            ? `Merged successfully. Target now has aliases: ${result.merged?.aliases?.join(', ')}`
-            : `Error: ${result.error}`}
-        </div>
+          <div style={{ display: 'flex', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
+            <label style={{ fontSize: 12 }}>
+              Keep (target):
+              <select
+                value={targetId}
+                onChange={(e) => setTargetId(e.target.value)}
+                style={{ marginLeft: 4, fontSize: 12, padding: 4, minWidth: 250 }}
+              >
+                <option value="">Select payer...</option>
+                {payers.map((p: any) => (
+                  <option key={p.id} value={p.id}>
+                    {p.canonicalName}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label style={{ fontSize: 12 }}>
+              Remove (source):
+              <select
+                value={sourceId}
+                onChange={(e) => setSourceId(e.target.value)}
+                style={{ marginLeft: 4, fontSize: 12, padding: 4, minWidth: 250 }}
+              >
+                <option value="">Select duplicate...</option>
+                {payers
+                  .filter((p: any) => p.id !== targetId)
+                  .map((p: any) => (
+                    <option key={p.id} value={p.id}>
+                      {p.canonicalName}
+                    </option>
+                  ))}
+              </select>
+            </label>
+            <button
+              onClick={merge}
+              disabled={!targetId || !sourceId}
+              style={{ padding: '4px 16px', fontSize: 12, cursor: 'pointer', alignSelf: 'flex-end' }}
+            >
+              Merge
+            </button>
+          </div>
+
+          {result && (
+            <div
+              style={{
+                padding: 8,
+                borderRadius: 4,
+                fontSize: 12,
+                background: result.ok ? '#d4edda' : '#f8d7da',
+                color: result.ok ? '#155724' : '#721c24',
+              }}
+            >
+              {result.ok
+                ? `Merged successfully. Target now has aliases: ${result.merged?.aliases?.join(', ')}`
+                : `Error: ${result.error}`}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

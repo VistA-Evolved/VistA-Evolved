@@ -1,6 +1,7 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { getBillingProvider, getPlans } from './index.js';
 import { log } from '../lib/logger.js';
+import { getMeterSnapshot } from './metering.js';
 import {
   upsertCustomer,
   upsertSubscription,
@@ -48,6 +49,24 @@ async function billingRoutes(server: FastifyInstance): Promise<void> {
     const billing = getBillingProvider();
     const sub = await billing.getSubscription(session.tenantId);
     return reply.send({ ok: true, subscription: sub, provider: billing.name, source: 'provider' });
+  });
+
+  server.get('/billing/usage', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = (req as any).session;
+    if (!session?.tenantId) {
+      return reply.code(401).send({ ok: false, error: 'Not authenticated' });
+    }
+
+    const billing = getBillingProvider();
+    return reply.send({
+      ok: true,
+      tenantId: session.tenantId,
+      counters: getMeterSnapshot(session.tenantId),
+      source: 'metering-snapshot',
+      durable: false,
+      provider: billing.name,
+      note: 'Meter counters are in-memory snapshots for the authenticated tenant and reset on API restart.',
+    });
   });
 
   server.post('/billing/subscribe', async (req: FastifyRequest, reply: FastifyReply) => {

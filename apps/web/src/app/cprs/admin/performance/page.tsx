@@ -51,7 +51,11 @@ interface SlowQuery {
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API}${path}`, { credentials: 'include', ...opts });
-  return res.json();
+  const data = await res.json();
+  if (!res.ok || data?.ok === false) {
+    throw new Error(data?.error || data?.message || 'Request failed');
+  }
+  return data;
 }
 
 /* ------------------------------------------------------------------ */
@@ -59,15 +63,24 @@ async function apiFetch(path: string, opts?: RequestInit) {
 /* ------------------------------------------------------------------ */
 function SummaryTab() {
   const [summary, setSummary] = useState<PerfSummary | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
-    const data = await apiFetch('/admin/performance/summary');
-    if (data.ok) setSummary(data.summary);
+    setError(null);
+    try {
+      const data = await apiFetch('/admin/performance/summary');
+      setSummary(data.summary);
+    } catch (err) {
+      setSummary(null);
+      setError(err instanceof Error ? err.message : 'Unable to load performance summary.');
+    }
   }, []);
 
   useEffect(() => {
     load();
   }, [load]);
+
+  if (error) return <p className="p-4 text-sm text-red-700">Unable to load performance summary. {error}</p>;
 
   if (!summary) return <p className="p-4 text-sm text-gray-500">Loading...</p>;
 
@@ -135,10 +148,17 @@ function StatCard({
 /* ------------------------------------------------------------------ */
 function ProfilesTab() {
   const [profiles, setProfiles] = useState<RouteProfile[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
-    const data = await apiFetch('/admin/performance/profiles');
-    if (data.ok) setProfiles(data.profiles ?? []);
+    setError(null);
+    try {
+      const data = await apiFetch('/admin/performance/profiles');
+      setProfiles(data.profiles ?? []);
+    } catch (err) {
+      setProfiles([]);
+      setError(err instanceof Error ? err.message : 'Unable to load route profiles.');
+    }
   }, []);
 
   useEffect(() => {
@@ -153,7 +173,9 @@ function ProfilesTab() {
           Refresh
         </button>
       </div>
-      {profiles.length === 0 ? (
+      {error ? (
+        <p className="text-sm text-red-700">Unable to load route profiles. {error}</p>
+      ) : profiles.length === 0 ? (
         <p className="text-sm text-gray-500">
           No route profiles recorded yet. Profiles appear as API requests are made.
         </p>
@@ -223,10 +245,17 @@ function formatBytes(bytes: number): string {
 function BudgetsTab() {
   const [budgets, setBudgets] = useState<PerfBudget[]>([]);
   const [form, setForm] = useState({ routePattern: '', method: '*', maxMs: '2000', maxBytes: '0' });
+  const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
-    const data = await apiFetch('/admin/performance/budgets');
-    if (data.ok) setBudgets(data.budgets ?? []);
+    setError(null);
+    try {
+      const data = await apiFetch('/admin/performance/budgets');
+      setBudgets(data.budgets ?? []);
+    } catch (err) {
+      setBudgets([]);
+      setError(err instanceof Error ? err.message : 'Unable to load performance budgets.');
+    }
   }, []);
 
   useEffect(() => {
@@ -310,7 +339,9 @@ function BudgetsTab() {
           Add
         </button>
       </div>
-      {budgets.length === 0 ? (
+      {error ? (
+        <p className="text-sm text-red-700">Unable to load performance budgets. {error}</p>
+      ) : budgets.length === 0 ? (
         <p className="text-sm text-gray-500">
           No budgets defined. Click &quot;Seed Defaults&quot; to create standard budgets.
         </p>
@@ -355,10 +386,17 @@ function BudgetsTab() {
 /* ------------------------------------------------------------------ */
 function SlowQueriesTab() {
   const [queries, setQueries] = useState<SlowQuery[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
-    const data = await apiFetch('/admin/performance/slow-queries');
-    if (data.ok) setQueries(data.queries ?? []);
+    setError(null);
+    try {
+      const data = await apiFetch('/admin/performance/slow-queries');
+      setQueries(data.queries ?? []);
+    } catch (err) {
+      setQueries([]);
+      setError(err instanceof Error ? err.message : 'Unable to load slow query log.');
+    }
   }, []);
 
   useEffect(() => {
@@ -373,7 +411,9 @@ function SlowQueriesTab() {
           Refresh
         </button>
       </div>
-      {queries.length === 0 ? (
+      {error ? (
+        <p className="text-sm text-red-700">Unable to load slow query log. {error}</p>
+      ) : queries.length === 0 ? (
         <p className="text-sm text-gray-500">No slow queries recorded.</p>
       ) : (
         <table className="min-w-full text-xs border">

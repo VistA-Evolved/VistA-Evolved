@@ -34,16 +34,18 @@ const TABS: React.CSSProperties = {
 const TAB_BASE: React.CSSProperties = {
   padding: '10px 20px',
   cursor: 'pointer',
-  border: 'none',
+  borderTop: 'none',
+  borderRight: 'none',
+  borderLeft: 'none',
+  borderBottom: '2px solid transparent',
   background: 'transparent',
   color: '#888',
   fontSize: 14,
-  borderBottom: '2px solid transparent',
 };
 const TAB_ACTIVE: React.CSSProperties = {
   ...TAB_BASE,
   color: '#60a5fa',
-  borderBottomColor: '#60a5fa',
+  borderBottom: '2px solid #60a5fa',
 };
 const CARD: React.CSSProperties = {
   background: '#111',
@@ -156,6 +158,7 @@ export default function ClaimsWorkbenchPage() {
   }>({ total: 0, available: 0, integrationPending: 0, notApplicable: 0 });
   const [rulepacks, setRulepacks] = useState<Rulepack[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [message, setMessage] = useState('');
 
   /* Form state */
@@ -165,40 +168,51 @@ export default function ClaimsWorkbenchPage() {
   const [formDate, setFormDate] = useState('');
   const [formCharge, setFormCharge] = useState('');
 
+  const fetchJson = useCallback(async (path: string) => {
+    const res = await fetch(`${API}${path}`, { credentials: 'include' });
+    const data = await res.json().catch(() => null);
+    if (!res.ok || !data?.ok) {
+      throw new Error(data?.error || `Request failed: ${res.status}`);
+    }
+    return data;
+  }, []);
+
   const fetchBoard = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API}/rcm/claims/hmo/board`, { credentials: 'include' });
-      const data = await res.json();
-      if (data.ok) setBoard(data);
-    } catch {
-      /* ignore */
+      const data = await fetchJson('/rcm/claims/hmo/board');
+      setBoard(data);
+      setError('');
+    } catch (err) {
+      setBoard(null);
+      setError(err instanceof Error ? err.message : 'Failed to load claims board');
     }
     setLoading(false);
-  }, []);
+  }, [fetchJson]);
 
   const fetchSources = useCallback(async () => {
     try {
-      const res = await fetch(`${API}/rcm/claims/source-map`, { credentials: 'include' });
-      const data = await res.json();
-      if (data.ok) {
-        setSources(data.entries ?? []);
-        setSourceStats(data.stats ?? {});
-      }
-    } catch {
-      /* ignore */
+      const data = await fetchJson('/rcm/claims/source-map');
+      setSources(data.entries ?? []);
+      setSourceStats(data.stats ?? {});
+      setError('');
+    } catch (err) {
+      setSources([]);
+      setSourceStats({ total: 0, available: 0, integrationPending: 0, notApplicable: 0 });
+      setError(err instanceof Error ? err.message : 'Failed to load VistA source map');
     }
-  }, []);
+  }, [fetchJson]);
 
   const fetchRulepacks = useCallback(async () => {
     try {
-      const res = await fetch(`${API}/rcm/payers/rulepacks`, { credentials: 'include' });
-      const data = await res.json();
-      if (data.ok) setRulepacks(data.rulepacks ?? []);
-    } catch {
-      /* ignore */
+      const data = await fetchJson('/rcm/payers/rulepacks');
+      setRulepacks(data.rulepacks ?? []);
+      setError('');
+    } catch (err) {
+      setRulepacks([]);
+      setError(err instanceof Error ? err.message : 'Failed to load payer rulepacks');
     }
-  }, []);
+  }, [fetchJson]);
 
   useEffect(() => {
     fetchBoard();
@@ -266,6 +280,12 @@ export default function ClaimsWorkbenchPage() {
         </div>
       )}
 
+      {error && (
+        <div style={{ ...CARD, background: '#2a1212', borderColor: '#7f1d1d', marginBottom: 16 }}>
+          <span style={{ fontSize: 13 }}>Error: {error}</span>
+        </div>
+      )}
+
       <div style={TABS}>
         {(['board', 'create', 'sources', 'rulepacks'] as const).map((t) => (
           <button key={t} onClick={() => setTab(t)} style={tab === t ? TAB_ACTIVE : TAB_BASE}>
@@ -285,6 +305,10 @@ export default function ClaimsWorkbenchPage() {
         <div>
           {loading ? (
             <p style={{ color: '#888' }}>Loading...</p>
+          ) : error ? (
+            <div style={CARD}>
+              <p style={{ color: '#fca5a5' }}>Unable to load claims board.</p>
+            </div>
           ) : board ? (
             <>
               <div
@@ -363,7 +387,7 @@ export default function ClaimsWorkbenchPage() {
                   style={INPUT}
                   value={formDfn}
                   onChange={(e) => setFormDfn(e.target.value)}
-                  placeholder="e.g. 3"
+                  placeholder="e.g. 46"
                 />
               </div>
               <div>
@@ -372,7 +396,7 @@ export default function ClaimsWorkbenchPage() {
                   style={INPUT}
                   value={formName}
                   onChange={(e) => setFormName(e.target.value)}
-                  placeholder="e.g. EIGHT,PATIENT"
+                  placeholder="e.g. ZZZRETFOURNINETYFOUR,PATIENT"
                 />
               </div>
               <div>
@@ -414,90 +438,102 @@ export default function ClaimsWorkbenchPage() {
       {/* -- VistA Sources -------------------------------------- */}
       {tab === 'sources' && (
         <div>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-              gap: 12,
-              marginBottom: 20,
-            }}
-          >
+          {error ? (
             <div style={CARD}>
-              <div style={{ fontSize: 11, color: '#888' }}>Total Fields</div>
-              <div style={{ fontSize: 22, fontWeight: 700 }}>{sourceStats.total}</div>
+              <p style={{ color: '#fca5a5' }}>Unable to load VistA source map.</p>
             </div>
-            <div style={CARD}>
-              <div style={{ fontSize: 11, color: '#888' }}>Available</div>
-              <div style={{ fontSize: 22, fontWeight: 700, color: '#22c55e' }}>
-                {sourceStats.available}
+          ) : (
+            <>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                  gap: 12,
+                  marginBottom: 20,
+                }}
+              >
+                <div style={CARD}>
+                  <div style={{ fontSize: 11, color: '#888' }}>Total Fields</div>
+                  <div style={{ fontSize: 22, fontWeight: 700 }}>{sourceStats.total}</div>
+                </div>
+                <div style={CARD}>
+                  <div style={{ fontSize: 11, color: '#888' }}>Available</div>
+                  <div style={{ fontSize: 22, fontWeight: 700, color: '#22c55e' }}>
+                    {sourceStats.available}
+                  </div>
+                </div>
+                <div style={CARD}>
+                  <div style={{ fontSize: 11, color: '#888' }}>Awaiting Config</div>
+                  <div style={{ fontSize: 22, fontWeight: 700, color: '#f59e0b' }}>
+                    {sourceStats.integrationPending}
+                  </div>
+                </div>
+                <div style={CARD}>
+                  <div style={{ fontSize: 11, color: '#888' }}>Not Applicable</div>
+                  <div style={{ fontSize: 22, fontWeight: 700, color: '#888' }}>
+                    {sourceStats.notApplicable}
+                  </div>
+                </div>
               </div>
-            </div>
-            <div style={CARD}>
-              <div style={{ fontSize: 11, color: '#888' }}>Awaiting Config</div>
-              <div style={{ fontSize: 22, fontWeight: 700, color: '#f59e0b' }}>
-                {sourceStats.integrationPending}
-              </div>
-            </div>
-            <div style={CARD}>
-              <div style={{ fontSize: 11, color: '#888' }}>Not Applicable</div>
-              <div style={{ fontSize: 22, fontWeight: 700, color: '#888' }}>
-                {sourceStats.notApplicable}
-              </div>
-            </div>
-          </div>
 
-          <table style={TABLE}>
-            <thead>
-              <tr>
-                <th style={TH}>Field</th>
-                <th style={TH}>Category</th>
-                <th style={TH}>Status</th>
-                <th style={TH}>VistA File</th>
-                <th style={TH}>RPC</th>
-                <th style={TH}>Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sources.map((s, i) => (
-                <tr key={i}>
-                  <td style={TD}>
-                    <strong>{s.field}</strong>
-                  </td>
-                  <td style={TD}>{s.category}</td>
-                  <td style={TD}>
-                    <span
-                      style={{
-                        ...BADGE,
-                        background:
-                          s.status === 'available'
-                            ? '#16a34a'
-                            : s.status === 'requires_config'
-                              ? '#d97706'
-                              : '#666',
-                        color: '#fff',
-                      }}
-                    >
-                      {s.status}
-                    </span>
-                  </td>
-                  <td style={TD}>
-                    <code style={{ fontSize: 11 }}>{s.vistaFile ?? '-'}</code>
-                  </td>
-                  <td style={TD}>
-                    <code style={{ fontSize: 11 }}>{s.rpcName ?? '-'}</code>
-                  </td>
-                  <td style={{ ...TD, fontSize: 11, color: '#888' }}>{s.sandboxNote ?? '-'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+              <table style={TABLE}>
+                <thead>
+                  <tr>
+                    <th style={TH}>Field</th>
+                    <th style={TH}>Category</th>
+                    <th style={TH}>Status</th>
+                    <th style={TH}>VistA File</th>
+                    <th style={TH}>RPC</th>
+                    <th style={TH}>Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sources.map((s, i) => (
+                    <tr key={i}>
+                      <td style={TD}>
+                        <strong>{s.field}</strong>
+                      </td>
+                      <td style={TD}>{s.category}</td>
+                      <td style={TD}>
+                        <span
+                          style={{
+                            ...BADGE,
+                            background:
+                              s.status === 'available'
+                                ? '#16a34a'
+                                : s.status === 'requires_config'
+                                  ? '#d97706'
+                                  : '#666',
+                            color: '#fff',
+                          }}
+                        >
+                          {s.status}
+                        </span>
+                      </td>
+                      <td style={TD}>
+                        <code style={{ fontSize: 11 }}>{s.vistaFile ?? '-'}</code>
+                      </td>
+                      <td style={TD}>
+                        <code style={{ fontSize: 11 }}>{s.rpcName ?? '-'}</code>
+                      </td>
+                      <td style={{ ...TD, fontSize: 11, color: '#888' }}>{s.sandboxNote ?? '-'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          )}
         </div>
       )}
 
       {/* -- Rulepacks ------------------------------------------ */}
       {tab === 'rulepacks' && (
         <div>
-          {rulepacks.length === 0 ? (
+          {error ? (
+            <div style={CARD}>
+              <p style={{ color: '#fca5a5' }}>Unable to load payer rulepacks.</p>
+            </div>
+          ) : rulepacks.length === 0 ? (
             <div style={CARD}>
               <p style={{ color: '#888' }}>
                 No rulepacks loaded. Check data/payers/ph-hmo-rulepacks.json

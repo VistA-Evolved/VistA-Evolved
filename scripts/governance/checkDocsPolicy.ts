@@ -8,7 +8,8 @@
  *   3. Prompt structure validated (delegates to auditPrompts for deep checks)
  *
  * Usage:
- *   npx tsx scripts/governance/checkDocsPolicy.ts
+ *   From repo root: npx tsx scripts/governance/checkDocsPolicy.ts
+ *   On Windows from root: .\apps\api\node_modules\.bin\tsx.cmd scripts\governance\checkDocsPolicy.ts
  *
  * Exit codes:
  *   0 = policy clean

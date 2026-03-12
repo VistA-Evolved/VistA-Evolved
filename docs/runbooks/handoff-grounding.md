@@ -47,6 +47,7 @@ Current implementation uses `Map<string, HandoffReport>` with:
 - 4-state lifecycle: draft -> submitted -> accepted -> archived
 - Per-patient SBAR notes, risk flags, and todos
 - Creator/acceptor DUZ tracking
+- Acceptance requires `acceptedBy.duz` to differ from `createdBy.duz`, matching incoming-shift semantics
 - Timestamps for all state transitions
 
 ### Migration Plan (4 Steps)

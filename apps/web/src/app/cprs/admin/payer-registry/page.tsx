@@ -113,48 +113,84 @@ export default function PayerRegistryPage() {
   const [selectedPayer, setSelectedPayer] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
+  const [registryError, setRegistryError] = useState<string | null>(null);
+  const [evidenceError, setEvidenceError] = useState<string | null>(null);
+  const [auditError, setAuditError] = useState<string | null>(null);
+  const [statsError, setStatsError] = useState<string | null>(null);
+
+  const getResponseError = (data: any, fallback: string) =>
+    data?.error || data?.message || (Array.isArray(data?.errors) ? data.errors.join('; ') : fallback);
+
+  const getThrownErrorMessage = (error: unknown, fallback: string) =>
+    error instanceof Error ? error.message : fallback;
 
   /* -- Fetchers --------------------------------------------- */
 
   const fetchPayers = useCallback(async () => {
     setLoading(true);
+    setRegistryError(null);
     try {
       const url = search
         ? `${API}/admin/payers?search=${encodeURIComponent(search)}`
         : `${API}/admin/payers`;
       const res = await fetch(url, { credentials: 'include' });
       const data = await res.json();
-      if (data.ok) {
+      if (!res.ok || !data.ok) {
+        setPayers([]);
+        setPayerCount(0);
+        setRegistryError(getResponseError(data, 'Unable to load payer registry.'));
+      } else {
         setPayers(data.payers ?? []);
         setPayerCount(data.total ?? data.count ?? 0);
       }
-    } catch {
-      /* ignore */
+    } catch (error) {
+      setPayers([]);
+      setPayerCount(0);
+      setRegistryError(getThrownErrorMessage(error, 'Unable to load payer registry.'));
     }
     setLoading(false);
   }, [search]);
 
   const fetchStats = useCallback(async () => {
+    setStatsError(null);
+    setEvidenceError(null);
     try {
       const res = await fetch(`${API}/admin/payers/stats`, { credentials: 'include' });
       const data = await res.json();
-      if (data.ok) {
+      if (!res.ok || !data.ok) {
+        setStats(null);
+        setEvidenceScore(null);
+        const message = getResponseError(data, 'Unable to load registry stats.');
+        setStatsError(message);
+        setEvidenceError(message);
+      } else {
         setStats(data.stats ?? null);
         setEvidenceScore(data.evidenceScore ?? null);
       }
-    } catch {
-      /* ignore */
+    } catch (error) {
+      setStats(null);
+      setEvidenceScore(null);
+      const message = getThrownErrorMessage(error, 'Unable to load registry stats.');
+      setStatsError(message);
+      setEvidenceError(message);
     }
   }, []);
 
   const fetchAudit = useCallback(async () => {
+    setAuditError(null);
     try {
       const url = selectedPayer
         ? `${API}/admin/payers/${selectedPayer}/audit?limit=50`
         : `${API}/admin/payers/audit/verify`;
       const res = await fetch(url, { credentials: 'include' });
       const data = await res.json();
-      if (selectedPayer) {
+      if (!res.ok || (!selectedPayer && !data.ok)) {
+        setAuditEvents([]);
+        setAuditTotal(0);
+        setChainOk(null);
+        setChainMsg('');
+        setAuditError(getResponseError(data, 'Unable to load registry audit.'));
+      } else if (selectedPayer) {
         setAuditEvents(data.events ?? []);
         setAuditTotal(data.total ?? 0);
         setChainOk(null);
@@ -165,8 +201,12 @@ export default function PayerRegistryPage() {
         setAuditEvents([]);
         setAuditTotal(0);
       }
-    } catch {
-      /* ignore */
+    } catch (error) {
+      setAuditEvents([]);
+      setAuditTotal(0);
+      setChainOk(null);
+      setChainMsg('');
+      setAuditError(getThrownErrorMessage(error, 'Unable to load registry audit.'));
     }
   }, [selectedPayer]);
 
@@ -319,7 +359,14 @@ export default function PayerRegistryPage() {
 
           {loading && <p style={{ fontSize: 13, color: '#6b7280' }}>Loading...</p>}
 
-          {payers.length === 0 && !loading && (
+          {registryError && !loading && (
+            <div style={{ ...cardStyle, textAlign: 'center', color: '#991b1b', background: '#fef2f2' }}>
+              <p style={{ fontSize: 14, marginBottom: 8 }}>Unable to load payer registry.</p>
+              <p style={{ fontSize: 12 }}>{registryError}</p>
+            </div>
+          )}
+
+          {payers.length === 0 && !loading && !registryError && (
             <div style={{ ...cardStyle, textAlign: 'center', color: '#6b7280' }}>
               <p style={{ fontSize: 14, marginBottom: 8 }}>No payers in persistent store</p>
               <p style={{ fontSize: 12 }}>
@@ -432,7 +479,12 @@ export default function PayerRegistryPage() {
       {/* -- Evidence Tab ------------------------------------ */}
       {tab === 'evidence' && (
         <div>
-          {evidenceScore ? (
+          {evidenceError ? (
+            <div style={{ ...cardStyle, textAlign: 'center', color: '#991b1b', background: '#fef2f2' }}>
+              <p style={{ fontSize: 14, marginBottom: 8 }}>Unable to load evidence scores.</p>
+              <p style={{ fontSize: 12 }}>{evidenceError}</p>
+            </div>
+          ) : evidenceScore ? (
             <>
               <div
                 style={{
@@ -558,7 +610,12 @@ export default function PayerRegistryPage() {
             )}
           </div>
 
-          {selectedPayer ? (
+          {auditError ? (
+            <div style={{ ...cardStyle, textAlign: 'center', color: '#991b1b', background: '#fef2f2' }}>
+              <p style={{ fontSize: 14, marginBottom: 8 }}>Unable to load audit status.</p>
+              <p style={{ fontSize: 12 }}>{auditError}</p>
+            </div>
+          ) : selectedPayer ? (
             <>
               <p style={{ fontSize: 13, color: '#6b7280', marginBottom: 8 }}>
                 Audit trail for <strong>{selectedPayer}</strong> ({auditTotal} events)
@@ -616,7 +673,12 @@ export default function PayerRegistryPage() {
       {/* -- Stats Tab --------------------------------------- */}
       {tab === 'stats' && (
         <div>
-          {stats ? (
+          {statsError ? (
+            <div style={{ ...cardStyle, textAlign: 'center', color: '#991b1b', background: '#fef2f2' }}>
+              <p style={{ fontSize: 14, marginBottom: 8 }}>Unable to load registry stats.</p>
+              <p style={{ fontSize: 12 }}>{statsError}</p>
+            </div>
+          ) : stats ? (
             <>
               <div
                 style={{

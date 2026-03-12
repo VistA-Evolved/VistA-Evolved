@@ -41,6 +41,12 @@ interface LoaStats {
   byStatus: Record<string, number>;
 }
 
+interface ApiResult {
+  ok?: boolean;
+  error?: string;
+  [key: string]: unknown;
+}
+
 /* -- Styles --------------------------------------------------- */
 
 const PAGE: React.CSSProperties = {
@@ -133,6 +139,8 @@ export default function LoaWorkbenchPage() {
   const [stats, setStats] = useState<LoaStats | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState('');
+  const [statsError, setStatsError] = useState('');
   const [selectedLoa, setSelectedLoa] = useState<LoaRequest | null>(null);
   const [message, setMessage] = useState('');
 
@@ -147,26 +155,41 @@ export default function LoaWorkbenchPage() {
   const [formFacilityName, setFormFacilityName] = useState('');
   const [formMemberId, setFormMemberId] = useState('');
 
+  async function apiFetch<T extends ApiResult>(url: string, init?: RequestInit): Promise<T> {
+    const res = await fetch(url, { credentials: 'include', ...init });
+    const payload = (await res.json().catch(() => null)) as T | null;
+    if (!res.ok || !payload?.ok) {
+      const error = payload?.error || (res.status === 401 ? 'Authentication required' : `HTTP ${res.status}`);
+      throw new Error(error);
+    }
+    return payload;
+  }
+
   const fetchLoas = useCallback(async () => {
     setLoading(true);
+    setLoadError('');
     try {
       const url = statusFilter ? `${API}/rcm/loa?status=${statusFilter}` : `${API}/rcm/loa`;
-      const res = await fetch(url, { credentials: 'include' });
-      const data = await res.json();
-      if (data.ok) setLoas(data.requests ?? []);
-    } catch {
-      /* ignore */
+      const data = await apiFetch<{ ok: true; requests?: LoaRequest[] }>(url);
+      setLoas(data.requests ?? []);
+    } catch (err) {
+      setLoas([]);
+      setSelectedLoa(null);
+      setLoadError(err instanceof Error ? err.message : String(err));
     }
     setLoading(false);
   }, [statusFilter]);
 
   const fetchStats = useCallback(async () => {
+    setStatsError('');
     try {
-      const res = await fetch(`${API}/rcm/loa/stats`, { credentials: 'include' });
-      const data = await res.json();
-      if (data.ok) setStats(data);
-    } catch {
-      /* ignore */
+      const data = await apiFetch<{ ok: true; total: number; byStatus: Record<string, number> }>(
+        `${API}/rcm/loa/stats`
+      );
+      setStats(data);
+    } catch (err) {
+      setStats(null);
+      setStatsError(err instanceof Error ? err.message : String(err));
     }
   }, []);
 
@@ -317,6 +340,10 @@ export default function LoaWorkbenchPage() {
 
           {loading ? (
             <p style={{ color: '#888' }}>Loading...</p>
+          ) : loadError ? (
+            <div style={CARD}>
+              <p style={{ color: '#fca5a5' }}>Unable to load LOA requests. {loadError}</p>
+            </div>
           ) : loas.length === 0 ? (
             <div style={CARD}>
               <p style={{ color: '#888' }}>
@@ -598,7 +625,11 @@ export default function LoaWorkbenchPage() {
       {/* -- Stats tab ------------------------------------------ */}
       {tab === 'stats' && (
         <div>
-          {stats ? (
+          {statsError ? (
+            <div style={CARD}>
+              <p style={{ color: '#fca5a5' }}>Unable to load LOA stats. {statsError}</p>
+            </div>
+          ) : stats ? (
             <div
               style={{
                 display: 'grid',

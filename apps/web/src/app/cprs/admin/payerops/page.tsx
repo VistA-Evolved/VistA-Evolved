@@ -25,21 +25,39 @@ async function apiFetch(path: string, opts?: RequestInit) {
     ...opts,
     headers: { ...csrfHeaders(), ...(opts?.headers || {}) },
   });
-  return res.json();
+  const data = await res.json();
+  if (!res.ok || data?.ok === false) {
+    throw new Error(data?.error || data?.message || 'Request failed');
+  }
+  return data;
 }
 
 export default function PayerOpsPage() {
   const [tab, setTab] = useState<Tab>('enrollments');
   const [health, setHealth] = useState<any>(null);
   const [stats, setStats] = useState<any>(null);
+  const [healthError, setHealthError] = useState<string | null>(null);
+  const [statsError, setStatsError] = useState<string | null>(null);
 
   useEffect(() => {
     apiFetch('/rcm/payerops/health')
-      .then(setHealth)
-      .catch(() => {});
+      .then((data) => {
+        setHealth(data);
+        setHealthError(null);
+      })
+      .catch((error) => {
+        setHealth(null);
+        setHealthError(error instanceof Error ? error.message : 'Unable to load payer operations health.');
+      });
     apiFetch('/rcm/payerops/stats')
-      .then((d) => setStats(d?.stats))
-      .catch(() => {});
+      .then((d) => {
+        setStats(d?.stats);
+        setStatsError(null);
+      })
+      .catch((error) => {
+        setStats(null);
+        setStatsError(error instanceof Error ? error.message : 'Unable to load payer operations stats.');
+      });
   }, []);
 
   const tabs: { id: Tab; label: string }[] = [
@@ -75,6 +93,22 @@ export default function PayerOpsPage() {
           Phase 87 -- PayerOps
         </span>
       </div>
+
+      {(healthError || statsError) && (
+        <div
+          style={{
+            margin: '12px 24px 0',
+            padding: '10px 12px',
+            background: '#fef2f2',
+            color: '#991b1b',
+            borderRadius: 4,
+            fontSize: 12,
+          }}
+        >
+          <strong>Unable to load payer operations status.</strong>
+          <div>{healthError || statsError}</div>
+        </div>
+      )}
 
       {/* Stats Summary */}
       {stats && (
@@ -144,12 +178,17 @@ function EnrollmentsTab() {
   const [enrollments, setEnrollments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(() => {
     setLoading(true);
+    setError(null);
     apiFetch('/rcm/payerops/enrollments')
       .then((d) => setEnrollments(d?.enrollments || []))
-      .catch(() => {})
+      .catch((err) => {
+        setEnrollments([]);
+        setError(err instanceof Error ? err.message : 'Unable to load enrollments.');
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -187,6 +226,8 @@ function EnrollmentsTab() {
 
       {loading ? (
         <p style={{ fontSize: 13, color: '#6c757d' }}>Loading...</p>
+      ) : error ? (
+        <p style={{ fontSize: 13, color: '#991b1b' }}>Unable to load enrollments. {error}</p>
       ) : enrollments.length === 0 ? (
         <p style={{ fontSize: 13, color: '#6c757d' }}>
           No enrollments yet. Create one to start tracking payer accreditation.
@@ -336,12 +377,17 @@ function LOATab() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [selectedPack, setSelectedPack] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(() => {
     setLoading(true);
+    setError(null);
     apiFetch('/rcm/payerops/loa')
       .then((d) => setCases(d?.loaCases || []))
-      .catch(() => {})
+      .catch((err) => {
+        setCases([]);
+        setError(err instanceof Error ? err.message : 'Unable to load LOA cases.');
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -384,6 +430,8 @@ function LOATab() {
 
       {loading ? (
         <p style={{ fontSize: 13, color: '#6c757d' }}>Loading...</p>
+      ) : error ? (
+        <p style={{ fontSize: 13, color: '#991b1b' }}>Unable to load LOA cases. {error}</p>
       ) : cases.length === 0 ? (
         <p style={{ fontSize: 13, color: '#6c757d' }}>
           No LOA cases yet. Create one to begin tracking payer authorizations.
@@ -630,9 +678,11 @@ function CredentialsTab() {
   const [credentials, setCredentials] = useState<any[]>([]);
   const [expiring, setExpiring] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(() => {
     setLoading(true);
+    setError(null);
     Promise.all([
       apiFetch('/rcm/payerops/credentials'),
       apiFetch('/rcm/payerops/credentials/expiring?days=60'),
@@ -641,7 +691,11 @@ function CredentialsTab() {
         setCredentials(creds?.credentials || []);
         setExpiring(exp?.credentials || []);
       })
-      .catch(() => {})
+      .catch((err) => {
+        setCredentials([]);
+        setExpiring([]);
+        setError(err instanceof Error ? err.message : 'Unable to load credentials.');
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -675,6 +729,8 @@ function CredentialsTab() {
 
       {loading ? (
         <p style={{ fontSize: 13, color: '#6c757d' }}>Loading...</p>
+      ) : error ? (
+        <p style={{ fontSize: 13, color: '#991b1b' }}>Unable to load credential vault. {error}</p>
       ) : credentials.length === 0 ? (
         <p style={{ fontSize: 13, color: '#6c757d' }}>
           No credentials stored. Upload facility licenses, accreditation documents, and insurance
@@ -733,11 +789,15 @@ function CredentialsTab() {
 function AdaptersTab() {
   const [adapters, setAdapters] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     apiFetch('/rcm/payerops/adapters')
       .then((d) => setAdapters(d?.adapters || []))
-      .catch(() => {})
+      .catch((err) => {
+        setAdapters([]);
+        setError(err instanceof Error ? err.message : 'Unable to load adapters.');
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -751,6 +811,8 @@ function AdaptersTab() {
 
       {loading ? (
         <p style={{ fontSize: 13, color: '#6c757d' }}>Loading...</p>
+      ) : error ? (
+        <p style={{ fontSize: 13, color: '#991b1b' }}>Unable to load adapters. {error}</p>
       ) : (
         <div style={{ display: 'grid', gap: 12 }}>
           {adapters.map((a: any) => (
