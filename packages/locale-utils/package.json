@@ -13,8 +13,8 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@types/node": "^22.15.0",
+    "@types/node": "^22.19.15",
     "typescript": "^5.9.3",
-    "vitest": "^3.2.1"
+    "vitest": "^3.2.4"
   }
 }

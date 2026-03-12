@@ -1,5 +1,8 @@
 # Dependabot configuration
 # https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+#
+# To stop Dependabot alert emails, see .github/DEPENDABOT-NOTIFICATIONS.md
+# (Disable alerts: Settings → Code security and analysis → Dependabot alerts → Disable)
 
 version: 2
 updates:
@@ -8,7 +11,7 @@ updates:
     schedule:
       interval: 'weekly'
       day: 'monday'
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 5
     commit-message:
       prefix: 'chore(deps)'
     labels:

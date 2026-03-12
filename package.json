@@ -77,9 +77,9 @@
     "api:restart:safe": "powershell -ExecutionPolicy Bypass -File scripts/start-api-safe.ps1 -ForceRestart"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^8.56.1",
-    "@typescript-eslint/parser": "^8.56.1",
-    "eslint": "^9.39.2",
+    "@typescript-eslint/eslint-plugin": "^8.57.0",
+    "@typescript-eslint/parser": "^8.57.0",
+    "eslint": "^9.39.4",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
