@@ -75,11 +75,11 @@ Invoke-RestMethod -Uri 'http://127.0.0.1:3001/terminal/sessions' -WebSession $se
   .\scripts\runtime\verify-web-terminal-backend.ps1 -ApiBase "http://127.0.0.1:3001" -AccessCode "PRO1234" -VerifyCode "PRO1234!!"
   ```
   Requires admin-capable session (e.g. PRO1234 for VEHU). Script: login, GET `/terminal/health`, GET `/terminal/sessions`.
-- **Browser (optional):** Playwright smoke test loads `/cprs/vista-workspace`, selects Terminal mode, and asserts terminal UI is visible:
+- **Browser (optional):** Playwright smoke test loads `/cprs/vista-workspace`, selects Terminal mode, and asserts terminal UI is visible. **Full live proof** test establishes WebSocket, waits for `[data-terminal-status="connected"]`, sends keyboard input (Enter, `D ^ZU`, Enter), asserts session remains connected, and saves a screenshot for evidence.
   ```powershell
-  cd apps/web && pnpm exec playwright test e2e/terminal-roll-and-scroll.spec.ts
+  cd apps\web; pnpm exec playwright test e2e/terminal-roll-and-scroll.spec.ts --reporter=list
   ```
-  Does not require VistA SSH; only checks page load and terminal component mount.
+  **Evidence:** Screenshot written to `apps/web/e2e-report/terminal-live-proof.png` when the live proof test runs. Requires API running with VistA SSH (e.g. `VISTA_SSH_PORT=2224` for local-vista).
 
 ---
 
@@ -92,6 +92,7 @@ Invoke-RestMethod -Uri 'http://127.0.0.1:3001/terminal/sessions' -WebSession $se
 | Terminal sessions API | `GET /terminal/sessions` (with admin session) | `ok: true` |
 | WS upgrade | Open `/ws/terminal` with session cookie | Upgrade, then `connected` or SSH error (not 401) |
 | Browser terminal page | Open `/cprs/vista-workspace` → Terminal | “Connected to VistA”, real VistA prompt |
+| **Live interaction (e2e)** | `pnpm exec playwright test e2e/terminal-roll-and-scroll.spec.ts` | All 3 tests pass; `e2e-report/terminal-live-proof.png` exists |
 | Authentic interaction | Sign in at VistA, run menu | Real response from VistA, no fake prompts |
 
 ---
@@ -99,7 +100,7 @@ Invoke-RestMethod -Uri 'http://127.0.0.1:3001/terminal/sessions' -WebSession $se
 ## 6. What to capture for proof
 
 - **Backend:** Output of `verify-web-terminal-backend.ps1` (or equivalent curl/Invoke-RestMethod).
-- **Browser:** Whether session established (Connected/Disconnected/Error), and one successful sign-in + menu navigation (screenshot or clip).
+- **Browser:** Whether session established (Connected/Disconnected/Error), and one successful sign-in + menu navigation (screenshot or clip). **Automated:** Playwright live proof test produces `apps/web/e2e-report/terminal-live-proof.png` (keyboard interaction and prompt/response).
 - **Logs:** API log lines for one terminal connect/disconnect (sessionId, duz, sshHost, sshPort); any SSH error message.
 
 ---

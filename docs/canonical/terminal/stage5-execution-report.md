@@ -41,10 +41,11 @@
 | `docs/canonical/terminal/web-terminal-architecture.md` | **Created** — architecture map (frontend route, component tree, backend bridge, env, security, lifecycle) |
 | `docs/canonical/terminal/web-terminal-verification.md` | **Created** — verification steps, proof checklist, script references |
 | `scripts/runtime/verify-web-terminal-backend.ps1` | **Created** — backend verification: login, GET /terminal/health, GET /terminal/sessions |
-| `apps/web/e2e/terminal-roll-and-scroll.spec.ts` | **Created** — Playwright smoke: vista-workspace load, Terminal mode, terminal UI visible |
+| `apps/web/e2e/terminal-roll-and-scroll.spec.ts` | **Created** — Playwright smoke: vista-workspace load, Terminal mode, terminal UI visible; **extended** — live WebSocket test: connect, type, confirm session stability, screenshot evidence |
+| `apps/web/src/components/terminal/VistaSshTerminal.tsx` | **Updated** — added `data-terminal-status={status}` for e2e wait on connected |
 | `apps/api/.env.example` | **Updated** — added VISTA_SSH_HOST, VISTA_SSH_PORT, VISTA_SSH_USER, VISTA_SSH_PASSWORD comments |
 
-No changes to `ws-terminal.ts`, `VistaSshTerminal.tsx`, or vista-workspace page logic; path was already implemented and wired.
+No changes to `ws-terminal.ts` or vista-workspace page logic; path was already implemented and wired.
 
 ---
 
@@ -63,7 +64,8 @@ No changes to `ws-terminal.ts`, `VistaSshTerminal.tsx`, or vista-workspace page 
 
 - **Backend:** Login with PRO1234/PRO1234!! returned a session; GET `/terminal/health` and GET `/terminal/sessions` succeeded with that session (admin).
 - **SSH:** `/terminal/health` reported `ssh.status=connected` — API successfully connected to VistA SSH at configured host/port.
-- **Browser:** Playwright test authenticated (auth setup), opened `/cprs/vista-workspace`, clicked Terminal mode, and confirmed terminal UI (VistA Terminal / Connected|Connecting|Disconnected) visible. No live WebSocket-to-VistA test in this run (manual step in verification doc).
+- **Browser:** Playwright test authenticated (auth setup), opened `/cprs/vista-workspace`, clicked Terminal mode, and confirmed terminal UI (VistA Terminal / Connected|Connecting|Disconnected) visible.
+- **Full browser proof (Stage 5 extension):** Playwright test established live WebSocket session, waited for `[data-terminal-status="connected"]`, focused terminal, sent Enter + `D ^ZU` + Enter, waited for VistA response, confirmed session still connected, and captured screenshot at `apps/web/e2e-report/terminal-live-proof.png`. All three tests passed (setup, smoke, live interaction).
 
 ---
 
@@ -72,6 +74,7 @@ No changes to `ws-terminal.ts`, `VistaSshTerminal.tsx`, or vista-workspace page 
 - **Backend verification script:** All three gates passed (G1 login, G2 /terminal/health connected, G3 /terminal/sessions).
 - **SSH connectivity:** API → VistA SSH connection succeeded (health check).
 - **Playwright smoke:** vista-workspace loaded, Terminal mode selected, terminal component rendered.
+- **Playwright live proof:** WebSocket connected, terminal received `connected` message, keyboard input (Enter, `D ^ZU`, Enter) sent to VistA, session remained connected; screenshot saved to `e2e-report/terminal-live-proof.png`.
 - **Docs:** Canonical criteria, architecture, and verification docs created; .env.example documents SSH terminal env vars.
 
 ---
@@ -109,26 +112,32 @@ No changes to `ws-terminal.ts`, `VistaSshTerminal.tsx`, or vista-workspace page 
 ```
 Exit code: 0.
 
-### Browser smoke (Playwright)
+### Browser smoke + live interaction (Playwright)
 
 **Command:**
 ```powershell
 cd apps\web; pnpm exec playwright test e2e/terminal-roll-and-scroll.spec.ts --reporter=list
 ```
 
-**Output:**
+**Output (full run, including live WebSocket proof):**
 ```
-  ok 1 [setup] › e2e\auth.setup.ts › authenticate via API (3.9s)
-  ok 2 [chromium] › e2e\terminal-roll-and-scroll.spec.ts › vista-workspace loads and Terminal mode shows terminal UI (12.6s)
-  2 passed (28.6s)
+  ok 1 [setup] › e2e\auth.setup.ts › authenticate via API (7.4s)
+  ok 2 [chromium] › e2e\terminal-roll-and-scroll.spec.ts › vista-workspace loads and Terminal mode shows terminal UI (14.0s)
+  ok 3 [chromium] › e2e\terminal-roll-and-scroll.spec.ts › live WebSocket session: connect, type, confirm VistA response and session stability (8.7s)
+
+  3 passed (36.1s)
 ```
+
+**Evidence:** Screenshot of live terminal interaction (keyboard input, VistA prompt/response, session connected):  
+`apps/web/e2e-report/terminal-live-proof.png`
 
 ---
 
 ## 8. What stage should run next
 
-- **Next:** Continue with **runtime/terminal integration** or the next slice in your plan: e.g. prove a **full browser session** (login → vista-workspace → Terminal → type at VistA prompt and capture output) and record it in the same canonical docs. No side-by-side GUI mapping or admin dashboards until later stages.
+- **Done for Stage 5:** Full browser session proved (login → vista-workspace → Terminal → WebSocket connected → type at VistA prompt → session stable; evidence in `e2e-report/terminal-live-proof.png`).
 - **Optional:** Run manual browser verification from `web-terminal-verification.md` (sign in at VistA, run a menu, resize, copy/paste) and attach screenshot/clip to this report or artifacts.
+- **Next slice:** Proceed to Slice 001 only after runtime truth and terminal truth are accepted; do not begin Slice 001 until then.
 
 ---
 

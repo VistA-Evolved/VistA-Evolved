@@ -1,5 +1,24 @@
-{
-  "description": "Pinned WorldVistA upstream sources. Updated by fetch-worldvista-sources.ps1 and pin-worldvista-sources.ps1.",
-  "updatedAt": null,
-  "repos": []
+﻿{
+    "updatedAt":  "2026-03-12T16:44:12.6818588+08:00",
+    "description":  "Pinned WorldVistA upstream sources. Updated by fetch-worldvista-sources.ps1 and pin-worldvista-sources.ps1.",
+    "repos":  [
+                  {
+                      "name":  "VistA-M",
+                      "url":  "https://github.com/WorldVistA/VistA-M.git",
+                      "branch":  "master",
+                      "commitSha":  "b7aecb9029f9bb8639a7bfa63b635469065ab44d",
+                      "localPath":  "vendor/upstream/VistA-M",
+                      "fetchDate":  "2026-03-12T16:44:12.7595132+08:00",
+                      "purpose":  "Canonical M source baseline (OSEHRA VistA M components)"
+                  },
+                  {
+                      "name":  "VistA",
+                      "url":  "https://github.com/WorldVistA/VistA.git",
+                      "branch":  "master",
+                      "commitSha":  "6c18f1bf98a3c2b33aa0c61ced6282a42c72e1aa",
+                      "localPath":  "vendor/upstream/VistA",
+                      "fetchDate":  "2026-03-12T16:44:12.8404320+08:00",
+                      "purpose":  "Canonical broader source/patch/tooling baseline (OSEHRA VistA)"
+                  }
+              ]
 }

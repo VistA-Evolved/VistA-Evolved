@@ -268,7 +268,10 @@ export default function VistaSshTerminal({
   }[status];
 
   return (
-    <div className="flex flex-col h-full bg-background rounded-lg border overflow-hidden">
+    <div
+      className="flex flex-col h-full bg-background rounded-lg border overflow-hidden"
+      data-terminal-status={status}
+    >
       {showToolbar && (
         <div className="flex items-center justify-between px-3 py-1.5 bg-muted border-b text-sm">
           <div className="flex items-center gap-2">
