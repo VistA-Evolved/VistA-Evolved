@@ -49,7 +49,7 @@ jobs:
       PLATFORM_PG_URL: postgresql://ve_api:ve_dev_only_change_in_prod@localhost:5433/ve_platform
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: pnpm/action-setup@v4
         with:
