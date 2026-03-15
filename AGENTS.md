@@ -1,13 +1,28 @@
-# Agent & Developer Onboarding — VistA-Evolved
+# Agent & Developer Onboarding — VistA-Evolved (ARCHIVED)
+
+> **⛔ THIS REPO IS FROZEN.** See `/ARCHIVE-STATUS.md` for full details.
+>
+> This repository is archived as prototype/salvage/reference. **No new development happens here.**
+> The active repos are:
+> - **vista-evolved-platform** — has its own `AGENTS.md` governing platform work
+> - **vista-evolved-vista-distro** — has its own `AGENTS.md` governing distro work
+>
+> **Do NOT apply these rules when working in the active repos.** Each active repo is self-governing.
+>
+> This file remains as **reference material** for VistA RPC protocol details, XWB broker fixes,
+> MUMPS integration patterns, and the bug tracker. Extract what is useful into the active repos;
+> do not treat this file as active governance.
+
+---
 
 > **This file exists so AI coding agents and new developers can find critical
 > context _fast_ without repeating hours of investigation.**
 
 ---
 
-## 0. MANDATORY GOVERNANCE PREAMBLE (Phase 53)
+## 0. GOVERNANCE PREAMBLE (Phase 53) — ARCHIVED, NOT ACTIVE
 
-**Every agent and developer MUST follow these rules:**
+**These rules applied when this repo was active. They do NOT govern the new repos:**
 
 0. **DOCKER-FIRST VERIFICATION (NON-NEGOTIABLE, RULE ZERO).**
    Before writing ANY backend code, verify Docker is running and the API

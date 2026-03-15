@@ -1,8 +1,23 @@
-# VistA-Evolved -- Copilot Build Protocol (MANDATORY)
+# VistA-Evolved -- Copilot Build Protocol (ARCHIVED)
+
+> **⛔ THIS REPO IS FROZEN.** See `/ARCHIVE-STATUS.md` for details.
+>
+> This repository is archived as prototype/salvage/reference. **No new development happens here.**
+> The active repos are:
+> - **vista-evolved-platform** — control plane, admin console, contracts, config, domain
+> - **vista-evolved-vista-distro** — VistA upstream/overlay, docker, build/verify scripts
+>
+> **Do NOT apply these instructions when working in the active repos.** Each active repo has its own `AGENTS.md`, `CLAUDE.md`, `.github/copilot-instructions.md`, and `.cursor/rules/` that govern AI behavior for that repo.
+>
+> These instructions remain here solely as **reference material** for understanding the original monorepo's VistA RPC protocol, MUMPS integration patterns, and hard-won bug fixes. Extract what is useful; do not treat these rules as active governance.
+
+---
 
 ## Governed build protocol (no uncontrolled feature generation)
 
-This repo is a **governed, proof-driven platform**. Follow these rules in addition to RULE ZERO below:
+**ARCHIVED — applies only to this frozen repo, not to active repos.**
+
+This repo was a **governed, proof-driven platform**. The rules below applied when it was active:
 
 - **No broad uncontrolled feature generation.** Work one slice at a time; complete verification and human review before the next slice. See `docs/canonical/governed-build-protocol.md`.
 - **No claiming done without proof.** Proof = exact files changed + exact commands run + exact outputs + pass/fail. See `docs/canonical/verification-standard.md` and `docs/governance/PROOF-AND-GOVERNANCE.md`.
