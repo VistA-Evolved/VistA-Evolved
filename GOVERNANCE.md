@@ -1,6 +1,15 @@
 # VistA-Evolved: Governed Build Platform
 
-This repository is **transitioning from an exploratory AI-built codebase to a governed, proof-driven platform.**
+> **⛔ THIS REPO IS FROZEN.** Governance for active work lives in the active repos.
+> See [ARCHIVE-STATUS.md](ARCHIVE-STATUS.md) for details.
+>
+> **Active governance:**
+> - `vista-evolved-platform/AGENTS.md` — platform governance and build protocol
+> - `vista-evolved-vista-distro/AGENTS.md` — distro governance
+
+---
+
+This repository was **an exploratory AI-built codebase** that has been archived as prototype/salvage/reference.
 
 ## Current repo
 

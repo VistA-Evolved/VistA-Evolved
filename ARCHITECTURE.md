@@ -1,6 +1,16 @@
 # VistA-Evolved Architecture
 
-> Single source of truth for system architecture. Updated March 2026.
+> **⛔ THIS REPO IS FROZEN.** This architecture doc describes the **archived monorepo**.
+> It does not reflect the current multi-repo architecture.
+> See [ARCHIVE-STATUS.md](ARCHIVE-STATUS.md) for details.
+>
+> **Current architecture lives in the active repos:**
+> - `vista-evolved-platform/AGENTS.md` — platform architecture and governance
+> - `vista-evolved-vista-distro/docs/` — VistA runtime architecture
+
+---
+
+> Single source of truth for system architecture. Updated March 2026. **(Archived — reference only.)**
 
 ## System Overview
 

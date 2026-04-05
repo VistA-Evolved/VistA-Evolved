@@ -1,5 +1,18 @@
 # Contributing to VistA Evolved
 
+> **⛔ THIS REPO IS FROZEN — NO CONTRIBUTIONS ACCEPTED.**
+> This repository is archived as prototype/salvage/reference only.
+> See [ARCHIVE-STATUS.md](ARCHIVE-STATUS.md) for details.
+>
+> **Active repos (contribute here instead):**
+> - **vista-evolved-platform** — web UI, APIs, control plane, tenant admin
+> - **vista-evolved-vista-distro** — VistA Docker runtime, upstream pins, overlay routines
+
+---
+
+<details>
+<summary>Archived contribution guide (reference only)</summary>
+
 ## Source of Truth
 
 - Planning, roadmap, and feature specs live in Notion.
@@ -72,3 +85,5 @@ deployment, create an ADR in `docs/decisions/`.
 - Do not commit secrets. Use `apps/api/.env.local` locally.
 - Credentials must not appear outside the login page (`NODE_ENV` guard).
 - Read AGENTS.md §6 ("Key Gotchas") before touching auth or VistA protocol code.
+
+</details>

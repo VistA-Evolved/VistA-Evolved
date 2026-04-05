@@ -1,5 +1,21 @@
 # VistA Evolved
 
+> **⛔ THIS REPO IS FROZEN — DO NOT USE FOR ACTIVE DEVELOPMENT.**
+> This repository is archived as prototype/salvage/reference only.
+> See [ARCHIVE-STATUS.md](ARCHIVE-STATUS.md) for full details.
+>
+> **Active repos:**
+> - **vista-evolved-platform** — web UI, APIs, control plane, tenant admin
+> - **vista-evolved-vista-distro** — VistA Docker runtime, upstream pins, overlay routines
+>
+> Do not start servers, install dependencies, or make changes here.
+> Extract only what is needed into the active repos.
+
+---
+
+<details>
+<summary>Archived README (reference only — do not follow these instructions)</summary>
+
 Modern browser-based EHR built on proven VistA clinical logic.
 
 ## What This Is
@@ -295,3 +311,5 @@ Code that was never executed against the live system is NOT considered done.
 See [CONTRIBUTING.md](CONTRIBUTING.md) for branch naming, commit conventions,
 and the PR checklist. All PRs require a green CI pipeline and an updated
 `docs/SESSION_LOG.md` entry.
+
+</details>
